@@ -17,6 +17,11 @@ func main() {
 		}
 	} else if len(os.Args) == 2 && os.Args[1] == "--custom" {
 		// Run it interactively with more customization.
+		err := pr.Run()
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
 	} else {
 		// Run it in batch mode.
 		_ = pr.ParseArgument(os.Args)

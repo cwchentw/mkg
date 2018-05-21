@@ -58,6 +58,15 @@ func (r *ParsingResult) RunWithDefaults() error {
 	return nil
 }
 
+func (r *ParsingResult) Run() error {
+	err := r.RunWithDefaults()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func prompt(prompt string) (string, error) {
 	reader := bufio.NewReader(os.Stdin)
 
