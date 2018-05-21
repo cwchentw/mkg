@@ -70,8 +70,8 @@ Project source directory: %s
 Project include directory: %s
 Project test directory: %s
 Project example directory: %s
-`, r.prog, r.path, langToString(r.lang), projToString(r.proj),
-		layoutToString(r.layout), r.src, r.include, r.test, r.example)
+`, r.Prog(), r.Path(), langToString(r.Lang()), projToString(r.Proj()),
+		layoutToString(r.Layout()), r.Src(), r.Include(), r.Test(), r.Example())
 }
 
 func langToString(lang Language) string {
@@ -107,8 +107,8 @@ func layoutToString(layout ProjectLayout) string {
 	}
 }
 
-func (r *ParsingResult) ParseArgument(args []string) *ParsingResult {
-	return r
+func (r *ParsingResult) ParseArgument(args []string) error {
+	return nil
 }
 
 func (r *ParsingResult) Prog() string {
