@@ -24,7 +24,11 @@ func main() {
 		}
 	} else {
 		// Run it in batch mode.
-		_ = pr.ParseArgument(os.Args)
+		err := pr.ParseArgument(os.Args)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
 	}
 
 	// Remove it later.
