@@ -14,6 +14,8 @@ type ParsingResult struct {
 	proj   ProjectType
 	layout ProjectLayout
 
+	license License
+
 	src     string
 	include string
 	test    string
@@ -31,6 +33,8 @@ func NewParsingResult() *ParsingResult {
 	result.proj = PROJ_APP
 	result.layout = LAYOUT_NESTED
 
+	result.license = LICENSE_NONE
+
 	result.src = "src"
 	result.include = "include"
 	result.test = "test"
@@ -44,21 +48,23 @@ func (r *ParsingResult) String() string {
 Project path: %s
 Project language: %s
 Project type: %s
+Project license: %s
 Project layout: %s
 Project source directory: %s
 Project include directory: %s
 Project test directory: %s
 Project example directory: %s
 `, r.Prog(), r.Path(), langToString(r.Lang()), projToString(r.Proj()),
-		layoutToString(r.Layout()), r.Src(), r.Include(), r.Test(), r.Example())
+		licenseToString(r.License()), layoutToString(r.Layout()),
+		r.Src(), r.Include(), r.Test(), r.Example())
 }
 
 func langToString(lang Language) string {
 	switch lang {
 	case LANG_C:
-		return "LANG_C"
+		return "C"
 	case LANG_CPP:
-		return "LANG_C++"
+		return "C++"
 	default:
 		panic("Unknown language")
 	}
@@ -83,6 +89,39 @@ func layoutToString(layout ProjectLayout) string {
 		return "flat"
 	default:
 		panic("Unknown layout")
+	}
+}
+
+func licenseToString(license License) string {
+	switch license {
+	case LICENSE_NONE:
+		return "none"
+	case LICENSE_APACHE2:
+		return "apache2"
+	case LICENSE_MIT:
+		return "mit"
+	case LICENSE_GPL3:
+		return "gpl3"
+	case LICENSE_BSD2:
+		return "bsd2"
+	case LICENSE_BSD3:
+		return "bsd3"
+	case LICENSE_EPL2:
+		return "epl2"
+	case LICENSE_AGPL3:
+		return "agpl3"
+	case LICENSE_GPL2:
+		return "gpl2"
+	case LICENSE_LGPL2:
+		return "lgpl2"
+	case LICENSE_LGPL3:
+		return "lgpl3"
+	case LICENSE_MPL2:
+		return "mpl2"
+	case LICENSE_UNLICENSE:
+		return "unlicense"
+	default:
+		panic("Unknown license")
 	}
 }
 
@@ -154,6 +193,14 @@ func (r *ParsingResult) Layout() ProjectLayout {
 
 func (r *ParsingResult) SetLayout(layout ProjectLayout) {
 	r.layout = layout
+}
+
+func (r *ParsingResult) License() License {
+	return r.license
+}
+
+func (r *ParsingResult) SetLicense(license License) {
+	r.license = license
 }
 
 func (r *ParsingResult) Src() string {
