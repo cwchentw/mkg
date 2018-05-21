@@ -5,27 +5,6 @@ import (
 	"fmt"
 )
 
-type Language int
-
-const (
-	C Language = iota
-	Cpp
-)
-
-type ProjectType int
-
-const (
-	Application ProjectType = iota
-	Library
-)
-
-type ProjectLayout int
-
-const (
-	Nested ProjectLayout = iota
-	Flat
-)
-
 type ParsingResult struct {
 	prog   string
 	path   string
@@ -48,9 +27,9 @@ func NewParsingResult() *ParsingResult {
 	result.path = result.prog
 	result.config = "Makefile"
 
-	result.lang = C
-	result.proj = Application
-	result.layout = Nested
+	result.lang = LANG_C
+	result.proj = PROJ_APP
+	result.layout = LAYOUT_NESTED
 
 	result.src = "src"
 	result.include = "include"
@@ -76,10 +55,10 @@ Project example directory: %s
 
 func langToString(lang Language) string {
 	switch lang {
-	case C:
-		return "C"
-	case Cpp:
-		return "C++"
+	case LANG_C:
+		return "LANG_C"
+	case LANG_CPP:
+		return "LANG_C++"
 	default:
 		panic("Unknown language")
 	}
@@ -87,9 +66,9 @@ func langToString(lang Language) string {
 
 func projToString(proj ProjectType) string {
 	switch proj {
-	case Application:
+	case PROJ_APP:
 		return "application"
-	case Library:
+	case PROJ_LIB:
 		return "library"
 	default:
 		panic("Unknown project type")
@@ -98,9 +77,9 @@ func projToString(proj ProjectType) string {
 
 func layoutToString(layout ProjectLayout) string {
 	switch layout {
-	case Nested:
+	case LAYOUT_NESTED:
 		return "nested"
-	case Flat:
+	case LAYOUT_FLAT:
 		return "flat"
 	default:
 		panic("Unknown layout")

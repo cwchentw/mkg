@@ -46,9 +46,9 @@ func (r *ParsingResult) RunWithDefaults() error {
 	}
 
 	if lang == "c" {
-		r.SetLang(C)
+		r.SetLang(LANG_C)
 	} else if lang == "cpp" {
-		r.SetLang(Cpp)
+		r.SetLang(LANG_CPP)
 	} else if lang == "" {
 		// Do nothing.
 	} else {
