@@ -50,6 +50,21 @@ Program name [hello]:
 Project path [hello]:
 Project language (c/cpp) [c]:
 Project type (app/lib) [app]:
+Project licensing [none]:
+    None (none)
+    Apache License 2.0 (apache2)
+    GNU General Public License v3.0 (gpl3)
+    MIT License (mit)
+    ---
+    BSD 2-clause "Simplified" license (bsd2)
+    BSD 3-clause "New" or "Revised" license (bsd3)
+    Eclipse Public License 2.0 (epl2)
+    GNU Affero General Public License v3.0 (agpl3)
+    GNU General Public License v2.0 (gpl2)
+    GNU Lesser General Public License v2.1 (lgpl2)
+    GNU Lesser General Public License v3.0 (lgpl3)
+    Mozilla Public License 2.0 (mpl2)
+    The Unlicense (unlicense)
 ```
 
 In this case, `mkg` will generate a project with a sensible project structure.
@@ -62,6 +77,8 @@ Program name [hello]:
 Project path [hello]:
 Project language (c/cpp) [c]:
 Project type (app/lib) [app]:
+(Choose licensing as above...)
+
 Project structure (nested/flat) [nested]:
 Project source directory [src]:
 Project include directory [include]:
@@ -75,13 +92,30 @@ Project config file [Makefile]:
 ### Program metadata
 
 * `-v` or `--version`: Show version info
-* `--license`: Show license info
 * `-h` or `--help`: Show help message
 
 ### Project metadata
 
 * `-p _prog_` or `--program _prog_`: Set program name to _prog_, default to directory name
-* `-o _config_` or `--output _config_`: Set Make configuration to _config_, default to *Makefile*
+* `-o _config_` or `--output _config_`: Set Make configuration file to _config_, default to *Makefile*
+* `-l _license_` or `--license _license_`: Choose a open-source _license_ for the generated project
+
+Here are the available licenses in `mkg`:
+
+* Recommended
+  * Apache License 2.0 (apache2)
+  * GNU General Public License v3.0 (gpl3)
+  * MIT License (mit)
+* Other
+  * BSD 2-clause "Simplified" license (bsd2)
+  * BSD 3-clause "New" or "Revised" license (bsd3)
+  * Eclipse Public License 2.0 (epl2)
+  * GNU Affero General Public License v3.0 (agpl3)
+  * GNU General Public License v2.0 (gpl2)
+  * GNU Lesser General Public License v2.1 (lgpl2)
+  * GNU Lesser General Public License v3.0 (lgpl3)
+  * Mozilla Public License 2.0 (mpl2)
+  * The Unlicense (unlicense)
 
 ### Behavior modifiers
 
