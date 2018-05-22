@@ -108,22 +108,23 @@ Project config file [Makefile]:
 
 ### Program metadata
 
-* `-v` or `--version`: Show version info
-* `-h` or `--help`: Show help message
+* `-v` or `--version`: Show version info and exit the program
+* `-h` or `--help`: Show help message and exit the program
+* `--licenses`: Show the available open-source licenses and exit the program
 
 ### Project metadata
 
 * `-p _prog_` or `--program _prog_`: Set program name to _prog_, default to directory name
 * `-o _config_` or `--output _config_`: Set Make configuration file to _config_, default to *Makefile*
-* `-l _license_` or `--license _license_`: Choose a open-source _license_ for the generated project
+* `-l _license_` or `--license _license_`: Choose a open-source _license_ for the project
 
-Here are the available licenses in `mkg`:
+Here are the available licenses in our program:
 
 * Recommended
   * Apache License 2.0 (apache2)
   * GNU General Public License v3.0 (gpl3)
   * MIT License (mit)
-* Other
+* Alternative
   * BSD 2-clause "Simplified" license (bsd2)
   * BSD 3-clause "New" or "Revised" license (bsd3)
   * Eclipse Public License 2.0 (epl2)
