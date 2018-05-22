@@ -8,6 +8,7 @@ import (
 func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 	size := len(args)
 	setProg := false
+	setPath := false
 	for i := 1; i < size; i++ {
 		switch args[i] {
 		case "-v", "--version":
@@ -31,6 +32,20 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 			r.SetLayout(LAYOUT_NESTED)
 		case "--flat":
 			r.SetLayout(LAYOUT_FLAT)
+		case "-a", "--author":
+			if i+1 >= len(args) {
+				return PARSING_EVENT_ERROR, errors.New("No valid author")
+			}
+
+			r.SetAuthor(args[i+1])
+			i++
+		case "-b", "--brief":
+			if i+1 >= len(args) {
+				return PARSING_EVENT_ERROR, errors.New("No valid description")
+			}
+
+			r.SetBrief(args[i+1])
+			i++
 		case "-l", "--license":
 			if i+1 >= len(args) {
 				return PARSING_EVENT_ERROR, errors.New("No valid license")
@@ -92,6 +107,12 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 			if !setProg {
 				r.SetProg(filepath.Base(r.Path()))
 			}
+
+			setPath = true
+		}
+
+		if setPath {
+			break
 		}
 	}
 

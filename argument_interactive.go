@@ -38,6 +38,24 @@ func (r *ParsingResult) RunWithDefaults() error {
 		}
 	}
 
+	author, err := prompt(fmt.Sprintf("Project author [%s]: ", r.Author()))
+	if err != nil {
+		return err
+	}
+
+	if author != "" {
+		r.SetAuthor(author)
+	}
+
+	brief, err := prompt(fmt.Sprintf("Project brief description [%s]: ", r.Brief()))
+	if err != nil {
+		return err
+	}
+
+	if brief != "" {
+		r.SetBrief(brief)
+	}
+
 	lang, err := prompt(
 		fmt.Sprintf("Project language (c/cpp) [%s]: ", langToString(r.Lang())))
 	if err != nil {

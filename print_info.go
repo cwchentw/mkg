@@ -15,10 +15,14 @@ func printHelp(stream io.Writer) {
 Options:
     -p _prog_           Set program name as _prog_
     --program _prog_
+    -a _author_         Set project author as _author_
+    --author _author_
+    -b _brief_          Set project description as _brief_
+    --brief _brief_
     -o _config_         Set config file to _config_, default to Makefile
     --output _config_
-    -l _cert_           Choose a open-source license from _cert_
-    --license _cert_
+    -l _license_        Choose a open-source _license_
+    --license _license_
     --licenses          Show available licenses
 
     -c, -C              Generate a C project (default)

@@ -10,6 +10,9 @@ type ParsingResult struct {
 	path   string
 	config string
 
+	author string
+	brief  string
+
 	lang   Language
 	proj   ProjectType
 	layout ProjectLayout
@@ -29,6 +32,9 @@ func NewParsingResult() *ParsingResult {
 	result.path = result.prog
 	result.config = "Makefile"
 
+	result.author = "somebody"
+	result.brief = "something"
+
 	result.lang = LANG_C
 	result.proj = PROJ_APP
 	result.layout = LAYOUT_NESTED
@@ -46,11 +52,14 @@ func NewParsingResult() *ParsingResult {
 func (r *ParsingResult) String() string {
 	out := fmt.Sprintf(`Program name: %s
 Project path: %s
+Project author: %s
+Project brief description: %s
 Project language: %s
 Project type: %s
 Project license: %s
 Project layout: %s
-`, r.Prog(), r.Path(), langToString(r.Lang()), projToString(r.Proj()),
+`, r.Prog(), r.Path(), r.Author(), r.Brief(),
+		langToString(r.Lang()), projToString(r.Proj()),
 		licenseToString(r.License()), layoutToString(r.Layout()),
 	)
 
@@ -93,6 +102,30 @@ func (r *ParsingResult) SetPath(path string) error {
 	r.path = path
 
 	return nil
+}
+
+func (r *ParsingResult) Author() string {
+	return r.author
+}
+
+func (r *ParsingResult) SetAuthor(author string) {
+	if author == "" {
+		return
+	}
+
+	r.author = author
+}
+
+func (r *ParsingResult) Brief() string {
+	return r.brief
+}
+
+func (r *ParsingResult) SetBrief(brief string) {
+	if brief == "" {
+		return
+	}
+
+	r.brief = brief
 }
 
 func (r *ParsingResult) Config() string {
