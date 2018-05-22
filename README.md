@@ -50,21 +50,24 @@ Program name [hello]:
 Project path [hello]:
 Project language (c/cpp) [c]:
 Project type (app/lib) [app]:
+
+None (none)
+Apache License 2.0 (apache2)
+GNU General Public License v3.0 (gpl3)
+MIT License (mit)
+---
+BSD 2-clause "Simplified" license (bsd2)
+BSD 3-clause "New" or "Revised" license (bsd3)
+Eclipse Public License 2.0 (epl2)
+GNU Affero General Public License v3.0 (agpl3)
+GNU General Public License v2.0 (gpl2)
+GNU Lesser General Public License v2.1 (lgpl2)
+GNU Lesser General Public License v3.0 (lgpl3)
+Mozilla Public License 2.0 (mpl2)
+The Unlicense (unlicense)
+
 Project licensing [none]:
-    None (none)
-    Apache License 2.0 (apache2)
-    GNU General Public License v3.0 (gpl3)
-    MIT License (mit)
-    ---
-    BSD 2-clause "Simplified" license (bsd2)
-    BSD 3-clause "New" or "Revised" license (bsd3)
-    Eclipse Public License 2.0 (epl2)
-    GNU Affero General Public License v3.0 (agpl3)
-    GNU General Public License v2.0 (gpl2)
-    GNU Lesser General Public License v2.1 (lgpl2)
-    GNU Lesser General Public License v3.0 (lgpl3)
-    Mozilla Public License 2.0 (mpl2)
-    The Unlicense (unlicense)
+    
 ```
 
 In this case, `mkg` will generate a project with a sensible project structure.

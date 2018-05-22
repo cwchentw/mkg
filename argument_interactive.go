@@ -83,6 +83,27 @@ func (r *ParsingResult) RunWithDefaults() error {
 		r.SetLayout(l)
 	}
 
+	fmt.Println("")
+
+	printLicenses()
+
+	fmt.Println("")
+
+	cert, err := prompt(
+		fmt.Sprintf("Project license [%s]: ", licenseToString(r.License())))
+	if err != nil {
+		return err
+	}
+
+	if cert != "" {
+		c, err := stringToLicense(cert)
+		if err != nil {
+			return err
+		}
+
+		r.SetLicense(c)
+	}
+
 	return nil
 }
 

@@ -103,6 +103,39 @@ func licenseToString(license License) string {
 	}
 }
 
+func stringToLicense(cert string) (License, error) {
+	switch cert {
+	case "none":
+		return LICENSE_NONE, nil
+	case "apache2":
+		return LICENSE_APACHE2, nil
+	case "mit":
+		return LICENSE_MIT, nil
+	case "gpl3":
+		return LICENSE_GPL3, nil
+	case "bsd2":
+		return LICENSE_BSD2, nil
+	case "bsd3":
+		return LICENSE_BSD3, nil
+	case "epl2":
+		return LICENSE_EPL2, nil
+	case "agpl3":
+		return LICENSE_AGPL3, nil
+	case "gpl2":
+		return LICENSE_GPL2, nil
+	case "lgpl2":
+		return LICENSE_LGPL2, nil
+	case "lgpl3":
+		return LICENSE_LGPL3, nil
+	case "mpl2":
+		return LICENSE_MPL2, nil
+	case "unlicense":
+		return LICENSE_UNLICENSE, nil
+	default:
+		return LICENSE_MIT, errors.New("Invalid license")
+	}
+}
+
 func isValidFileName(name string) bool {
 	// Modify it later.
 	return name != ""
