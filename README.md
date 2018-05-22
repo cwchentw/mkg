@@ -60,10 +60,10 @@ To invoke `mkg` interactively, run it without any argument:
 
 ```
 $ mkg
-Program name [hello]:
-Project path [hello]:
+Program name [myapp]:
+Project path [myapp]:
 Project author [somebody]: Michael Chen
-Project brief description [something]: Yet Another Hello Program
+Project brief description [something]: Yet Another Application
 Project language (c/cpp) [c]:
 Project type (app/lib) [app]:
 
@@ -91,10 +91,10 @@ Alternatively, run it interactively with more customization:
 
 ```
 $ mkg --custom
-Program name [hello]:
-Project path [hello]:
+Program name [myapp]:
+Project path [myapp]:
 Project author [somebody]: Michael Chen
-Project brief description [something]: Yet Another Hello Program
+Project brief description [something]: Yet Another Application
 Project language (c/cpp) [c]:
 Project type (app/lib) [app]:
 
@@ -172,7 +172,7 @@ These parameters only make effects in nested projects.
 
 ## Author
 
-Michael Chen, 2018.
+2018 Michael Chen
 
 ## License
 
