@@ -113,6 +113,62 @@ func (r *ParsingResult) Run() error {
 		r.SetLayout(l)
 	}
 
+	if !r.IsNested() {
+		return nil
+	}
+
+	src, err := prompt(
+		fmt.Sprintf("Project source directory [%s]: ", r.Src()))
+	if err != nil {
+		return err
+	}
+
+	if src != "" {
+		err = r.SetSrc(src)
+		if err != nil {
+			return err
+		}
+	}
+
+	include, err := prompt(
+		fmt.Sprintf("Project include directory [%s]: ", r.Include()))
+	if err != nil {
+		return err
+	}
+
+	if include != "" {
+		err = r.SetInclude(include)
+		if err != nil {
+			return err
+		}
+	}
+
+	tests, err := prompt(
+		fmt.Sprintf("Project test directory [%s]: ", r.Test()))
+	if err != nil {
+		return err
+	}
+
+	if tests != "" {
+		err = r.SetTest(tests)
+		if err != nil {
+			return err
+		}
+	}
+
+	examples, err := prompt(
+		fmt.Sprintf("Project example directory [%s]: ", r.Example()))
+	if err != nil {
+		return err
+	}
+
+	if examples != "" {
+		err = r.SetExample(examples)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 

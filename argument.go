@@ -37,7 +37,7 @@ func NewParsingResult() *ParsingResult {
 
 	result.src = "src"
 	result.include = "include"
-	result.test = "test"
+	result.test = "tests"
 	result.example = "examples"
 
 	return result
