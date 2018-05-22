@@ -44,23 +44,27 @@ func NewParsingResult() *ParsingResult {
 }
 
 func (r *ParsingResult) String() string {
-	return fmt.Sprintf(`Program name: %s
+	out := fmt.Sprintf(`Program name: %s
 Project path: %s
 Project language: %s
 Project type: %s
 Project license: %s
 Project layout: %s
-Project source directory: %s
+`, r.Prog(), r.Path(), langToString(r.Lang()), projToString(r.Proj()),
+		licenseToString(r.License()), layoutToString(r.Layout()),
+	)
+
+	if !r.IsNested() {
+		return out
+	}
+
+	more := fmt.Sprintf(`Project source directory: %s
 Project include directory: %s
 Project test directory: %s
 Project example directory: %s
-`, r.Prog(), r.Path(), langToString(r.Lang()), projToString(r.Proj()),
-		licenseToString(r.License()), layoutToString(r.Layout()),
-		r.Src(), r.Include(), r.Test(), r.Example())
-}
+`, r.Src(), r.Include(), r.Test(), r.Example())
 
-func (r *ParsingResult) ParseArgument(args []string) error {
-	return nil
+	return fmt.Sprintf("%s%s", out, more)
 }
 
 func (r *ParsingResult) Prog() string {
@@ -127,6 +131,10 @@ func (r *ParsingResult) Layout() ProjectLayout {
 
 func (r *ParsingResult) SetLayout(layout ProjectLayout) {
 	r.layout = layout
+}
+
+func (r *ParsingResult) IsNested() bool {
+	return r.layout == LAYOUT_NESTED
 }
 
 func (r *ParsingResult) License() License {

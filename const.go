@@ -1,5 +1,8 @@
 package main
 
+const PROGRAM = "mkg"
+const VERSION = "0.1.0"
+
 type Language int
 
 const (
@@ -37,4 +40,13 @@ const (
 	LICENSE_EPL2
 	LICENSE_MPL2
 	LICENSE_UNLICENSE
+)
+
+type ParsingEvent int
+
+const (
+	PARSING_EVENT_VERSION ParsingEvent = iota
+	PARSING_EVENT_HELP
+	PARSING_EVENT_RUN
+	PARSING_EVENT_ERROR
 )
