@@ -35,9 +35,8 @@ func CreateProject(pr *ParsingResult) {
 		if pr.License() == LICENSE_GPL3 {
 			_, err = fileLicense.WriteString(template)
 		} else {
-			// Fix it later.
 			_, err = fileLicense.WriteString(
-				fmt.Sprintf(template, fmt.Sprint(now.Year()), "Michael Chen"))
+				fmt.Sprintf(template, fmt.Sprint(now.Year()), pr.Author()))
 		}
 
 		if err != nil {
