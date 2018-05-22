@@ -44,6 +44,9 @@ func main() {
 	case PARSING_EVENT_HELP:
 		printHelp(os.Stdout)
 		os.Exit(0)
+	case PARSING_EVENT_LICENSES:
+		printLicenses()
+		os.Exit(0)
 	}
 
 	// Remove it later.

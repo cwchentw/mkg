@@ -14,6 +14,8 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 			return PARSING_EVENT_VERSION, nil
 		case "-h", "--help":
 			return PARSING_EVENT_HELP, nil
+		case "--licenses":
+			return PARSING_EVENT_LICENSES, nil
 		case "-p", "--program":
 			r.SetProg(args[i])
 			setProg = true
