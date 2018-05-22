@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"os"
 	"runtime"
@@ -45,14 +44,14 @@ func (r *ParsingResult) RunWithDefaults() error {
 		return err
 	}
 
-	if lang == "c" {
-		r.SetLang(LANG_C)
-	} else if lang == "cpp" {
-		r.SetLang(LANG_CPP)
-	} else if lang == "" {
-		// Do nothing.
+	if lang == "" {
+		// Do nothing
 	} else {
-		return errors.New("Invalid language")
+		l, err := stringToLang(lang)
+		if err != nil {
+			return err
+		}
+		r.SetLang(l)
 	}
 
 	return nil

@@ -1,5 +1,9 @@
 package main
 
+import (
+	"errors"
+)
+
 func langToString(lang Language) string {
 	switch lang {
 	case LANG_C:
@@ -8,6 +12,17 @@ func langToString(lang Language) string {
 		return "C++"
 	default:
 		panic("Unknown language")
+	}
+}
+
+func stringToLang(lang string) (Language, error) {
+	switch lang {
+	case "c":
+		return LANG_C, nil
+	case "cpp":
+		return LANG_CPP, nil
+	default:
+		return LANG_C, errors.New("Invalid language")
 	}
 }
 
