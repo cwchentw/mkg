@@ -26,28 +26,30 @@ func CreateProject(pr *ParsingResult) {
 }
 
 func createLicense(pr *ParsingResult) {
-	if pr.License() != LICENSE_NONE {
-		path := filepath.Join(pr.Path(), "LICENSE")
-		file, err := os.Create(path)
-		defer file.Close()
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			os.Exit(1)
-		}
+	if pr.License() == LICENSE_NONE {
+		return
+	}
 
-		template := getTemplate(pr.License())
-		now := time.Now()
-		if pr.License() == LICENSE_GPL3 {
-			_, err = file.WriteString(template)
-		} else {
-			_, err = file.WriteString(
-				fmt.Sprintf(template, fmt.Sprint(now.Year()), pr.Author()))
-		}
+	path := filepath.Join(pr.Path(), "LICENSE")
+	file, err := os.Create(path)
+	defer file.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
 
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			os.Exit(1)
-		}
+	template := getTemplate(pr.License())
+	now := time.Now()
+	if pr.License() == LICENSE_GPL3 {
+		_, err = file.WriteString(template)
+	} else {
+		_, err = file.WriteString(
+			fmt.Sprintf(template, fmt.Sprint(now.Year()), pr.Author()))
+	}
+
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 }
 
