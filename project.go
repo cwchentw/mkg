@@ -21,6 +21,7 @@ func CreateProject(pr *ParsingResult) {
 		os.Exit(1)
 	}
 
+	now := time.Now()
 	if pr.License() != LICENSE_NONE {
 		pathLicense := filepath.Join(pr.Path(), "LICENSE")
 		fileLicense, err := os.Create(pathLicense)
@@ -31,7 +32,7 @@ func CreateProject(pr *ParsingResult) {
 		}
 
 		template := getTemplate(pr.License())
-		now := time.Now()
+
 		if pr.License() == LICENSE_GPL3 {
 			_, err = fileLicense.WriteString(template)
 		} else {
@@ -45,4 +46,19 @@ func CreateProject(pr *ParsingResult) {
 		}
 	}
 
+	pathREADME := filepath.Join(pr.Path(), "README.md")
+	fileREADME, err := os.Create(pathREADME)
+	defer fileREADME.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	_, err = fileREADME.WriteString(
+		fmt.Sprintf(template_readme,
+			pr.Prog(), pr.Brief(), fmt.Sprint(now.Year()), pr.Author()))
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
 }
