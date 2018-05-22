@@ -50,5 +50,11 @@ func main() {
 	}
 
 	// Remove it later.
+	fmt.Println("")
+
 	fmt.Print(pr)
+
+	fmt.Println("")
+
+	CreateProject(pr)
 }
