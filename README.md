@@ -20,8 +20,22 @@ $ go get https://github.com/cwchentw/mkg.git
 
 ## Synposis
 
+Run it in batch mode:
+
 ```
 $ mkg [option] /path/to/project
+```
+
+Rut it interactively with a sensible project structure:
+
+```
+$ mkg
+```
+
+Rut it interactively with more customization:
+
+```
+$ mkg --custom
 ```
 
 ## Usage
@@ -33,13 +47,13 @@ Make is a part of POSIX standard and many Unix-like systems adopt GNU Make as th
 By default, `mkg` will generate a nested C application project to the target path:
 
 ```
-$ mkg hello
+$ mkg myapp
 ```
 
 You may adjust `mkg` with some parameters:
 
 ```
-$ mkg -cpp -lib --flat greet
+$ mkg -cpp -lib --flat mylib
 ```
 
 To invoke `mkg` interactively, run it without any argument:
