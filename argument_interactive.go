@@ -44,14 +44,28 @@ func (r *ParsingResult) RunWithDefaults() error {
 		return err
 	}
 
-	if lang == "" {
-		// Do nothing
-	} else {
+	if lang != "" {
 		l, err := stringToLang(lang)
 		if err != nil {
 			return err
 		}
+
 		r.SetLang(l)
+	}
+
+	proj, err := prompt(
+		fmt.Sprintf("Project type (app/lib) [%s]: ", projToString(r.Proj())))
+	if err != nil {
+		return err
+	}
+
+	if proj != "" {
+		p, err := stringToProj(proj)
+		if err != nil {
+			return err
+		}
+
+		r.SetProj(p)
 	}
 
 	return nil

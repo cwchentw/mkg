@@ -7,9 +7,9 @@ import (
 func langToString(lang Language) string {
 	switch lang {
 	case LANG_C:
-		return "C"
+		return "c"
 	case LANG_CPP:
-		return "C++"
+		return "cpp"
 	default:
 		panic("Unknown language")
 	}
@@ -29,11 +29,22 @@ func stringToLang(lang string) (Language, error) {
 func projToString(proj ProjectType) string {
 	switch proj {
 	case PROJ_APP:
-		return "application"
+		return "app"
 	case PROJ_LIB:
-		return "library"
+		return "lib"
 	default:
 		panic("Unknown project type")
+	}
+}
+
+func stringToProj(proj string) (ProjectType, error) {
+	switch proj {
+	case "app":
+		return PROJ_APP, nil
+	case "lib":
+		return PROJ_LIB, nil
+	default:
+		return PROJ_APP, errors.New("Invalid project type")
 	}
 }
 
