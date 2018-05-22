@@ -67,7 +67,6 @@ Mozilla Public License 2.0 (mpl2)
 The Unlicense (unlicense)
 
 Project licensing [none]:
-    
 ```
 
 In this case, `mkg` will generate a project with a sensible project structure.
@@ -80,6 +79,7 @@ Program name [hello]:
 Project path [hello]:
 Project language (c/cpp) [c]:
 Project type (app/lib) [app]:
+
 (Choose licensing as above...)
 
 Project structure (nested/flat) [nested]:
