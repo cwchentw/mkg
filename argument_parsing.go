@@ -31,6 +31,17 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 			r.SetLayout(LAYOUT_NESTED)
 		case "--flat":
 			r.SetLayout(LAYOUT_FLAT)
+		case "-l", "--license":
+			if i+1 >= len(args) {
+				return PARSING_EVENT_ERROR, errors.New("No valid license")
+			}
+
+			l, err := stringToLicense(args[i+1])
+			if err != nil {
+				return PARSING_EVENT_ERROR, err
+			}
+
+			r.SetLicense(l)
 		case "-s", "--source":
 			if i+1 >= len(args) {
 				return PARSING_EVENT_ERROR, errors.New("No valid source directory name")

@@ -32,26 +32,18 @@ func CreateProject(pr *ParsingResult) {
 
 		template := getTemplate(pr.License())
 		now := time.Now()
-		// Fix it later.
-		_, err = fileLicense.WriteString(
-			fmt.Sprintf(template, fmt.Sprint(now.Year()), "Michael Chen"))
+		if pr.License() == LICENSE_GPL3 {
+			_, err = fileLicense.WriteString(template)
+		} else {
+			// Fix it later.
+			_, err = fileLicense.WriteString(
+				fmt.Sprintf(template, fmt.Sprint(now.Year()), "Michael Chen"))
+		}
+
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}
 	}
 
-}
-
-func getTemplate(license License) string {
-	switch license {
-	case LICENSE_NONE:
-		return ""
-	case LICENSE_APACHE2:
-		return template_apache2
-	case LICENSE_MIT:
-		return template_mit
-	default:
-		panic("Unknown license")
-	}
 }

@@ -136,6 +136,21 @@ func stringToLicense(cert string) (License, error) {
 	}
 }
 
+func getTemplate(license License) string {
+	switch license {
+	case LICENSE_NONE:
+		return ""
+	case LICENSE_APACHE2:
+		return template_apache2
+	case LICENSE_GPL3:
+		return template_gpl3
+	case LICENSE_MIT:
+		return template_mit
+	default:
+		panic("Unknown license")
+	}
+}
+
 func isValidFileName(name string) bool {
 	// Modify it later.
 	return name != ""
