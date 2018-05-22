@@ -59,6 +59,17 @@ func layoutToString(layout ProjectLayout) string {
 	}
 }
 
+func stringToLayout(layout string) (ProjectLayout, error) {
+	switch layout {
+	case "nested":
+		return LAYOUT_NESTED, nil
+	case "flat":
+		return LAYOUT_FLAT, nil
+	default:
+		return LAYOUT_NESTED, errors.New("Invalid project layout")
+	}
+}
+
 func licenseToString(license License) string {
 	switch license {
 	case LICENSE_NONE:

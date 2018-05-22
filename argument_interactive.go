@@ -68,6 +68,21 @@ func (r *ParsingResult) RunWithDefaults() error {
 		r.SetProj(p)
 	}
 
+	layout, err := prompt(
+		fmt.Sprintf("Project layout (nested/flat) [%s]: ", layoutToString(r.Layout())))
+	if err != nil {
+		return err
+	}
+
+	if layout != "" {
+		l, err := stringToLayout(layout)
+		if err != nil {
+			return err
+		}
+
+		r.SetLayout(l)
+	}
+
 	return nil
 }
 

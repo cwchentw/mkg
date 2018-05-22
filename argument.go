@@ -25,7 +25,7 @@ type ParsingResult struct {
 func NewParsingResult() *ParsingResult {
 	result := new(ParsingResult)
 
-	result.prog = "hello"
+	result.prog = "myapp"
 	result.path = result.prog
 	result.config = "Makefile"
 
