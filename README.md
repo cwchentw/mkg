@@ -149,6 +149,7 @@ Here are the available licenses in our program:
 * `-lib` or `--library`: generate a library project
 * `--nested`: generate a nested project (default)
 * `--flat`: generate a flat project
+* `-f` or `--force`: Remove all existing contents on path (Dangerous!)
 * `--custom`: run it interactively with more customization
 
 ### Project structure
