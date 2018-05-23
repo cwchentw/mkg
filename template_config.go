@@ -1,6 +1,7 @@
 package main
 
-const config_platform = `ifeq ($(OS),Windows_NT)
+const config_platform = `# Detect underlying system.
+ifeq ($(OS),Windows_NT)
 	detected_OS := Windows
 else
 	detected_OS := $(shell sh -c 'uname -s 2>/dev/null || echo not')
@@ -9,7 +10,9 @@ endif
 export detected_OS
 `
 
-const config_cc = `CC=
+const config_cc = `# Set default C compiler.
+# Clean implict CC variable.
+CC=
 
 ifndef CC
 	ifeq ($(detected_OS),Windows)
@@ -24,7 +27,9 @@ endif  # CC
 export CC
 `
 
-const config_cxx = `CXX=
+const config_cxx = `# Set default C++ compiler.
+# Clean implict CXX variable.
+CXX=
 
 ifndef CXX
 	ifeq ($(detected_OS),Windows)
@@ -39,7 +44,8 @@ endif  # CXX
 export CXX
 `
 
-const config_cflags_debug = `ifndef CFLAGS_DEBUG
+const config_cflags_debug = `# Set CFLAGS for Debug target.
+ifndef CFLAGS_DEBUG
 	ifeq ($(CC),cl)
 		CFLAGS_DEBUG=/Wall /sdl /Zi
 	else ifeq ($(detected_OS),Darwin)
@@ -56,7 +62,8 @@ endif  # CFLAGS_DEBUG
 export CFLAGS_DEBUG
 `
 
-const config_cxxflags_debug = `ifndef CXXFLAGS_DEBUG
+const config_cxxflags_debug = `# Set CXXFLAGS for Debug target.
+ifndef CXXFLAGS_DEBUG
 	ifeq ($(CXX),cl)
 		CXXFLAGS_DEBUG=/Wall /sdl /EHsc /std:c++11 /Zi
 	else ifeq ($(detected_OS),Darwin)
@@ -73,7 +80,8 @@ endif  # CXXFLAGS_DEBUG
 export CXXFLAGS_DEBUG
 `
 
-const config_cflags_release = `ifndef CFLAGS_RELEASE
+const config_cflags_release = `# Set CFLAGS for Release target.
+ifndef CFLAGS_RELEASE
 	ifeq ($(CC),cl)
 		CFLAGS_RELEASE=/Wall /sdl /O2
 	else
@@ -84,7 +92,8 @@ endif  # CFLAGS_RELEASE
 export CFLAGS_RELEASE
 `
 
-const config_cxxflags_release = `ifndef CXXFLAGS_RELEASE
+const config_cxxflags_release = `# Set CXXFLAGS for Release target.
+ifndef CXXFLAGS_RELEASE
 	ifeq ($(CC),cl)
 		CXXFLAGS_RELEASE=/Wall /sdl /EHsc /std:c++11 /O2
 	else
@@ -95,7 +104,8 @@ endif  # CXXFLAGS_RELEASE
 export CXXFLAGS_DEBUG
 `
 
-const config_target = `TARGET=
+const config_target = `# Set default target.
+TARGET=
 
 ifndef TARGET
 	TARGET=Release
@@ -104,7 +114,9 @@ endif  # TARGET
 export TARGET
 `
 
-const config_cflags = `CFLAGS=
+const config_cflags = `# Set default CFLAGS
+# Clean implict CFLAGS
+CFLAGS=
 
 ifndef CFLAGS
 	ifeq ($(TARGET),Debug)
@@ -117,7 +129,9 @@ endif  # CFLAGS
 export CFLAGS
 `
 
-const config_cxxflags = `CXXFLAGS=
+const config_cxxflags = `# Set default CXXFLAGS
+# Clean implict CXXFLAGS
+CXXFLAGS=
 
 ifndef CXXFLAGS
 	ifeq ($(TARGET),Debug)
@@ -130,14 +144,16 @@ endif  # CXXFLAGS
 export CXXFLAGS
 `
 
-const config_rm = `ifeq ($(detected_OS),Windows)
+const config_rm = `# Set proper RM on Windows.
+ifeq ($(detected_OS),Windows)
 	RM=del
 endif
 
 export RM
 `
 
-const config_program = `ifeq ($(detected_OS),Windows)
+const config_program = `# Set proper program name.
+ifeq ($(detected_OS),Windows)
 	PROGRAM=%s.exe
 else
 	PROGRAM=%s
@@ -154,7 +170,8 @@ endif  # OBJS
 export OBJS
 `
 
-const config_lib = `ifeq ($(CC),cl)
+const config_lib = `# Set third-party include and library path
+ifeq ($(CC),cl)
 	INCLUDE=
 	LIBS=
 else
