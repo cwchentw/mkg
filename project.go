@@ -345,6 +345,21 @@ func createConfigLibFlat(pr *ParsingResult) {
 			config_external_library,
 			config_lib_flat_c,
 			config_lib_clean)
+	} else if pr.Lang() == LANG_CPP {
+		template = fmt.Sprintf(config,
+			config_platform,
+			config_cxx,
+			config_cxxflags_debug,
+			config_cxxflags_release,
+			config_target,
+			config_cxxflags,
+			config_rm,
+			config_sep,
+			config_library,
+			config_objects,
+			config_external_library,
+			config_lib_flat_cxx,
+			config_lib_clean)
 	} else {
 		panic("Unknown language")
 	}
