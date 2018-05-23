@@ -148,6 +148,8 @@ func getTemplate(license License) string {
 		return template_gpl2
 	case LICENSE_GPL3:
 		return template_gpl3
+	case LICENSE_MPL2:
+		return template_mpl2
 	default:
 		panic("Unknown license")
 	}
