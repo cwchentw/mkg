@@ -192,6 +192,13 @@ const config_app_flat_c = `.PHONY: all clean
 
 all: run
 
+test: $(PROGRAM)
+ifeq ($(detected_OS),Windows)
+	@echo "Unsupported"
+else
+	./$(PROGRAM).bash
+endif
+
 run: $(PROGRAM)
 	.$(SEP)$(PROGRAM)
 	echo $$?
@@ -213,6 +220,13 @@ endif
 const config_app_flat_cpp = `.PHONY: all clean
 
 all: run
+
+test: $(PROGRAM)
+ifeq ($(detected_OS),Windows)
+	@echo "Unsupported"
+else
+	./$(PROGRAM).bash
+endif
 
 run: $(PROGRAM)
 	.$(SEP)$(PROGRAM)

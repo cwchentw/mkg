@@ -41,6 +41,7 @@ func CreateProject(pr *ParsingResult) {
 	if pr.Layout() == LAYOUT_FLAT && pr.Proj() == PROJ_APP {
 		createConfigAppFlat(pr)
 		createAppFlat(pr)
+		createTestFlat(pr)
 	} else {
 		// Implement it later.
 	}
@@ -243,6 +244,30 @@ func createAppFlat(pr *ParsingResult) {
 	}
 
 	_, err = file.WriteString(program)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func createTestFlat(pr *ParsingResult) {
+	path := filepath.Join(pr.Path(), fmt.Sprintf("%s%s", pr.Prog(), ".bash"))
+	file, err := os.Create(path)
+	defer file.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	template := program_app_test
+	_, err = file.WriteString(
+		fmt.Sprintf(template, pr.Prog()))
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	err = os.Chmod(path, 0755)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
