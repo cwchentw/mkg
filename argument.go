@@ -6,6 +6,8 @@ import (
 )
 
 type ParsingResult struct {
+	isForced bool
+
 	prog   string
 	path   string
 	config string
@@ -27,6 +29,8 @@ type ParsingResult struct {
 
 func NewParsingResult() *ParsingResult {
 	result := new(ParsingResult)
+
+	result.isForced = false
 
 	result.prog = "myapp"
 	result.path = result.prog
@@ -74,6 +78,14 @@ Project example directory: %s
 `, r.Src(), r.Include(), r.Test(), r.Example())
 
 	return fmt.Sprintf("%s%s", out, more)
+}
+
+func (r *ParsingResult) IsForced() bool {
+	return r.isForced
+}
+
+func (r *ParsingResult) SetForced(isForced bool) {
+	r.isForced = isForced
 }
 
 func (r *ParsingResult) Prog() string {

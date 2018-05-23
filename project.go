@@ -10,9 +10,17 @@ import (
 func CreateProject(pr *ParsingResult) {
 	_, err := os.Stat(pr.Path())
 	if !os.IsNotExist(err) {
-		fmt.Fprintln(os.Stderr,
-			fmt.Sprintf("File or directory %s exists", pr.Path()))
-		os.Exit(1)
+		if pr.IsForced() {
+			err = os.RemoveAll(pr.Path())
+			if err != nil {
+				fmt.Fprintln(os.Stderr, err)
+				os.Exit(1)
+			}
+		} else {
+			fmt.Fprintln(os.Stderr,
+				fmt.Sprintf("File or directory %s exists", pr.Path()))
+			os.Exit(1)
+		}
 	}
 
 	err = os.MkdirAll(pr.Path(), os.ModePerm)
@@ -135,6 +143,8 @@ func createConfigAppFlat(pr *ParsingResult) {
 
 	RM
 
+	SEP
+
 	PROGRAM
 
 	RULE_APP_C or RULE_APP_CXX
@@ -142,6 +152,7 @@ func createConfigAppFlat(pr *ParsingResult) {
 	RULE_RM
 	*/
 	config := `%s
+%s
 %s
 %s
 %s
@@ -164,6 +175,7 @@ func createConfigAppFlat(pr *ParsingResult) {
 			config_target,
 			config_cflags,
 			config_rm,
+			config_sep,
 			config_program,
 			config_lib,
 			config_app_flat_c,
@@ -177,6 +189,7 @@ func createConfigAppFlat(pr *ParsingResult) {
 			config_target,
 			config_cxxflags,
 			config_rm,
+			config_sep,
 			config_program,
 			config_lib,
 			config_app_flat_cpp,

@@ -46,6 +46,7 @@ Options:
     Custom directories only make effects in nested projects.
 
     --custom            Run interactively with more customization
+    -f, --force         Remove all existing contents on path (Dangerous!)
     -h, --help          Show help message
     -v, --version       Show version info
 

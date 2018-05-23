@@ -152,6 +152,14 @@ endif
 export RM
 `
 
+const config_sep = `# Set proper path separator.
+ifeq ($(detected_OS),Windows)
+	SEP=\\
+else
+	SEP=/
+endif
+`
+
 const config_program = `# Set proper program name.
 ifeq ($(detected_OS),Windows)
 	PROGRAM=%s.exe
@@ -182,7 +190,11 @@ endif
 
 const config_app_flat_c = `.PHONY: all clean
 
-all: $(PROGRAM)
+all: run
+
+run: $(PROGRAM)
+	.$(SEP)$(PROGRAM)
+	echo $$?
 
 $(PROGRAM): $(OBJS)
 ifeq (($CC),cl)
@@ -200,7 +212,11 @@ endif
 
 const config_app_flat_cpp = `.PHONY: all clean
 
-all: $(PROGRAM)
+all: run
+
+run: $(PROGRAM)
+	.$(SEP)$(PROGRAM)
+	echo $$?
 
 $(PROGRAM): $(OBJS)
 ifeq (($CXX),cl)
