@@ -1,6 +1,6 @@
 package main
 
-const template_mit = `Copyright %s %s
+const license_mit = `Copyright %s, %s
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in

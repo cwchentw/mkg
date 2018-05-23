@@ -141,17 +141,17 @@ func getTemplate(license License) string {
 	case LICENSE_NONE:
 		return ""
 	case LICENSE_APACHE2:
-		return template_apache2
+		return license_apache2
 	case LICENSE_MIT:
-		return template_mit
+		return license_mit
 	case LICENSE_BSD2:
-		return template_bsd2
+		return license_bsd2
 	case LICENSE_GPL2:
-		return template_gpl2
+		return license_gpl2
 	case LICENSE_GPL3:
-		return template_gpl3
+		return license_gpl3
 	case LICENSE_MPL2:
-		return template_mpl2
+		return license_mpl2
 	default:
 		panic("Unknown license")
 	}

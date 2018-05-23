@@ -1,6 +1,6 @@
 package main
 
-const template_bsd2 = `Copyright (c) %s, %s
+const license_bsd2 = `Copyright (c) %s, %s
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
