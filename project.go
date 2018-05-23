@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -44,6 +45,7 @@ func CreateProject(pr *ParsingResult) {
 		createTestFlat(pr)
 	} else if pr.Layout() == LAYOUT_FLAT && pr.Proj() == PROJ_LIB {
 		createConfigLibFlat(pr)
+		createHeaderFlat(pr)
 		createLibFlat(pr)
 	}
 }
@@ -375,6 +377,35 @@ func createConfigLibFlat(pr *ParsingResult) {
 
 	_, err = file.WriteString(
 		fmt.Sprintf(template, pr.Prog(), "%.obj", src, "%.o", src))
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func createHeaderFlat(pr *ParsingResult) {
+	var suffix string
+	if pr.Lang() == LANG_C {
+		suffix = ".h"
+	} else if pr.Lang() == LANG_CPP {
+		suffix = ".hpp"
+	} else {
+		panic("Unknown language")
+	}
+
+	path := filepath.Join(pr.Path(), fmt.Sprintf("%s%s", pr.Prog(), suffix))
+	file, err := os.Create(path)
+	defer file.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	header := program_header
+	progUpper := strings.ToUpper(pr.Prog())
+
+	_, err = file.WriteString(
+		fmt.Sprintf(header, progUpper, progUpper, progUpper))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

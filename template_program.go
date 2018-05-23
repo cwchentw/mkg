@@ -23,6 +23,28 @@ int main(int argc, char *argv[])
 }
 `
 
+const program_header = `#ifndef %s_H
+#define %s_H
+
+#ifdef __cplusplus
+    #include <cstdbool>
+#else
+    #include <stdbool.h>
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+bool is_even(int n);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif  // %s_H
+`
+
 const program_lib_c = `#include <stdbool.h>
 
 bool is_even(int n)
