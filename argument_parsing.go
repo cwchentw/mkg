@@ -17,7 +17,7 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 			return PARSING_EVENT_HELP, nil
 		case "--licenses":
 			return PARSING_EVENT_LICENSES, nil
-		case "-f", "--forced":
+		case "-f", "--force":
 			r.SetForced(true)
 		case "-p", "--program":
 			r.SetProg(args[i])
@@ -59,6 +59,7 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 			}
 
 			r.SetLicense(l)
+			i++
 		case "-s", "--source":
 			if i+1 >= len(args) {
 				return PARSING_EVENT_ERROR, errors.New("No valid source directory name")
