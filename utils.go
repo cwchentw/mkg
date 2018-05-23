@@ -144,6 +144,8 @@ func getTemplate(license License) string {
 		return template_apache2
 	case LICENSE_MIT:
 		return template_mit
+	case LICENSE_BSD2:
+		return template_bsd2
 	case LICENSE_GPL2:
 		return template_gpl2
 	case LICENSE_GPL3:
