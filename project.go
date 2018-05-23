@@ -149,6 +149,7 @@ func createConfigAppFlat(pr *ParsingResult) {
 %s
 %s
 %s
+%s
 
 %s
 %s`
@@ -164,6 +165,7 @@ func createConfigAppFlat(pr *ParsingResult) {
 			config_cflags,
 			config_rm,
 			config_program,
+			config_lib,
 			config_app_flat_c,
 			config_clean)
 	} else if pr.Lang() == LANG_CPP {
@@ -176,6 +178,7 @@ func createConfigAppFlat(pr *ParsingResult) {
 			config_cxxflags,
 			config_rm,
 			config_program,
+			config_lib,
 			config_app_flat_cpp,
 			config_clean)
 	} else {
