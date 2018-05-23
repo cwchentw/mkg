@@ -154,22 +154,31 @@ endif  # OBJS
 export OBJS
 `
 
+const config_lib = `ifeq ($(CC),cl)
+	INCLUDE=
+	LIBS=
+else
+	INCLUDE=
+	LIBS=
+endif
+`
+
 const config_app_flat_c = `.PHONY: all clean
 
 all: $(PROGRAM)
 
 $(PROGRAM): $(OBJS)
 ifeq (($CC),cl)
-	$(CC) $(CFLAGS) /Fe $(PROGRAM) $(OBJS)
+	$(CC) $(CFLAGS) /Fe $(PROGRAM) $(OBJS) $(INCLUDE) $(LIBS)
 else
-	$(CC) $(CFLAGS) -o $(PROGRAM) $(OBJS)
+	$(CC) $(CFLAGS) -o $(PROGRAM) $(OBJS) $(INCLUDE) $(LIBS)
 endif
 
 %s: %s
-	$(CC) $(CFLAGS) /c $<
+	$(CC) $(CFLAGS) /c $< $(INCLUDE) $(LIBS)
 
 %s: %s
-	$(CC) $(CFLAGS) -c $<
+	$(CC) $(CFLAGS) -c $< $(INCLUDE) $(LIBS)
 `
 
 const config_app_flat_cpp = `.PHONY: all clean
@@ -178,16 +187,16 @@ all: $(PROGRAM)
 
 $(PROGRAM): $(OBJS)
 ifeq (($CXX),cl)
-	$(CXX) $(CXXFLAGS) /Fe $(PROGRAM) $(OBJS)
+	$(CXX) $(CXXFLAGS) /Fe $(PROGRAM) $(OBJS) $(INCLUDE) $(LIBS)
 else
-	$(CXX) $(CXXFLAGS) -o $(PROGRAM) $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $(PROGRAM) $(OBJS) $(INCLUDE) $(LIBS)
 endif
 
 %s: %s
-	$(CXX) $(CXXFLAGS) /c $<
+	$(CXX) $(CXXFLAGS) /c $< $(INCLUDE) $(LIBS)
 
 %s: %s
-	$(CXX) $(CXXFLAGS) -c $<
+	$(CXX) $(CXXFLAGS) -c $< $(INCLUDE) $(LIBS)
 `
 
 const config_clean = `clean:
