@@ -168,8 +168,33 @@ else
 endif
 
 export PROGRAM
+`
+
+const config_library = `# Set proper library name.
+PROGRAM=%s
+
+ifeq ($(detected_OS),Windows)
+	ifeq ($(CC),cl)
+		DYNAMIC_LIB=$(PROGRAM).dll
+	else
+		DYNAMIC_LIB=lib$(PROGRAM).dll
+	endif
+else
+	ifeq ($(detected_OS),Darwin)
+		DYNAMIC_LIB=lib$(PROGRAM).dylib
+	else
+		DYNAMIC_LIB=lib$(PROGRAM).so
+	endif
+endif
 
 ifeq ($(CC),cl)
+	STATIC_LIB=$(PROGRAM).lib
+else
+	STATIC_LIB=lib$(PROGRAM).a
+endif
+`
+
+const config_objects = `ifeq ($(CC),cl)
 	OBJS=$(PROGRAM).obj
 else
 	OBJS=$(PROGRAM).o
@@ -178,7 +203,7 @@ endif  # OBJS
 export OBJS
 `
 
-const config_lib = `# Set third-party include and library path
+const config_external_library = `# Set third-party include and library path
 ifeq ($(CC),cl)
 	INCLUDE=
 	LIBS=
@@ -205,13 +230,13 @@ run: $(PROGRAM)
 
 $(PROGRAM): $(OBJS)
 ifeq (($CC),cl)
-	$(CC) $(CFLAGS) /Fe $(PROGRAM) $(OBJS) $(INCLUDE) $(LIBS)
+	$(CC) $(CFLAGS) /Fe $(PROGRAM) $(INCLUDE) $(LIBS) $(OBJS)
 else
 	$(CC) $(CFLAGS) -o $(PROGRAM) $(OBJS) $(INCLUDE) $(LIBS)
 endif
 
 %s: %s
-	$(CC) $(CFLAGS) /c $< $(INCLUDE) $(LIBS)
+	$(CC) $(CFLAGS) $(INCLUDE) $(LIBS) /c $< 
 
 %s: %s
 	$(CC) $(CFLAGS) -c $< $(INCLUDE) $(LIBS)
@@ -234,18 +259,54 @@ run: $(PROGRAM)
 
 $(PROGRAM): $(OBJS)
 ifeq (($CXX),cl)
-	$(CXX) $(CXXFLAGS) /Fe $(PROGRAM) $(OBJS) $(INCLUDE) $(LIBS)
+	$(CXX) $(CXXFLAGS) /Fe $(PROGRAM) $(INCLUDE) $(LIBS) $(OBJS) 
 else
 	$(CXX) $(CXXFLAGS) -o $(PROGRAM) $(OBJS) $(INCLUDE) $(LIBS)
 endif
 
 %s: %s
-	$(CXX) $(CXXFLAGS) /c $< $(INCLUDE) $(LIBS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) /c $< 
 
 %s: %s
 	$(CXX) $(CXXFLAGS) -c $< $(INCLUDE) $(LIBS)
 `
 
-const config_clean = `clean:
+const config_lib_flat_c = `.PHONY: all clean
+
+all: dynamic
+
+dynamic:
+ifeq ($(detected_OS),Windows)
+	ifeq ($(CC),cl)
+		for %%x in (*.c) do $(CC) $(CFLAGS) $(INCLUDE) $(LIBS) /c %%x
+		link /DLL /out:$(DYNAMIC_LIB) $(INCLUDE) $(LIBS) $(OBJS)
+	else
+		for %%x in (*.c) do $(CC) $(CFLAGS) -fPIC -c %%x $(INCLUDE) $(LIBS)
+		$(CC) $(CFLAGS) -shared -o $(DYNAMIC_LIB) $(OBJS) $(INCLUDE) $(LIBS)
+	endif
+else
+	for x in ` + "`" + `ls *.c` + "`" + `; do $(CC) $(CFLAGS) -fPIC -c $$x $(INCLUDE) $(LIBS); done
+	$(CC) $(CFLAGS) -shared -o $(DYNAMIC_LIB) $(OBJS) $(INCLUDE) $(LIBS)
+endif
+
+static: $(OBJS)
+ifeq ($(CC),cl)
+	lib /out:$(STATIC_LIB) $(OBJS)
+else
+	$(AR) rcs -o $(STATIC_LIB) $(OBJS)
+endif
+
+%s: %s
+	$(CC) $(CFLAGS) $(INCLUDE) $(LIBS) /c $<
+
+%s: %s
+	$(CC) $(CFLAGS) -c $< $(INCLUDE) $(LIBS)
+`
+
+const config_app_clean = `clean:
 	$(RM) $(PROGRAM) $(OBJS)
+`
+
+const config_lib_clean = `clean:
+	$(RM) $(DYNAMIC_LIB) $(STATIC_LIB) $(OBJS)
 `

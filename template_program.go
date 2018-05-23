@@ -22,3 +22,17 @@ int main(int argc, char *argv[])
     return 0;
 }
 `
+
+const program_lib_c = `#include <stdbool.h>
+
+bool is_even(int n)
+{
+    return n % 2 == 0;
+}
+`
+
+const program_lib_cpp = `bool is_even(int n)
+{
+    return n % 2 == 0;
+}
+`
