@@ -26,9 +26,7 @@ int main(int argc, char *argv[])
 const program_header = `#ifndef %s_H
 #define %s_H
 
-#ifdef __cplusplus
-    #include <cstdbool>
-#else
+#ifndef __cplusplus
     #include <stdbool.h>
 #endif
 
