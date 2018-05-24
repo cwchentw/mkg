@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func CreateProject(pr *ParsingResult) {
+func CreateCorCppProject(pr *ParsingResult) {
 	_, err := os.Stat(pr.Path())
 	if !os.IsNotExist(err) {
 		if pr.IsForced() {

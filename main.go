@@ -56,5 +56,5 @@ func main() {
 
 	fmt.Println("")
 
-	CreateProject(pr)
+	CreateCorCppProject(pr)
 }
