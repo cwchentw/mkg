@@ -145,8 +145,8 @@ Here are the available licenses in our program:
 
 * `-c` or `-C`: generate a C project (default)
 * `-cpp` or `-cxx`: generate a C++ project
-* `-app` or `--application`: generate an application project (default)
-* `-lib` or `--library`: generate a library project
+* `--console`: generate an application project (default)
+* `--library`: generate a library project
 * `--nested`: generate a nested project (default)
 * `--flat`: generate a flat project
 * `-f` or `--force`: Remove all existing contents on path (Dangerous!)

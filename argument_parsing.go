@@ -28,10 +28,10 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 			r.SetLang(LANG_C)
 		case "-cpp", "-cxx":
 			r.SetLang(LANG_CPP)
-		case "-app", "--application":
-			r.SetProj(PROJ_APP)
-		case "-lib", "--library":
-			r.SetProj(PROJ_LIB)
+		case "--console":
+			r.SetProj(PROJ_CONSOLE)
+		case "--library":
+			r.SetProj(PROJ_LIBRARY)
 		case "--nested":
 			r.SetLayout(LAYOUT_NESTED)
 		case "--flat":

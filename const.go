@@ -13,8 +13,8 @@ const (
 type ProjectType int
 
 const (
-	PROJ_APP ProjectType = iota
-	PROJ_LIB
+	PROJ_CONSOLE ProjectType = iota
+	PROJ_LIBRARY
 )
 
 type ProjectLayout int

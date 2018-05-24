@@ -28,10 +28,10 @@ func stringToLang(lang string) (Language, error) {
 
 func projToString(proj ProjectType) string {
 	switch proj {
-	case PROJ_APP:
-		return "app"
-	case PROJ_LIB:
-		return "lib"
+	case PROJ_CONSOLE:
+		return "console"
+	case PROJ_LIBRARY:
+		return "library"
 	default:
 		panic("Unknown project type")
 	}
@@ -39,12 +39,12 @@ func projToString(proj ProjectType) string {
 
 func stringToProj(proj string) (ProjectType, error) {
 	switch proj {
-	case "app":
-		return PROJ_APP, nil
-	case "lib":
-		return PROJ_LIB, nil
+	case "console":
+		return PROJ_CONSOLE, nil
+	case "library":
+		return PROJ_LIBRARY, nil
 	default:
-		return PROJ_APP, errors.New("Invalid project type")
+		return PROJ_CONSOLE, errors.New("Invalid project type")
 	}
 }
 

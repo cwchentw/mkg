@@ -36,11 +36,11 @@ func CreateCorCppProject(pr *ParsingResult) {
 	createREADME(pr)
 	createGitignore(pr)
 
-	if pr.Layout() == LAYOUT_FLAT && pr.Proj() == PROJ_APP {
+	if pr.Layout() == LAYOUT_FLAT && pr.Proj() == PROJ_CONSOLE {
 		createConfigAppFlat(pr)
 		createApp(pr)
 		createTest(pr)
-	} else if pr.Layout() == LAYOUT_FLAT && pr.Proj() == PROJ_LIB {
+	} else if pr.Layout() == LAYOUT_FLAT && pr.Proj() == PROJ_LIBRARY {
 		createConfigLibFlat(pr)
 		createHeader(pr)
 		createLib(pr)

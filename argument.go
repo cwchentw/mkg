@@ -40,7 +40,7 @@ func NewParsingResult() *ParsingResult {
 	result.brief = "something"
 
 	result.lang = LANG_C
-	result.proj = PROJ_APP
+	result.proj = PROJ_CONSOLE
 	result.layout = LAYOUT_NESTED
 
 	result.license = LICENSE_NONE

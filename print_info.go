@@ -27,10 +27,8 @@ Options:
 
     -c, -C              Generate a C project (default)
     -cpp, -cxx          Generate a C++ project
-    -app                Generate an application project (default)
-    --application
-    -lib                Generate a library project
-    --library
+    --console           Generate a console project (default)
+    --library           Generate a library project
     --nested            Generate a nested project (default)
     --flat              Generate a flat project
 
