@@ -49,5 +49,6 @@ func CreateCorCppProject(pr *ParsingResult) {
 		createConfigAppNested(pr)
 		createConfigAppInternal(pr)
 		createApp(pr)
+		createTest(pr)
 	}
 }

@@ -648,9 +648,11 @@ func createLibImpl(pr *ParsingResult, path string) {
 func createTest(pr *ParsingResult) {
 	var path string
 	if pr.Layout() == LAYOUT_FLAT {
-		path = filepath.Join(pr.Path(), fmt.Sprintf("%s%s", pr.Prog(), ".bash"))
+		path = filepath.Join(
+			pr.Path(), fmt.Sprintf("%s%s", pr.Prog(), ".bash"))
 	} else {
-		panic("Unimplemented")
+		path = filepath.Join(
+			pr.Path(), pr.Test(), fmt.Sprintf("%s%s", pr.Prog(), ".bash"))
 	}
 
 	createTestImpl(pr, path)
@@ -664,9 +666,15 @@ func createTestImpl(pr *ParsingResult, path string) {
 		os.Exit(1)
 	}
 
-	template := program_app_test
-	_, err = file.WriteString(
-		fmt.Sprintf(template, pr.Prog()))
+	var test string
+	if pr.Layout() == LAYOUT_FLAT {
+		test = fmt.Sprintf(program_app_test, pr.Prog())
+	} else if pr.Layout() == LAYOUT_NESTED {
+		test = fmt.Sprintf(program_app_test_nested, pr.Prog(), pr.Dist())
+	} else {
+		panic("Unknown project layout")
+	}
+	_, err = file.WriteString(test)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

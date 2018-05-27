@@ -18,6 +18,10 @@ const config_app_nested = `.PHONY: all run clean
 
 all: run
 
+test: .$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
+	bats $(TEST_DIR)/$(PROGRAM).bash
+	echo $$?
+
 run: .$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 	.$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 	echo $$?
