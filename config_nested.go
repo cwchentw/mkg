@@ -14,7 +14,7 @@ export TEST_DIR
 export EXAMPLE_DIR
 `
 
-const config_app_nested_c = `.PHONY: all run clean
+const config_app_nested = `.PHONY: all run clean
 
 all: run
 
@@ -59,6 +59,28 @@ endif
 
 %s: %s
 	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
+`
+
+const config_internal_app_cxx = `.SUFFIXES:
+
+.PHONY: all clean
+
+all: ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
+ifeq ($(CXX),cl)
+	$(CXX) $(CXXFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS) \
+		/Fe ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM) $(OBJS)
+else
+	$(CXX) $(CXXFLAGS) -o ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM) $(OBJS) \
+		-I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
+endif
+
+..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM): $(OBJS)
+
+%s: %s
+	$(CXX) $(CXXFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS) /c $<
+
+%s: %s
+	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
 const config_internal_clean = `clean:

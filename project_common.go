@@ -352,10 +352,24 @@ func createConfigAppNested(pr *ParsingResult) {
 			config_objects,
 			config_project_structure,
 			config_external_library,
-			config_app_nested_c,
+			config_app_nested,
 			config_app_nested_clean)
 	} else if pr.Lang() == LANG_CPP {
-		panic("Unimplemented")
+		template = fmt.Sprintf(config,
+			config_platform,
+			config_cxx,
+			config_cxxflags_debug,
+			config_cxxflags_release,
+			config_target,
+			config_cxxflags,
+			config_rm,
+			config_sep,
+			config_program,
+			config_objects,
+			config_project_structure,
+			config_external_library,
+			config_app_nested,
+			config_app_nested_clean)
 	} else {
 		panic("Unknown language")
 	}
@@ -392,7 +406,9 @@ func createConfigAppInternal(pr *ParsingResult) {
 			config_internal_app_c,
 			config_internal_clean)
 	} else if pr.Lang() == LANG_CPP {
-		panic("Unimplemented")
+		template = fmt.Sprintf(config,
+			config_internal_app_cxx,
+			config_internal_clean)
 	} else {
 		panic("Unknown language")
 	}
