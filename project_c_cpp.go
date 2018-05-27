@@ -27,11 +27,6 @@ func CreateCorCppProject(pr *ParsingResult) {
 		os.Exit(1)
 	}
 
-	// Remove it later.
-	if pr.Layout() == LAYOUT_NESTED && pr.Proj() != PROJ_CONSOLE {
-		panic("Unimplemented")
-	}
-
 	createLicense(pr)
 	createREADME(pr)
 	createGitignore(pr)
@@ -50,5 +45,11 @@ func CreateCorCppProject(pr *ParsingResult) {
 		createConfigAppInternal(pr)
 		createApp(pr)
 		createTest(pr)
+	} else if pr.Layout() == LAYOUT_NESTED && pr.Proj() == PROJ_LIBRARY {
+		createProjStruct(pr)
+		createConfigLibNested(pr)
+		createConfigLibInternal(pr)
+		createHeader(pr)
+		createLib(pr)
 	}
 }

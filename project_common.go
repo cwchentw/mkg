@@ -383,6 +383,90 @@ func createConfigAppNested(pr *ParsingResult) {
 	}
 }
 
+func createConfigLibNested(pr *ParsingResult) {
+	path := filepath.Join(pr.Path(), pr.Config())
+	file, err := os.Create(path)
+	defer file.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	/* Makefile layout
+	PLATFORM
+
+	CC or CXX
+
+	CFLAGS_DEBUG or CXXFLAGS_DEBUG
+
+	CFLAGS_RELEASE or CXXFLAGS_RELEASE
+
+	TARGET
+
+	CFLAGS or CXX_FLAGS
+
+	RM
+
+	SEP
+
+	LIBRARY
+
+	OBJS
+
+	PROJECT_STRUCTURE
+
+	LIBRARY
+
+	RULE_LIB_C or RULE_LIB_CXX
+	*/
+	const config = `%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+
+%s
+%s`
+
+	var template string
+	if pr.Lang() == LANG_C {
+		template = fmt.Sprintf(config,
+			config_platform,
+			config_cc,
+			config_cflags_debug,
+			config_cflags_release,
+			config_target,
+			config_cflags,
+			config_rm,
+			config_sep,
+			config_library,
+			config_objects,
+			config_project_structure,
+			config_external_library,
+			config_lib_nested,
+			config_lib_nested_clean)
+	} else if pr.Lang() == LANG_CPP {
+		panic("Unimplemented")
+	} else {
+		panic("Unknown language")
+	}
+
+	_, err = file.WriteString(
+		fmt.Sprintf(template, pr.Prog(),
+			pr.Src(), pr.Include(), pr.Dist(), pr.Test(), pr.Example()))
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
 func createConfigAppInternal(pr *ParsingResult) {
 	path := filepath.Join(pr.Path(), pr.Src(), "Makefile")
 	file, err := os.Create(path)
@@ -409,6 +493,51 @@ func createConfigAppInternal(pr *ParsingResult) {
 		template = fmt.Sprintf(config,
 			config_internal_app_cxx,
 			config_internal_clean)
+	} else {
+		panic("Unknown language")
+	}
+
+	var src string
+	if pr.Lang() == LANG_C {
+		src = "%.c"
+	} else if pr.Lang() == LANG_CPP {
+		src = "%.cpp"
+	} else {
+		panic("Unknown language")
+	}
+
+	_, err = file.WriteString(
+		fmt.Sprintf(template, "%.obj", src, "%.o", src))
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func createConfigLibInternal(pr *ParsingResult) {
+	path := filepath.Join(pr.Path(), pr.Src(), "Makefile")
+	file, err := os.Create(path)
+	defer file.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	/* Makefile layout
+	RULE_LIB_C or RULE_LIB_CXX
+
+	RULE_RM
+	*/
+	const config = `%s
+%s`
+
+	var template string
+	if pr.Lang() == LANG_C {
+		template = fmt.Sprintf(config,
+			config_internal_lib_c,
+			config_internal_clean)
+	} else if pr.Lang() == LANG_CPP {
+		panic("Unimplemented")
 	} else {
 		panic("Unknown language")
 	}
@@ -574,9 +703,11 @@ func createHeader(pr *ParsingResult) {
 	var path string
 
 	if pr.Layout() == LAYOUT_FLAT {
-		path = filepath.Join(pr.Path(), fmt.Sprintf("%s%s", pr.Prog(), suffix))
+		path = filepath.Join(
+			pr.Path(), fmt.Sprintf("%s%s", pr.Prog(), suffix))
 	} else {
-		panic("Unimplemented")
+		path = filepath.Join(
+			pr.Path(), pr.Include(), fmt.Sprintf("%s%s", pr.Prog(), suffix))
 	}
 
 	createHeaderImpl(pr, path)
@@ -615,7 +746,8 @@ func createLib(pr *ParsingResult) {
 	if pr.Layout() == LAYOUT_FLAT {
 		path = filepath.Join(pr.Path(), fmt.Sprintf("%s%s", pr.Prog(), suffix))
 	} else {
-		panic("Unimplemented")
+		path = filepath.Join(
+			pr.Path(), pr.Src(), fmt.Sprintf("%s%s", pr.Prog(), suffix))
 	}
 
 	createLibImpl(pr, path)

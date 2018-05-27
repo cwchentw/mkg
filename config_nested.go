@@ -14,7 +14,7 @@ export TEST_DIR
 export EXAMPLE_DIR
 `
 
-const config_app_nested = `.PHONY: all run clean
+const config_app_nested = `.PHONY: all test run clean
 
 all: run
 
@@ -34,6 +34,29 @@ else
 endif
 `
 
+const config_lib_nested = `.PHONY: all dynamic static clean
+
+all: dynamic
+
+dynamic: .$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB)
+
+.$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB):
+ifeq ($(detected_OS),Windows)
+	$(MAKE) -C $(SOURCE_DIR)$(SEP)Makefile.win
+else
+	$(MAKE) -C $(SOURCE_DIR)
+endif
+
+static: .$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
+
+.$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB):
+ifeq ($(detected_OS),Windows)
+	$(MAKE) -C $(SOURCE_DIR)$(SEP)Makefile.win static
+else
+	$(MAKE) -C $(SOURCE_DIR) static
+endif
+`
+
 const config_app_nested_clean = `clean:
 ifeq ($(detected_OS),Windows)
 	$(MAKE) -C $(SOURCE_DIR)$(SEP)Makefile.win clean
@@ -41,6 +64,16 @@ else
 	$(MAKE) -C $(SOURCE_DIR) clean
 endif
 	$(RM) $(DIST_DIR)$(SEP)$(PROGRAM)
+`
+
+const config_lib_nested_clean = `clean:
+ifeq ($(detected_OS),Windows)
+	$(MAKE) -C $(SOURCE_DIR)$(SEP)Makefile.win clean
+else
+	$(MAKE) -C $(SOURCE_DIR) clean
+endif
+	$(RM) $(DIST_DIR)$(SEP)$(DYNAMIC_LIB)
+	$(RM) $(DIST_DIR)$(SEP)$(STATIC_LIB)
 `
 
 const config_internal_app_c = `.SUFFIXES:
@@ -85,6 +118,45 @@ endif
 
 %s: %s
 	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
+`
+
+const config_internal_lib_c = `.PHONY: all dynamic static clean
+
+all: dynamic
+
+dynamic:
+ifeq ($(detected_OS),Windows)
+	ifeq ($(CC),cl)
+		for %%x in (*.c) do $(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) \
+			/I ..$(SEP)$(INCLUDE_DIR) /c %%x
+		link /DLL /out:..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
+			$(INCLUDE) $(LIBS) /I ..$(SEP)$(INCLUDE_DIR) $(OBJS)
+	else
+		for %%x in (*.c) do $(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) \
+			-I ..$(SEP)$(INCLUDE_DIR) /c %%x
+		$(CC) $(CFLAGS) -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
+			$(OBJS) $(INCLUDE) $(LIBS) -I ..$(SEP)$(INCLUDE_DIR)
+	endif
+else
+	for x in ` + "`" + `ls *.c` + "`" + `; do $(CC) $(CFLAGS) -fPIC -c $$x \
+		-I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS); done
+	$(CC) $(CFLAGS) -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) $(OBJS) \
+		-I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
+endif
+
+static: $(OBJS)
+ifeq ($(CC),cl)
+	lib /I ..$(SEP)$(INCLUDE_DIR) /out:..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) \
+		$(OBJS)
+else
+	$(AR) rcs -o ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(OBJS)
+endif
+
+%s: %s
+	$(CC) $(CFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS) /c $<
+
+%s: %s
+	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
 const config_internal_clean = `clean:

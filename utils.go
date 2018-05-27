@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"strings"
 )
 
 func langToString(lang Language) string {
@@ -168,5 +169,15 @@ func isValidFileName(name string) bool {
 
 func isValidPath(path string) bool {
 	// Modify it later.
-	return path != ""
+	if path == "" {
+		return false
+	}
+
+	ss := strings.Split(path, "")
+
+	if ss[0] == "-" {
+		return false
+	}
+
+	return true
 }
