@@ -36,6 +36,8 @@ Options:
     --source _dir_
     -i _dir_            Make a custom include directory at _dir_
     --include _dir_
+    -d _dir             Make a cust dist directory at _dir_
+    --dist _dist_
     -t _dir_            Make a custom test directory at _dir_
     --test _dir_
     -e _dir_            Make a custom example directory at _dir_

@@ -23,6 +23,7 @@ type ParsingResult struct {
 
 	src     string
 	include string
+	dist    string
 	test    string
 	example string
 }
@@ -47,6 +48,7 @@ func NewParsingResult() *ParsingResult {
 
 	result.src = "src"
 	result.include = "include"
+	result.dist = "dist"
 	result.test = "tests"
 	result.example = "examples"
 
@@ -73,9 +75,10 @@ Project layout: %s
 
 	more := fmt.Sprintf(`Project source directory: %s
 Project include directory: %s
+Project dist directory: %s
 Project test directory: %s
 Project example directory: %s
-`, r.Src(), r.Include(), r.Test(), r.Example())
+`, r.Src(), r.Include(), r.Dist(), r.Test(), r.Example())
 
 	return fmt.Sprintf("%s%s", out, more)
 }
@@ -214,6 +217,20 @@ func (r *ParsingResult) SetInclude(include string) error {
 	}
 
 	r.include = include
+
+	return nil
+}
+
+func (r *ParsingResult) Dist() string {
+	return r.dist
+}
+
+func (r *ParsingResult) SetDist(dist string) error {
+	if !isValidPath(dist) {
+		return errors.New("Invalid dist path")
+	}
+
+	r.dist = dist
 
 	return nil
 }

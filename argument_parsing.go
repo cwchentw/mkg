@@ -82,6 +82,16 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 			}
 
 			i++
+		case "-d", "--dist":
+			if i+1 >= len(args) {
+				return PARSING_EVENT_ERROR, errors.New("No valid dist directory name")
+			}
+
+			if r.IsNested() {
+				r.SetDist(args[i+1])
+			}
+
+			i++
 		case "-t", "--test":
 			if i+1 >= len(args) {
 				return PARSING_EVENT_ERROR, errors.New("No valid test directory name")

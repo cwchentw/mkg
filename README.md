@@ -158,6 +158,7 @@ These parameters only make effects in nested projects.
 
 * `-s _dir_` or `--source _dir_`: set source directory, default to *src*
 * `-i _dir_` or `--include _dir_`: set include directory, default to *include*
+* `-d _dir_` or `--dist _dir_`: set dist directory, default to *dist*
 * `-t _dir_` or `--test _dir_`: set test programs directory, default to *test*
 * `-e _dir_` or `--example _dir_`: set example programs directory, default to *examples*
 
