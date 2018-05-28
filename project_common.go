@@ -348,9 +348,9 @@ func createConfigAppNested(pr *ParsingResult) {
 			config_cflags,
 			config_rm,
 			config_sep,
+			config_project_structure,
 			config_program,
 			config_objects,
-			config_project_structure,
 			config_external_library,
 			config_app_nested,
 			config_app_nested_clean)
@@ -364,9 +364,9 @@ func createConfigAppNested(pr *ParsingResult) {
 			config_cxxflags,
 			config_rm,
 			config_sep,
+			config_project_structure,
 			config_program,
 			config_objects,
-			config_project_structure,
 			config_external_library,
 			config_app_nested,
 			config_app_nested_clean)
@@ -375,8 +375,9 @@ func createConfigAppNested(pr *ParsingResult) {
 	}
 
 	_, err = file.WriteString(
-		fmt.Sprintf(template, pr.Prog(), pr.Prog(),
-			pr.Src(), pr.Include(), pr.Dist(), pr.Test(), pr.Example()))
+		fmt.Sprintf(template,
+			pr.Src(), pr.Include(), pr.Dist(), pr.Test(), pr.Example(),
+			pr.Prog(), pr.Prog()))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -446,9 +447,9 @@ func createConfigLibNested(pr *ParsingResult) {
 			config_cflags,
 			config_rm,
 			config_sep,
+			config_project_structure,
 			config_library,
 			config_objects,
-			config_project_structure,
 			config_external_library,
 			config_lib_nested,
 			config_lib_nested_clean)
@@ -459,8 +460,9 @@ func createConfigLibNested(pr *ParsingResult) {
 	}
 
 	_, err = file.WriteString(
-		fmt.Sprintf(template, pr.Prog(),
-			pr.Src(), pr.Include(), pr.Dist(), pr.Test(), pr.Example()))
+		fmt.Sprintf(template,
+			pr.Src(), pr.Include(), pr.Dist(), pr.Test(), pr.Example(),
+			pr.Prog()))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

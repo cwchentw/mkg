@@ -76,7 +76,9 @@ endif
 export STATIC_LIB
 `
 
-const config_objects = `ifeq ($(CC),cl)
+const config_objects = `# Set object files.
+# Modify it if more than one source files.
+ifeq ($(CC),cl)
 	OBJS=$(PROGRAM).obj
 else
 	OBJS=$(PROGRAM).o
@@ -86,6 +88,7 @@ export OBJS
 `
 
 const config_external_library = `# Set third-party include and library path
+# Modify it as needed.
 ifeq ($(CC),cl)
 	INCLUDE=
 	LIBS=
