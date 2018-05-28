@@ -81,6 +81,20 @@ const config_internal_app_c = `.SUFFIXES:
 .PHONY: all clean
 
 all: ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
+	$(CC) $(CFLAGS) -o ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM) $(OBJS) \
+		-I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
+
+..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM): $(OBJS)
+
+%s: %s
+	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
+`
+
+const config_internal_app_c_win = `.SUFFIXES:
+
+.PHONY: all clean
+
+all: ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 ifeq ($(CC),cl)
 	$(CC) $(CFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS) \
 		/Fe ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM) $(OBJS)
@@ -99,6 +113,20 @@ endif
 `
 
 const config_internal_app_cxx = `.SUFFIXES:
+
+.PHONY: all clean
+
+all: ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
+	$(CXX) $(CXXFLAGS) -o ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM) $(OBJS) \
+		-I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
+
+..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM): $(OBJS)
+
+%s: %s
+	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
+`
+
+const config_internal_app_cxx_win = `.SUFFIXES:
 
 .PHONY: all clean
 
