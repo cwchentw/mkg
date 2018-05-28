@@ -4,7 +4,7 @@ function assert {
     if [ $? -ne 0 ]; then echo "Failed program state"; exit 1; fi
 }
 
-function run {
+function runApp {
     cd myapp && make 2>&1 >/dev/null && assert && make clean && \
         make test 2>&1 >/dev/null && assert && make clean && cd ..
 }
@@ -18,25 +18,25 @@ go build
 ./$PROGRAM -f --flat myapp
 
 # Run the test
-run
+runApp
 
 # Create a flat application project for C++.
 ./$PROGRAM -f --flat -cxx myapp
 
 # Run the test
-run
+runApp
 
 # Create a nested application project for C.
 ./$PROGRAM -f myapp
 
 # Run the test
-run
+runApp
 
 # Create a nested application project for C++.
 ./$PROGRAM -f -cpp myapp
 
 # Run the test
-run
+runApp
 
 # Remove the project.
 rm -rf myapp
