@@ -179,6 +179,7 @@ Add supports to the following compilers or toolchains:
 * Fortran (gFortran-based)
 * Objective-C (either GCC or Clang-based)
 * LaTeX
+* (May or may not) Vala
 
 (May or may not) add support to CMake.
 
