@@ -153,23 +153,33 @@ const makefile_internal_lib_c = `.PHONY: all dynamic static clean
 all: dynamic
 
 dynamic:
-ifeq ($(detected_OS),Windows)
-	ifeq ($(CC),cl)
-		for %%x in (*.c) do $(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) \
-			/I ..$(SEP)$(INCLUDE_DIR) /c %%x
-		link /DLL /out:..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
-			$(INCLUDE) $(LIBS) /I ..$(SEP)$(INCLUDE_DIR) $(OBJS)
-	else
-		for %%x in (*.c) do $(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) \
-			-I ..$(SEP)$(INCLUDE_DIR) /c %%x
-		$(CC) $(CFLAGS) -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
-			$(OBJS) $(INCLUDE) $(LIBS) -I ..$(SEP)$(INCLUDE_DIR)
-	endif
-else
 	for x in ` + "`" + `ls *.c` + "`" + `; do $(CC) $(CFLAGS) -fPIC -c $$x \
 		-I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS); done
 	$(CC) $(CFLAGS) -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) $(OBJS) \
 		-I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
+
+static: $(OBJS)
+	$(AR) rcs -o ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(OBJS)
+
+%s: %s
+	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
+`
+
+const makefile_internal_lib_c_win = `.PHONY: all dynamic static clean
+
+all: dynamic
+
+dynamic:
+ifeq ($(CC),cl)
+	for %%x in (*.c) do $(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) \
+		/I ..$(SEP)$(INCLUDE_DIR) /c %%x
+	link /DLL /out:..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
+		$(INCLUDE) $(LIBS) /I ..$(SEP)$(INCLUDE_DIR) $(OBJS)
+else
+	for %%x in (*.c) do $(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) \
+		-I ..$(SEP)$(INCLUDE_DIR) /c %%x
+	$(CC) $(CFLAGS) -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
+		$(OBJS) $(INCLUDE) $(LIBS) -I ..$(SEP)$(INCLUDE_DIR)
 endif
 
 static: $(OBJS)

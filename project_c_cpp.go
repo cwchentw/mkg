@@ -531,7 +531,7 @@ func createConfigLibInternal(pr *ParsingResult) {
 	}
 
 	_, err = file.WriteString(
-		fmt.Sprintf(template, "%.obj", src, "%.o", src))
+		fmt.Sprintf(template, "%.o", src))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
