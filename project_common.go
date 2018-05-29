@@ -309,13 +309,13 @@ func createConfigAppNested(pr *ParsingResult) {
 
 	SEP
 
-	PROGRAM
-
-	OBJS
-
 	PROJECT_STRUCTURE
 
-	LIBRARY
+	PROGRAM
+
+	OBJECTS
+
+	EXTERNAL_LIBRARY
 
 	RULE_LIB_C or RULE_LIB_CXX
 
@@ -410,15 +410,17 @@ func createConfigLibNested(pr *ParsingResult) {
 
 	SEP
 
-	LIBRARY
-
-	OBJS
-
 	PROJECT_STRUCTURE
 
 	LIBRARY
 
+	OBJECTS
+
+	EXTERNAL_LIBRARY
+
 	RULE_LIB_C or RULE_LIB_CXX
+
+	RULE_RM
 	*/
 	const config = `%s
 %s
@@ -779,7 +781,7 @@ func createLibImpl(pr *ParsingResult, path string) {
 	}
 }
 
-func createTest(pr *ParsingResult) {
+func createAppTest(pr *ParsingResult) {
 	var path string
 	if pr.Layout() == LAYOUT_FLAT {
 		path = filepath.Join(
@@ -789,10 +791,10 @@ func createTest(pr *ParsingResult) {
 			pr.Path(), pr.Test(), fmt.Sprintf("%s%s", pr.Prog(), ".bash"))
 	}
 
-	createTestImpl(pr, path)
+	createAppTestImpl(pr, path)
 }
 
-func createTestImpl(pr *ParsingResult, path string) {
+func createAppTestImpl(pr *ParsingResult, path string) {
 	file, err := os.Create(path)
 	defer file.Close()
 	if err != nil {

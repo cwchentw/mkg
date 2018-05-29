@@ -34,7 +34,7 @@ func CreateCorCppProject(pr *ParsingResult) {
 	if pr.Layout() == LAYOUT_FLAT && pr.Proj() == PROJ_CONSOLE {
 		createConfigAppFlat(pr)
 		createApp(pr)
-		createTest(pr)
+		createAppTest(pr)
 	} else if pr.Layout() == LAYOUT_FLAT && pr.Proj() == PROJ_LIBRARY {
 		createConfigLibFlat(pr)
 		createHeader(pr)
@@ -44,7 +44,7 @@ func CreateCorCppProject(pr *ParsingResult) {
 		createConfigAppNested(pr)
 		createConfigAppInternal(pr)
 		createApp(pr)
-		createTest(pr)
+		createAppTest(pr)
 	} else if pr.Layout() == LAYOUT_NESTED && pr.Proj() == PROJ_LIBRARY {
 		createProjStruct(pr)
 		createConfigLibNested(pr)
