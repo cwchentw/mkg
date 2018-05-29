@@ -9,6 +9,11 @@ function runApp {
         make test 2>&1 >/dev/null && assert && make clean && cd ..
 }
 
+function runLib {
+    cd mylib && make 2>&1 >/dev/null && assert && make clean && \
+        make static 2>&1 >/dev/null && assert && make clean && cd ..
+}
+
 PROGRAM=mkg
 
 # Build executables
@@ -41,5 +46,23 @@ runApp
 # Remove the project.
 rm -rf myapp
 
+# Create a flat library project for C.
+./$PROGRAM -f --flat --library mylib
+
+# Run the test.
+runLib
+
+# Create a nested library project for C.
+./$PROGRAM -f --library mylib
+
+# Run the test.
+runLib
+
+# Remove the project.
+rm -rf mylib
+
 # Clean executables
 go clean
+
+# Formatting go code.
+go fmt
