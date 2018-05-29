@@ -22,7 +22,7 @@ func createLicense(pr *ParsingResult) {
 
 	template := getTemplate(pr.License())
 	now := time.Now()
-	if pr.License() == LICENSE_GPL3 {
+	if isNoAuthor(pr.License()) {
 		_, err = file.WriteString(template)
 	} else {
 		_, err = file.WriteString(
@@ -33,6 +33,11 @@ func createLicense(pr *ParsingResult) {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+}
+
+func isNoAuthor(license License) bool {
+	return license == LICENSE_AGPL3 || license == LICENSE_GPL2 ||
+		license == LICENSE_GPL3 || license == LICENSE_MPL2
 }
 
 func createREADME(pr *ParsingResult) {
