@@ -58,6 +58,18 @@ runLib
 # Run the test.
 runLib
 
+# Create a flat library project for C.
+./$PROGRAM -f -cxx --flat --library mylib
+
+# Run the test.
+runLib
+
+# Create a nested library project for C.
+./$PROGRAM -f -cpp --library mylib
+
+# Run the test.
+runLib
+
 # Remove the project.
 rm -rf mylib
 

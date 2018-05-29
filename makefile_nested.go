@@ -197,6 +197,23 @@ endif
 	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
+const makefile_internal_lib_cxx = `.PHONY: all dynamic static clean
+
+all: dynamic
+
+dynamic:
+	for x in ` + "`" + `ls *.cpp` + "`" + `; do $(CXX) $(CXXFLAGS) -fPIC -c $$x \
+		-I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS); done
+	$(CXX) $(CXXFLAGS) -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) $(OBJS) \
+		-I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
+
+static: $(OBJS)
+	$(AR) rcs -o ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(OBJS)
+
+%s: %s
+	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
+`
+
 const makefile_internal_clean = `clean:
 	$(RM) $(OBJS)
 `

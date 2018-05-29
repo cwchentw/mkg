@@ -431,7 +431,21 @@ func createConfigLibNested(pr *ParsingResult) {
 			makefile_lib_nested,
 			makefile_lib_nested_clean)
 	} else if pr.Lang() == LANG_CPP {
-		panic("Unimplemented")
+		template = fmt.Sprintf(config,
+			makefile_platform,
+			makefile_cxx,
+			makefile_cxxflags_debug,
+			makefile_cxxflags_release,
+			makefile_target,
+			makefile_cxxflags,
+			makefile_rm,
+			makefile_sep,
+			makefile_project_structure,
+			makefile_library,
+			makefile_objects,
+			makefile_external_library,
+			makefile_lib_nested,
+			makefile_lib_nested_clean)
 	} else {
 		panic("Unknown language")
 	}
@@ -516,7 +530,9 @@ func createConfigLibInternal(pr *ParsingResult) {
 			makefile_internal_lib_c,
 			makefile_internal_clean)
 	} else if pr.Lang() == LANG_CPP {
-		panic("Unimplemented")
+		template = fmt.Sprintf(config,
+			makefile_internal_lib_cxx,
+			makefile_internal_clean)
 	} else {
 		panic("Unknown language")
 	}
