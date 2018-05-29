@@ -133,34 +133,34 @@ func createConfigAppFlat(pr *ParsingResult) {
 	var template string
 	if pr.Lang() == LANG_C {
 		template = fmt.Sprintf(config,
-			config_platform,
-			config_cc,
-			config_cflags_debug,
-			config_cflags_release,
-			config_target,
-			config_cflags,
-			config_rm,
-			config_sep,
-			config_program,
-			config_objects,
-			config_external_library,
-			config_app_flat_c,
-			config_app_clean)
+			makefile_platform,
+			makefile_cc,
+			makefile_cflags_debug,
+			makefile_cflags_release,
+			makefile_target,
+			makefile_cflags,
+			makefile_rm,
+			makefile_sep,
+			makefile_program,
+			makefile_objects,
+			makefile_external_library,
+			makefile_app_flat_c,
+			makefile_app_clean)
 	} else if pr.Lang() == LANG_CPP {
 		template = fmt.Sprintf(config,
-			config_platform,
-			config_cxx,
-			config_cxxflags_debug,
-			config_cxxflags_release,
-			config_target,
-			config_cxxflags,
-			config_rm,
-			config_sep,
-			config_program,
-			config_objects,
-			config_external_library,
-			config_app_flat_cpp,
-			config_app_clean)
+			makefile_platform,
+			makefile_cxx,
+			makefile_cxxflags_debug,
+			makefile_cxxflags_release,
+			makefile_target,
+			makefile_cxxflags,
+			makefile_rm,
+			makefile_sep,
+			makefile_program,
+			makefile_objects,
+			makefile_external_library,
+			makefile_app_flat_cpp,
+			makefile_app_clean)
 	} else {
 		panic("Unknown language")
 	}
@@ -234,34 +234,34 @@ func createConfigLibFlat(pr *ParsingResult) {
 	var template string
 	if pr.Lang() == LANG_C {
 		template = fmt.Sprintf(config,
-			config_platform,
-			config_cc,
-			config_cflags_debug,
-			config_cflags_release,
-			config_target,
-			config_cflags,
-			config_rm,
-			config_sep,
-			config_library,
-			config_objects,
-			config_external_library,
-			config_lib_flat_c,
-			config_lib_clean)
+			makefile_platform,
+			makefile_cc,
+			makefile_cflags_debug,
+			makefile_cflags_release,
+			makefile_target,
+			makefile_cflags,
+			makefile_rm,
+			makefile_sep,
+			makefile_library,
+			makefile_objects,
+			makefile_external_library,
+			makefile_lib_flat_c,
+			makefile_lib_clean)
 	} else if pr.Lang() == LANG_CPP {
 		template = fmt.Sprintf(config,
-			config_platform,
-			config_cxx,
-			config_cxxflags_debug,
-			config_cxxflags_release,
-			config_target,
-			config_cxxflags,
-			config_rm,
-			config_sep,
-			config_library,
-			config_objects,
-			config_external_library,
-			config_lib_flat_cxx,
-			config_lib_clean)
+			makefile_platform,
+			makefile_cxx,
+			makefile_cxxflags_debug,
+			makefile_cxxflags_release,
+			makefile_target,
+			makefile_cxxflags,
+			makefile_rm,
+			makefile_sep,
+			makefile_library,
+			makefile_objects,
+			makefile_external_library,
+			makefile_lib_flat_cxx,
+			makefile_lib_clean)
 	} else {
 		panic("Unknown language")
 	}
@@ -340,36 +340,36 @@ func createConfigAppNested(pr *ParsingResult) {
 	var template string
 	if pr.Lang() == LANG_C {
 		template = fmt.Sprintf(config,
-			config_platform,
-			config_cc,
-			config_cflags_debug,
-			config_cflags_release,
-			config_target,
-			config_cflags,
-			config_rm,
-			config_sep,
-			config_project_structure,
-			config_program,
-			config_objects,
-			config_external_library,
-			config_app_nested,
-			config_app_nested_clean)
+			makefile_platform,
+			makefile_cc,
+			makefile_cflags_debug,
+			makefile_cflags_release,
+			makefile_target,
+			makefile_cflags,
+			makefile_rm,
+			makefile_sep,
+			makefile_project_structure,
+			makefile_program,
+			makefile_objects,
+			makefile_external_library,
+			makefile_app_nested,
+			makefile_app_nested_clean)
 	} else if pr.Lang() == LANG_CPP {
 		template = fmt.Sprintf(config,
-			config_platform,
-			config_cxx,
-			config_cxxflags_debug,
-			config_cxxflags_release,
-			config_target,
-			config_cxxflags,
-			config_rm,
-			config_sep,
-			config_project_structure,
-			config_program,
-			config_objects,
-			config_external_library,
-			config_app_nested,
-			config_app_nested_clean)
+			makefile_platform,
+			makefile_cxx,
+			makefile_cxxflags_debug,
+			makefile_cxxflags_release,
+			makefile_target,
+			makefile_cxxflags,
+			makefile_rm,
+			makefile_sep,
+			makefile_project_structure,
+			makefile_program,
+			makefile_objects,
+			makefile_external_library,
+			makefile_app_nested,
+			makefile_app_nested_clean)
 	} else {
 		panic("Unknown language")
 	}
@@ -439,20 +439,20 @@ func createConfigLibNested(pr *ParsingResult) {
 	var template string
 	if pr.Lang() == LANG_C {
 		template = fmt.Sprintf(config,
-			config_platform,
-			config_cc,
-			config_cflags_debug,
-			config_cflags_release,
-			config_target,
-			config_cflags,
-			config_rm,
-			config_sep,
-			config_project_structure,
-			config_library,
-			config_objects,
-			config_external_library,
-			config_lib_nested,
-			config_lib_nested_clean)
+			makefile_platform,
+			makefile_cc,
+			makefile_cflags_debug,
+			makefile_cflags_release,
+			makefile_target,
+			makefile_cflags,
+			makefile_rm,
+			makefile_sep,
+			makefile_project_structure,
+			makefile_library,
+			makefile_objects,
+			makefile_external_library,
+			makefile_lib_nested,
+			makefile_lib_nested_clean)
 	} else if pr.Lang() == LANG_CPP {
 		panic("Unimplemented")
 	} else {
@@ -489,12 +489,12 @@ func createConfigAppInternal(pr *ParsingResult) {
 	var template string
 	if pr.Lang() == LANG_C {
 		template = fmt.Sprintf(config,
-			config_internal_app_c,
-			config_internal_clean)
+			makefile_internal_app_c,
+			makefile_internal_clean)
 	} else if pr.Lang() == LANG_CPP {
 		template = fmt.Sprintf(config,
-			config_internal_app_cxx,
-			config_internal_clean)
+			makefile_internal_app_cxx,
+			makefile_internal_clean)
 	} else {
 		panic("Unknown language")
 	}
@@ -536,8 +536,8 @@ func createConfigLibInternal(pr *ParsingResult) {
 	var template string
 	if pr.Lang() == LANG_C {
 		template = fmt.Sprintf(config,
-			config_internal_lib_c,
-			config_internal_clean)
+			makefile_internal_lib_c,
+			makefile_internal_clean)
 	} else if pr.Lang() == LANG_CPP {
 		panic("Unimplemented")
 	} else {

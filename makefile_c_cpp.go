@@ -1,6 +1,6 @@
 package main
 
-const config_cc = `# Set default C compiler.
+const makefile_cc = `# Set default C compiler.
 # Clean implict CC variable.
 CC=
 
@@ -17,7 +17,7 @@ endif  # CC
 export CC
 `
 
-const config_cxx = `# Set default C++ compiler.
+const makefile_cxx = `# Set default C++ compiler.
 # Clean implict CXX variable.
 CXX=
 
@@ -34,7 +34,7 @@ endif  # CXX
 export CXX
 `
 
-const config_cflags_debug = `# Set CFLAGS for Debug target.
+const makefile_cflags_debug = `# Set CFLAGS for Debug target.
 ifndef CFLAGS_DEBUG
 	ifeq ($(CC),cl)
 		CFLAGS_DEBUG=/Wall /sdl /Zi
@@ -52,7 +52,7 @@ endif  # CFLAGS_DEBUG
 export CFLAGS_DEBUG
 `
 
-const config_cxxflags_debug = `# Set CXXFLAGS for Debug target.
+const makefile_cxxflags_debug = `# Set CXXFLAGS for Debug target.
 ifndef CXXFLAGS_DEBUG
 	ifeq ($(CXX),cl)
 		CXXFLAGS_DEBUG=/Wall /sdl /EHsc /std:c++11 /Zi
@@ -70,7 +70,7 @@ endif  # CXXFLAGS_DEBUG
 export CXXFLAGS_DEBUG
 `
 
-const config_cflags_release = `# Set CFLAGS for Release target.
+const makefile_cflags_release = `# Set CFLAGS for Release target.
 ifndef CFLAGS_RELEASE
 	ifeq ($(CC),cl)
 		CFLAGS_RELEASE=/Wall /sdl /O2
@@ -82,7 +82,7 @@ endif  # CFLAGS_RELEASE
 export CFLAGS_RELEASE
 `
 
-const config_cxxflags_release = `# Set CXXFLAGS for Release target.
+const makefile_cxxflags_release = `# Set CXXFLAGS for Release target.
 ifndef CXXFLAGS_RELEASE
 	ifeq ($(CC),cl)
 		CXXFLAGS_RELEASE=/Wall /sdl /EHsc /std:c++11 /O2
@@ -94,7 +94,7 @@ endif  # CXXFLAGS_RELEASE
 export CXXFLAGS_DEBUG
 `
 
-const config_cflags = `# Set default CFLAGS
+const makefile_cflags = `# Set default CFLAGS
 # Clean implict CFLAGS
 CFLAGS=
 
@@ -109,7 +109,7 @@ endif  # CFLAGS
 export CFLAGS
 `
 
-const config_cxxflags = `# Set default CXXFLAGS
+const makefile_cxxflags = `# Set default CXXFLAGS
 # Clean implict CXXFLAGS
 CXXFLAGS=
 
@@ -124,7 +124,7 @@ endif  # CXXFLAGS
 export CXXFLAGS
 `
 
-const config_program = `# Set proper program name.
+const makefile_program = `# Set proper program name.
 ifeq ($(detected_OS),Windows)
 	PROGRAM=%s.exe
 else
@@ -134,7 +134,7 @@ endif
 export PROGRAM
 `
 
-const config_library = `# Set proper library name.
+const makefile_library = `# Set proper library name.
 PROGRAM=%s
 
 ifeq ($(detected_OS),Windows)
@@ -162,7 +162,7 @@ endif
 export STATIC_LIB
 `
 
-const config_objects = `# Set object files.
+const makefile_objects = `# Set object files.
 # Modify it if more than one source files.
 ifeq ($(CC),cl)
 	OBJS=$(PROGRAM).obj
@@ -173,7 +173,7 @@ endif  # OBJS
 export OBJS
 `
 
-const config_external_library = `# Set third-party include and library path
+const makefile_external_library = `# Set third-party include and library path
 # Modify it as needed.
 ifeq ($(CC),cl)
 	INCLUDE=

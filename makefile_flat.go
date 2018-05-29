@@ -1,6 +1,6 @@
 package main
 
-const config_app_flat_c = `.PHONY: all clean
+const makefile_app_flat_c = `.PHONY: all clean
 
 all: run
 
@@ -29,7 +29,7 @@ endif
 	$(CC) $(CFLAGS) -c $< $(INCLUDE) $(LIBS)
 `
 
-const config_app_flat_cpp = `.PHONY: all clean
+const makefile_app_flat_cpp = `.PHONY: all clean
 
 all: run
 
@@ -58,7 +58,7 @@ endif
 	$(CXX) $(CXXFLAGS) -c $< $(INCLUDE) $(LIBS)
 `
 
-const config_lib_flat_c = `.PHONY: all dynamic static clean
+const makefile_lib_flat_c = `.PHONY: all dynamic static clean
 
 all: dynamic
 
@@ -90,7 +90,7 @@ endif
 	$(CC) $(CFLAGS) -c $< $(INCLUDE) $(LIBS)
 `
 
-const config_lib_flat_cxx = `.PHONY: all dynamic static clean
+const makefile_lib_flat_cxx = `.PHONY: all dynamic static clean
 
 all: dynamic
 
@@ -122,10 +122,10 @@ endif
 	$(CXX) $(CXXFLAGS) -c $< $(INCLUDE) $(LIBS)
 `
 
-const config_app_clean = `clean:
+const makefile_app_clean = `clean:
 	$(RM) $(PROGRAM) $(OBJS)
 `
 
-const config_lib_clean = `clean:
+const makefile_lib_clean = `clean:
 	$(RM) $(DYNAMIC_LIB) $(STATIC_LIB) $(OBJS)
 `

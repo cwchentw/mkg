@@ -19,8 +19,8 @@ Options:
     --author _author_
     -b _brief_          Set project description as _brief_
     --brief _brief_
-    -o _config_         Set config file to _config_, default to Makefile
-    --output _config_
+    -o _makefile_         Set config file to _makefile_, default to Makefile
+    --output _makefile_
     -l _license_        Choose a open-source _license_
     --license _license_
     --licenses          Show available licenses

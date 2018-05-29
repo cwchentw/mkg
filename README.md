@@ -121,7 +121,7 @@ Project config file [Makefile]:
 * `-p _prog_` or `--program _prog_`: Set program name to _prog_, default to directory name
 * `-a _author_` or `--author _author_`: Set project author to _author_
 * `-b _brief_` or `--brief _brief_`: Set a brief description to _brief_ for the project
-* `-o _config_` or `--output _config_`: Set Make configuration file to _config_, default to *Makefile*
+* `-o _makefile_` or `--output _makefile_`: Set Make configuration file to _makefile_, default to *Makefile*
 * `-l _license_` or `--license _license_`: Choose a open-source _license_ for the project
 
 Here are the available licenses in our program:

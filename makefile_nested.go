@@ -1,6 +1,6 @@
 package main
 
-const config_project_structure = `# Set project structure.
+const makefile_project_structure = `# Set project structure.
 SOURCE_DIR=%s
 INCLUDE_DIR=%s
 DIST_DIR=%s
@@ -14,7 +14,7 @@ export TEST_DIR
 export EXAMPLE_DIR
 `
 
-const config_app_nested = `.PHONY: all test run clean
+const makefile_app_nested = `.PHONY: all test run clean
 
 all: run
 
@@ -34,7 +34,7 @@ else
 endif
 `
 
-const config_lib_nested = `.PHONY: all dynamic static clean
+const makefile_lib_nested = `.PHONY: all dynamic static clean
 
 all: dynamic
 
@@ -57,7 +57,7 @@ else
 endif
 `
 
-const config_app_nested_clean = `clean:
+const makefile_app_nested_clean = `clean:
 ifeq ($(detected_OS),Windows)
 	$(MAKE) -C $(SOURCE_DIR)$(SEP)Makefile.win clean
 else
@@ -66,7 +66,7 @@ endif
 	$(RM) $(DIST_DIR)$(SEP)$(PROGRAM)
 `
 
-const config_lib_nested_clean = `clean:
+const makefile_lib_nested_clean = `clean:
 ifeq ($(detected_OS),Windows)
 	$(MAKE) -C $(SOURCE_DIR)$(SEP)Makefile.win clean
 else
@@ -76,7 +76,7 @@ endif
 	$(RM) $(DIST_DIR)$(SEP)$(STATIC_LIB)
 `
 
-const config_internal_app_c = `.SUFFIXES:
+const makefile_internal_app_c = `.SUFFIXES:
 
 .PHONY: all clean
 
@@ -90,7 +90,7 @@ all: ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
-const config_internal_app_c_win = `.SUFFIXES:
+const makefile_internal_app_c_win = `.SUFFIXES:
 
 .PHONY: all clean
 
@@ -112,7 +112,7 @@ endif
 	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
-const config_internal_app_cxx = `.SUFFIXES:
+const makefile_internal_app_cxx = `.SUFFIXES:
 
 .PHONY: all clean
 
@@ -126,7 +126,7 @@ all: ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
-const config_internal_app_cxx_win = `.SUFFIXES:
+const makefile_internal_app_cxx_win = `.SUFFIXES:
 
 .PHONY: all clean
 
@@ -148,7 +148,7 @@ endif
 	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
-const config_internal_lib_c = `.PHONY: all dynamic static clean
+const makefile_internal_lib_c = `.PHONY: all dynamic static clean
 
 all: dynamic
 
@@ -187,6 +187,6 @@ endif
 	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
-const config_internal_clean = `clean:
+const makefile_internal_clean = `clean:
 	$(RM) $(OBJS)
 `
