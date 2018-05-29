@@ -53,7 +53,7 @@ $ mkg myapp
 You may adjust `mkg` with some parameters:
 
 ```
-$ mkg -cpp -lib --flat mylib
+$ mkg -cpp --library --flat mylib
 ```
 
 To invoke `mkg` interactively, run it without any argument:
@@ -145,7 +145,7 @@ Here are the available licenses in our program:
 
 * `-c` or `-C`: generate a C project (default)
 * `-cpp` or `-cxx`: generate a C++ project
-* `--console`: generate an application project (default)
+* `--console`: generate an console application project (default)
 * `--library`: generate a library project
 * `--nested`: generate a nested project (default)
 * `--flat`: generate a flat project
@@ -159,7 +159,7 @@ These parameters only make effects in nested projects.
 * `-s _dir_` or `--source _dir_`: set source directory, default to *src*
 * `-i _dir_` or `--include _dir_`: set include directory, default to *include*
 * `-d _dir_` or `--dist _dir_`: set dist directory, default to *dist*
-* `-t _dir_` or `--test _dir_`: set test programs directory, default to *test*
+* `-t _dir_` or `--test _dir_`: set test programs directory, default to *tests*
 * `-e _dir_` or `--example _dir_`: set example programs directory, default to *examples*
 
 ## Philosophy
@@ -179,6 +179,8 @@ Add supports to the following compilers or toolchains:
 * Fortran (gFortran-based)
 * Objective-C (either GCC or Clang-based)
 * LaTeX
+
+(May or may not) add support to CMake.
 
 ## Author
 
