@@ -52,15 +52,22 @@ else
 endif
 
 %.obj: %.cpp
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) /c $< 
+	$(CXX) $(CXXFLAGS) /I. $(INCLUDE) $(LIBS) /c $< 
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< $(INCLUDE) $(LIBS)
+	$(CXX) $(CXXFLAGS) -c $< -I. $(INCLUDE) $(LIBS)
 `
 
 const makefile_lib_flat_c = `.PHONY: all dynamic static clean
 
 all: dynamic
+
+test: $(TEST_OBJS)
+	for x in $(TEST_OBJS); do \
+		$(CC) $(CFLAGS) -o "${x%.*}" $x $(INCLUDE) $(LIBS); \
+		.$(SEP)"${x%.*}"; \
+		if [ $? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
+	done
 
 dynamic:
 ifeq ($(detected_OS),Windows)
@@ -94,6 +101,13 @@ const makefile_lib_flat_cxx = `.PHONY: all dynamic static clean
 
 all: dynamic
 
+test: $(TEST_OBJS)
+	for x in $(TEST_OBJS); do \
+		$(CXX) $(CXXFLAGS) -o "${x%.*}" $x $(INCLUDE) $(LIBS); \
+		.$(SEP)"${x%.*}"; \
+		if [ $? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
+	done
+
 dynamic:
 ifeq ($(detected_OS),Windows)
 	ifeq ($(CXX),cl)
@@ -116,10 +130,10 @@ else
 endif
 
 %.obj: %.cpp
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) /c $<
+	$(CXX) $(CXXFLAGS) /I. $(INCLUDE) $(LIBS) /c $<
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< $(INCLUDE) $(LIBS)
+	$(CXX) $(CXXFLAGS) -c $< -I. $(INCLUDE) $(LIBS)
 `
 
 const makefile_app_clean = `clean:

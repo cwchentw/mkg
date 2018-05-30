@@ -42,6 +42,7 @@ func CreateCorCppProject(pr *ParsingResult) {
 		createConfigLibFlat(pr)
 		createCorCppHeader(pr)
 		createCorCppLib(pr)
+		createCorCppLibTest(pr)
 	} else if pr.Layout() == LAYOUT_NESTED && pr.Proj() == PROJ_CONSOLE {
 		createProjStruct(pr)
 		createCorCppConfigAppNested(pr)
@@ -54,6 +55,7 @@ func CreateCorCppProject(pr *ParsingResult) {
 		createConfigLibInternal(pr)
 		createCorCppHeader(pr)
 		createCorCppLib(pr)
+		createCorCppLibTest(pr)
 	}
 }
 
@@ -780,4 +782,56 @@ func createAppTestImpl(pr *ParsingResult, path string) {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+}
+
+func createCorCppLibTest(pr *ParsingResult) {
+	var suffix string
+	if pr.Lang() == LANG_C {
+		suffix = ".c"
+	} else if pr.Lang() == LANG_CPP {
+		suffix = ".cpp"
+	} else {
+		panic("Unknown language")
+	}
+
+	var path string
+	if pr.Layout() == LAYOUT_FLAT {
+		path = filepath.Join(
+			pr.Path(), fmt.Sprintf("%s%s%s", pr.Prog(), "_test", suffix))
+	} else {
+		path = filepath.Join(
+			pr.Path(), pr.Test(), fmt.Sprintf("%s%s%s", pr.Prog(), "_test", suffix))
+	}
+
+	createCorCppLibTestImpl(pr, path)
+}
+
+func createCorCppLibTestImpl(pr *ParsingResult, path string) {
+	file, err := os.Create(path)
+	defer file.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	var tpl string
+	if pr.Lang() == LANG_C {
+		tpl = program_lib_test_c
+	} else if pr.Lang() == LANG_CPP {
+		tpl = ""
+	} else {
+		panic("Unknown language")
+	}
+
+	tmpl, err := template.New("test").Parse(tpl)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	err = tmpl.Execute(file, struct {
+		Program string
+	}{
+		pr.Prog(),
+	})
 }

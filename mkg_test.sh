@@ -10,7 +10,7 @@ function runApp {
 }
 
 function runLib {
-    cd mylib && make 2>&1 >/dev/null && assert && make clean && \
+    cd mylib && make 2>&1 >/dev/null && make test && assert && make clean && \
         make static 2>&1 >/dev/null && assert && make clean && cd ..
 }
 
@@ -56,7 +56,7 @@ runLib
 ./$PROGRAM -f --library mylib
 
 # Run the test.
-runLib
+#runLib
 
 # Create a flat library project for C++.
 ./$PROGRAM -f -cxx --flat --library mylib
@@ -68,7 +68,7 @@ runLib
 ./$PROGRAM -f -cpp --library mylib
 
 # Run the test.
-runLib
+#runLib
 
 # Remove the project.
 rm -rf mylib

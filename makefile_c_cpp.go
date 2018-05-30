@@ -160,6 +160,15 @@ else
 endif
 
 export STATIC_LIB
+
+# Add your own objects for the test programs
+ifeq ($(CC),cl)
+	TEST_OBJS=$(PROGRAM)_test.obj
+else
+	TEST_OBJS=$(PROGRAM)_test.o
+endif
+
+export TEST_OBJS
 `
 
 const makefile_objects = `# Set object files.
