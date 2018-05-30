@@ -720,7 +720,11 @@ func createLibImpl(pr *ParsingResult, path string) {
 		os.Exit(1)
 	}
 
-	err = tmpl.Execute(file, nil)
+	err = tmpl.Execute(file, struct {
+		Program string
+	}{
+		pr.Prog(),
+	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -818,7 +822,7 @@ func createCorCppLibTestImpl(pr *ParsingResult, path string) {
 	if pr.Lang() == LANG_C {
 		tpl = program_lib_test_c
 	} else if pr.Lang() == LANG_CPP {
-		tpl = ""
+		tpl = program_lib_test_cxx
 	} else {
 		panic("Unknown language")
 	}

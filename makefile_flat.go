@@ -62,11 +62,20 @@ const makefile_lib_flat_c = `.PHONY: all dynamic static clean
 
 all: dynamic
 
-test: $(TEST_OBJS)
+test: dynamic $(TEST_OBJS)
 	for x in $(TEST_OBJS); do \
-		$(CC) $(CFLAGS) -o "${x%.*}" $x $(INCLUDE) $(LIBS); \
-		.$(SEP)"${x%.*}"; \
-		if [ $? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
+		$(CC) $(CFLAGS) -c "$${x%.*}.c" -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS); \
+		$(CC) $(CFLAGS) -o "$${x%.*}" $$x -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS); \
+		LD_LIBRARY_PATH=. .$(SEP)"$${x%.*}"; \
+		if [ $$? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
+	done
+
+testStatic: static $(TEST_OBJS)
+	for x in $(TEST_OBJS); do \
+		$(CC) $(CFLAGS) -c "$${x%.*}.c" -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS); \
+		$(CC) $(CFLAGS) -o "$${x%.*}" $$x -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS); \
+		.$(SEP)"$${x%.*}"; \
+		if [ $$? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
 	done
 
 dynamic:
@@ -101,11 +110,20 @@ const makefile_lib_flat_cxx = `.PHONY: all dynamic static clean
 
 all: dynamic
 
-test: $(TEST_OBJS)
+test: dynamic
 	for x in $(TEST_OBJS); do \
-		$(CXX) $(CXXFLAGS) -o "${x%.*}" $x $(INCLUDE) $(LIBS); \
-		.$(SEP)"${x%.*}"; \
-		if [ $? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
+		$(CXX) $(CXXFLAGS) -c "$${x%.*}.cpp" -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS); \
+		$(CXX) $(CXXFLAGS) -o "$${x%.*}" $$x -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS); \
+		LD_LIBRARY_PATH=. .$(SEP)"$${x%.*}"; \
+		if [ $$? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
+	done
+
+testStatic: static
+	for x in $(TEST_OBJS); do \
+		$(CXX) $(CXXFLAGS) -c "$${x%.*}.cpp" -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS); \
+		$(CXX) $(CXXFLAGS) -o "$${x%.*}" $$x -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS); \
+		.$(SEP)"$${x%.o}"; \
+		if [ $$? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
 	done
 
 dynamic:

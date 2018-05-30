@@ -44,6 +44,7 @@ bool is_even(int n);
 `
 
 const program_lib_c = `#include <stdbool.h>
+#include "{{.Program}}.h"
 
 bool is_even(int n)
 {
@@ -51,7 +52,9 @@ bool is_even(int n)
 }
 `
 
-const program_lib_cpp = `bool is_even(int n)
+const program_lib_cpp = `#include "{{.Program}}.hpp"
+
+bool is_even(int n)
 {
     return n % 2 == 0;
 }
@@ -64,7 +67,7 @@ const program_lib_test_c = `#include <stdbool.h>
 
 #define TEST(cond) { \
         if (!cond) { \
-            fprintf(stderr, "%s %s: Failed on %s\n", __FILE__, __LINE__, #cond); \
+            fprintf(stderr, "%s %d: Failed on %s\n", __FILE__, __LINE__, #cond); \
             exit(1); \
         } \
     }
@@ -78,13 +81,13 @@ int main(void)
 }
 `
 
-const program_lib_test_cpp = `#include <cstdlib>
+const program_lib_test_cxx = `#include <cstdlib>
 #include <cstdio>
-#include "{{.Program}}.h"
+#include "{{.Program}}.hpp"
 
 #define TEST(cond) { \
         if (!cond) { \
-            fprintf(stderr, "%s %s: Failed on %s\n", __FILE__, __LINE__, #cond); \
+            fprintf(stderr, "%s %d: Failed on %s\n", __FILE__, __LINE__, #cond); \
             exit(1); \
         } \
     }

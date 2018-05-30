@@ -11,7 +11,7 @@ function runApp {
 
 function runLib {
     cd mylib && make 2>&1 >/dev/null && make test && assert && make clean && \
-        make static 2>&1 >/dev/null && assert && make clean && cd ..
+        make static 2>&1 >/dev/null && make testStatic && assert && make clean && cd ..
 }
 
 PROGRAM=mkg
