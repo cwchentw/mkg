@@ -58,7 +58,7 @@ func main() {
 		fmt.Println("")
 	*/
 
-	CreateDir(pr)
 	p := GetProject(pr)
+	CreateDir(pr)
 	p.Create()
 }
