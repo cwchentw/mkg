@@ -86,7 +86,7 @@ all: ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 
 ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM): $(OBJS)
 
-%s: %s
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
@@ -105,10 +105,10 @@ endif
 
 ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM): $(OBJS)
 
-%s: %s
+%.obj: %.c
 	$(CC) $(CFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS) /c $<
 
-%s: %s
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
@@ -122,7 +122,7 @@ all: ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 
 ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM): $(OBJS)
 
-%s: %s
+%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
@@ -141,10 +141,10 @@ endif
 
 ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM): $(OBJS)
 
-%s: %s
+%.obj: %.cpp
 	$(CXX) $(CXXFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS) /c $<
 
-%s: %s
+%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
@@ -161,7 +161,7 @@ dynamic:
 static: $(OBJS)
 	$(AR) rcs -o ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(OBJS)
 
-%s: %s
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
@@ -190,10 +190,10 @@ else
 	$(AR) rcs -o ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(OBJS)
 endif
 
-%s: %s
+%.obj: %.c
 	$(CC) $(CFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS) /c $<
 
-%s: %s
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
@@ -210,7 +210,7 @@ dynamic:
 static: $(OBJS)
 	$(AR) rcs -o ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(OBJS)
 
-%s: %s
+%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 

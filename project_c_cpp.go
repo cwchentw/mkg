@@ -478,33 +478,28 @@ func createConfigAppInternal(pr *ParsingResult) {
 	const config = `%s
 %s`
 
-	var template string
 	if pr.Lang() == LANG_C {
-		template = fmt.Sprintf(config,
-			makefile_internal_app_c,
-			makefile_internal_clean)
+		tmpl, err := template.New("internal").Parse(
+			fmt.Sprintf(config,
+				makefile_internal_app_c,
+				makefile_internal_clean))
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		tmpl.Execute(file, nil)
 	} else if pr.Lang() == LANG_CPP {
-		template = fmt.Sprintf(config,
-			makefile_internal_app_cxx,
-			makefile_internal_clean)
+		tmpl, err := template.New("internal").Parse(
+			fmt.Sprintf(config,
+				makefile_internal_app_cxx,
+				makefile_internal_clean))
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		tmpl.Execute(file, nil)
 	} else {
 		panic("Unknown language")
-	}
-
-	var src string
-	if pr.Lang() == LANG_C {
-		src = "%.c"
-	} else if pr.Lang() == LANG_CPP {
-		src = "%.cpp"
-	} else {
-		panic("Unknown language")
-	}
-
-	_, err = file.WriteString(
-		fmt.Sprintf(template, "%.o", src))
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
 	}
 }
 
@@ -525,33 +520,28 @@ func createConfigLibInternal(pr *ParsingResult) {
 	const config = `%s
 %s`
 
-	var template string
 	if pr.Lang() == LANG_C {
-		template = fmt.Sprintf(config,
-			makefile_internal_lib_c,
-			makefile_internal_clean)
+		tmpl, err := template.New("internal").Parse(
+			fmt.Sprintf(config,
+				makefile_internal_lib_c,
+				makefile_internal_clean))
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		tmpl.Execute(file, nil)
 	} else if pr.Lang() == LANG_CPP {
-		template = fmt.Sprintf(config,
-			makefile_internal_lib_cxx,
-			makefile_internal_clean)
+		tmpl, err := template.New("internal").Parse(
+			fmt.Sprintf(config,
+				makefile_internal_lib_cxx,
+				makefile_internal_clean))
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		tmpl.Execute(file, nil)
 	} else {
 		panic("Unknown language")
-	}
-
-	var src string
-	if pr.Lang() == LANG_C {
-		src = "%.c"
-	} else if pr.Lang() == LANG_CPP {
-		src = "%.cpp"
-	} else {
-		panic("Unknown language")
-	}
-
-	_, err = file.WriteString(
-		fmt.Sprintf(template, "%.o", src))
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
 	}
 }
 
