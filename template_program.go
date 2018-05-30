@@ -23,8 +23,8 @@ int main(int argc, char *argv[])
 }
 `
 
-const program_header = `#ifndef %s_H
-#define %s_H
+const program_header = `#ifndef {{.Program}}_H
+#define {{.Program}}_H
 
 #ifndef __cplusplus
     #include <stdbool.h>
@@ -40,7 +40,7 @@ bool is_even(int n);
 }
 #endif
 
-#endif  // %s_H
+#endif  // {{.Program}}_H
 `
 
 const program_lib_c = `#include <stdbool.h>

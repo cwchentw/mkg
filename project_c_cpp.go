@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"text/template"
 )
 
 func CreateCorCppProject(pr *ParsingResult) {
@@ -632,8 +633,17 @@ func createHeaderImpl(pr *ParsingResult, path string) {
 	header := program_header
 	progUpper := strings.ToUpper(pr.Prog())
 
-	_, err = file.WriteString(
-		fmt.Sprintf(header, progUpper, progUpper, progUpper))
+	tmpl, err := template.New("header").Parse(header)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	err = tmpl.Execute(file, struct {
+		Program string
+	}{
+		progUpper,
+	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -678,7 +688,13 @@ func createLibImpl(pr *ParsingResult, path string) {
 		panic("Unknown language")
 	}
 
-	_, err = file.WriteString(program)
+	tmpl, err := template.New("program").Parse(program)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	err = tmpl.Execute(file, nil)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -706,18 +722,33 @@ func createAppTestImpl(pr *ParsingResult, path string) {
 		os.Exit(1)
 	}
 
-	var test string
 	if pr.Layout() == LAYOUT_FLAT {
-		test = fmt.Sprintf(program_app_test, pr.Prog())
+		tmpl, err := template.New("test").Parse(program_app_test)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+
+		err = tmpl.Execute(file, struct {
+			Program string
+		}{
+			pr.Prog(),
+		})
 	} else if pr.Layout() == LAYOUT_NESTED {
-		test = fmt.Sprintf(program_app_test_nested, pr.Prog(), pr.Dist())
+		tmpl, err := template.New("test").Parse(program_app_test_nested)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		err = tmpl.Execute(file, struct {
+			Program string
+			DistDir string
+		}{
+			pr.Prog(),
+			pr.Dist(),
+		})
 	} else {
 		panic("Unknown project layout")
-	}
-	_, err = file.WriteString(test)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
 	}
 
 	err = os.Chmod(path, 0755)

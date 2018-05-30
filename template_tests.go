@@ -2,7 +2,7 @@ package main
 
 const program_app_test = `#!/usr/bin/env bats
 
-PROGRAM=%s
+PROGRAM={{.Program}}
 
 @test "Test main program" {
     run ./$PROGRAM
@@ -12,8 +12,8 @@ PROGRAM=%s
 
 const program_app_test_nested = `#!/usr/bin/env bats
 
-PROGRAM=%s
-DIST_DIR=%s
+PROGRAM={{.Program}}
+DIST_DIR={{.DistDir}}
 
 @test "Test main program" {
     run ./$DIST_DIR/$PROGRAM
