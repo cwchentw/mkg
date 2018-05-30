@@ -65,14 +65,14 @@ all: dynamic
 dynamic:
 ifeq ($(detected_OS),Windows)
 	ifeq ($(CC),cl)
-		for %%x in (*.c) do $(CC) $(CFLAGS) $(INCLUDE) $(LIBS) /c %%x
+		for %%x in ($(OBJS:.o=.c)) do $(CC) $(CFLAGS) $(INCLUDE) $(LIBS) /c %%x
 		link /DLL /out:$(DYNAMIC_LIB) $(INCLUDE) $(LIBS) $(OBJS)
 	else
-		for %%x in (*.c) do $(CC) $(CFLAGS) -fPIC -c %%x $(INCLUDE) $(LIBS)
+		for %%x in ($(OBJS:.o=.c)) do $(CC) $(CFLAGS) -fPIC -c %%x $(INCLUDE) $(LIBS)
 		$(CC) $(CFLAGS) -shared -o $(DYNAMIC_LIB) $(OBJS) $(INCLUDE) $(LIBS)
 	endif
 else
-	for x in ` + "`" + `ls *.c` + "`" + `; do $(CC) $(CFLAGS) -fPIC -c $$x $(INCLUDE) $(LIBS); done
+	for x in $(OBJS:.o=.c); do $(CC) $(CFLAGS) -fPIC -c $$x $(INCLUDE) $(LIBS); done
 	$(CC) $(CFLAGS) -shared -o $(DYNAMIC_LIB) $(OBJS) $(INCLUDE) $(LIBS)
 endif
 
@@ -97,14 +97,14 @@ all: dynamic
 dynamic:
 ifeq ($(detected_OS),Windows)
 	ifeq ($(CXX),cl)
-		for %%x in (*.cpp) do $(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) /c %%x
+		for %%x in ($(OBJS:.o=.cpp)) do $(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) /c %%x
 		link /DLL /out:$(DYNAMIC_LIB) $(INCLUDE) $(LIBS) $(OBJS)
 	else
-		for %%x in (*.cpp) do $(CXX) $(CXXFLAGS) -fPIC -c %%x $(INCLUDE) $(LIBS)
+		for %%x in ($(OBJS:.o=.cpp)) do $(CXX) $(CXXFLAGS) -fPIC -c %%x $(INCLUDE) $(LIBS)
 		$(CXX) $(CXXFLAGS) -shared -o $(DYNAMIC_LIB) $(OBJS) $(INCLUDE) $(LIBS)
 	endif
 else
-	for x in ` + "`" + `ls *.cpp` + "`" + `; do $(CXX) $(CXXFLAGS) -fPIC -c $$x $(INCLUDE) $(LIBS); done
+	for x in $(OBJS:.o=.cpp); do $(CXX) $(CXXFLAGS) -fPIC -c $$x $(INCLUDE) $(LIBS); done
 	$(CXX) $(CXXFLAGS) -shared -o $(DYNAMIC_LIB) $(OBJS) $(INCLUDE) $(LIBS)
 endif
 
