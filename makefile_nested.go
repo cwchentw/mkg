@@ -1,11 +1,11 @@
 package main
 
 const makefile_project_structure = `# Set project structure.
-SOURCE_DIR=%s
-INCLUDE_DIR=%s
-DIST_DIR=%s
-TEST_DIR=%s
-EXAMPLE_DIR=%s
+SOURCE_DIR={{.SrcDir}}
+INCLUDE_DIR={{.IncludeDir}}
+DIST_DIR={{.DistDir}}
+TEST_DIR={{.TestDir}}
+EXAMPLE_DIR={{.ExampleDir}}
 
 export SOURCE_DIR
 export INCLUDE_DIR

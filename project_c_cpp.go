@@ -106,9 +106,9 @@ func createConfigAppFlat(pr *ParsingResult) {
 %s
 %s`
 
-	var template string
+	var tpl string
 	if pr.Lang() == LANG_C {
-		template = fmt.Sprintf(config,
+		tpl = fmt.Sprintf(config,
 			makefile_platform,
 			makefile_cc,
 			makefile_cflags_debug,
@@ -123,7 +123,7 @@ func createConfigAppFlat(pr *ParsingResult) {
 			makefile_app_flat_c,
 			makefile_app_clean)
 	} else if pr.Lang() == LANG_CPP {
-		template = fmt.Sprintf(config,
+		tpl = fmt.Sprintf(config,
 			makefile_platform,
 			makefile_cxx,
 			makefile_cxxflags_debug,
@@ -141,17 +141,17 @@ func createConfigAppFlat(pr *ParsingResult) {
 		panic("Unknown language")
 	}
 
-	var src string
-	if pr.Lang() == LANG_C {
-		src = "%.c"
-	} else if pr.Lang() == LANG_CPP {
-		src = "%.cpp"
-	} else {
-		panic("Unknown language")
+	tmpl, err := template.New("appFlat").Parse(tpl)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 
-	_, err = file.WriteString(
-		fmt.Sprintf(template, pr.Prog(), pr.Prog(), "%.obj", src, "%.o", src))
+	err = tmpl.Execute(file, struct {
+		Program string
+	}{
+		pr.Prog(),
+	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -207,9 +207,9 @@ func createConfigLibFlat(pr *ParsingResult) {
 %s
 %s`
 
-	var template string
+	var tpl string
 	if pr.Lang() == LANG_C {
-		template = fmt.Sprintf(config,
+		tpl = fmt.Sprintf(config,
 			makefile_platform,
 			makefile_cc,
 			makefile_cflags_debug,
@@ -224,7 +224,7 @@ func createConfigLibFlat(pr *ParsingResult) {
 			makefile_lib_flat_c,
 			makefile_lib_clean)
 	} else if pr.Lang() == LANG_CPP {
-		template = fmt.Sprintf(config,
+		tpl = fmt.Sprintf(config,
 			makefile_platform,
 			makefile_cxx,
 			makefile_cxxflags_debug,
@@ -242,17 +242,17 @@ func createConfigLibFlat(pr *ParsingResult) {
 		panic("Unknown language")
 	}
 
-	var src string
-	if pr.Lang() == LANG_C {
-		src = "%.c"
-	} else if pr.Lang() == LANG_CPP {
-		src = "%.cpp"
-	} else {
-		panic("Unknown language")
+	tmpl, err := template.New("appFlat").Parse(tpl)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 
-	_, err = file.WriteString(
-		fmt.Sprintf(template, pr.Prog(), "%.obj", src, "%.o", src))
+	err = tmpl.Execute(file, struct {
+		Program string
+	}{
+		pr.Prog(),
+	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -313,9 +313,9 @@ func createConfigAppNested(pr *ParsingResult) {
 %s
 %s`
 
-	var template string
+	var tpl string
 	if pr.Lang() == LANG_C {
-		template = fmt.Sprintf(config,
+		tpl = fmt.Sprintf(config,
 			makefile_platform,
 			makefile_cc,
 			makefile_cflags_debug,
@@ -331,7 +331,7 @@ func createConfigAppNested(pr *ParsingResult) {
 			makefile_app_nested,
 			makefile_app_nested_clean)
 	} else if pr.Lang() == LANG_CPP {
-		template = fmt.Sprintf(config,
+		tpl = fmt.Sprintf(config,
 			makefile_platform,
 			makefile_cxx,
 			makefile_cxxflags_debug,
@@ -350,10 +350,27 @@ func createConfigAppNested(pr *ParsingResult) {
 		panic("Unknown language")
 	}
 
-	_, err = file.WriteString(
-		fmt.Sprintf(template,
-			pr.Src(), pr.Include(), pr.Dist(), pr.Test(), pr.Example(),
-			pr.Prog(), pr.Prog()))
+	tmpl, err := template.New("appNested").Parse(tpl)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	err = tmpl.Execute(file, struct {
+		Program    string
+		SrcDir     string
+		IncludeDir string
+		DistDir    string
+		TestDir    string
+		ExampleDir string
+	}{
+		pr.Prog(),
+		pr.Src(),
+		pr.Include(),
+		pr.Dist(),
+		pr.Test(),
+		pr.Example(),
+	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -414,9 +431,9 @@ func createConfigLibNested(pr *ParsingResult) {
 %s
 %s`
 
-	var template string
+	var tpl string
 	if pr.Lang() == LANG_C {
-		template = fmt.Sprintf(config,
+		tpl = fmt.Sprintf(config,
 			makefile_platform,
 			makefile_cc,
 			makefile_cflags_debug,
@@ -432,7 +449,7 @@ func createConfigLibNested(pr *ParsingResult) {
 			makefile_lib_nested,
 			makefile_lib_nested_clean)
 	} else if pr.Lang() == LANG_CPP {
-		template = fmt.Sprintf(config,
+		tpl = fmt.Sprintf(config,
 			makefile_platform,
 			makefile_cxx,
 			makefile_cxxflags_debug,
@@ -451,10 +468,27 @@ func createConfigLibNested(pr *ParsingResult) {
 		panic("Unknown language")
 	}
 
-	_, err = file.WriteString(
-		fmt.Sprintf(template,
-			pr.Src(), pr.Include(), pr.Dist(), pr.Test(), pr.Example(),
-			pr.Prog()))
+	tmpl, err := template.New("appNested").Parse(tpl)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	err = tmpl.Execute(file, struct {
+		Program    string
+		SrcDir     string
+		IncludeDir string
+		DistDir    string
+		TestDir    string
+		ExampleDir string
+	}{
+		pr.Prog(),
+		pr.Src(),
+		pr.Include(),
+		pr.Dist(),
+		pr.Test(),
+		pr.Example(),
+	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

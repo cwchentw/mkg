@@ -22,10 +22,10 @@ else
 	$(CC) $(CFLAGS) -o $(PROGRAM) $(OBJS) $(INCLUDE) $(LIBS)
 endif
 
-%s: %s
+%.obj: %.c
 	$(CC) $(CFLAGS) $(INCLUDE) $(LIBS) /c $< 
 
-%s: %s
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< $(INCLUDE) $(LIBS)
 `
 
@@ -51,10 +51,10 @@ else
 	$(CXX) $(CXXFLAGS) -o $(PROGRAM) $(OBJS) $(INCLUDE) $(LIBS)
 endif
 
-%s: %s
+%.obj: %.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) /c $< 
 
-%s: %s
+%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< $(INCLUDE) $(LIBS)
 `
 
@@ -83,10 +83,10 @@ else
 	$(AR) rcs -o $(STATIC_LIB) $(OBJS)
 endif
 
-%s: %s
+%.obj: %.c
 	$(CC) $(CFLAGS) $(INCLUDE) $(LIBS) /c $<
 
-%s: %s
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< $(INCLUDE) $(LIBS)
 `
 
@@ -115,10 +115,10 @@ else
 	$(AR) rcs -o $(STATIC_LIB) $(OBJS)
 endif
 
-%s: %s
+%.obj: %.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) /c $<
 
-%s: %s
+%.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< $(INCLUDE) $(LIBS)
 `
 

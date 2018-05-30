@@ -126,16 +126,16 @@ export CXXFLAGS
 
 const makefile_program = `# Set proper program name.
 ifeq ($(detected_OS),Windows)
-	PROGRAM=%s.exe
+	PROGRAM={{.Program}}.exe
 else
-	PROGRAM=%s
+	PROGRAM={{.Program}}
 endif
 
 export PROGRAM
 `
 
 const makefile_library = `# Set proper library name.
-PROGRAM=%s
+PROGRAM={{.Program}}
 
 ifeq ($(detected_OS),Windows)
 	ifeq ($(CC),cl)
