@@ -35,29 +35,29 @@ func CreateCorCppProject(pr *ParsingResult) {
 	createGitignore(pr)
 
 	if pr.Layout() == LAYOUT_FLAT && pr.Proj() == PROJ_CONSOLE {
-		createConfigAppFlat(pr)
-		createApp(pr)
-		createAppTest(pr)
+		createCorCppConfigAppFlat(pr)
+		createCorCppApp(pr)
+		createCorCppAppTest(pr)
 	} else if pr.Layout() == LAYOUT_FLAT && pr.Proj() == PROJ_LIBRARY {
 		createConfigLibFlat(pr)
-		createHeader(pr)
-		createLib(pr)
+		createCorCppHeader(pr)
+		createCorCppLib(pr)
 	} else if pr.Layout() == LAYOUT_NESTED && pr.Proj() == PROJ_CONSOLE {
 		createProjStruct(pr)
-		createConfigAppNested(pr)
+		createCorCppConfigAppNested(pr)
 		createConfigAppInternal(pr)
-		createApp(pr)
-		createAppTest(pr)
+		createCorCppApp(pr)
+		createCorCppAppTest(pr)
 	} else if pr.Layout() == LAYOUT_NESTED && pr.Proj() == PROJ_LIBRARY {
 		createProjStruct(pr)
 		createConfigLibNested(pr)
 		createConfigLibInternal(pr)
-		createHeader(pr)
-		createLib(pr)
+		createCorCppHeader(pr)
+		createCorCppLib(pr)
 	}
 }
 
-func createConfigAppFlat(pr *ParsingResult) {
+func createCorCppConfigAppFlat(pr *ParsingResult) {
 	path := filepath.Join(pr.Path(), pr.Config())
 	file, err := os.Create(path)
 	defer file.Close()
@@ -259,7 +259,7 @@ func createConfigLibFlat(pr *ParsingResult) {
 	}
 }
 
-func createConfigAppNested(pr *ParsingResult) {
+func createCorCppConfigAppNested(pr *ParsingResult) {
 	path := filepath.Join(pr.Path(), pr.Config())
 	file, err := os.Create(path)
 	defer file.Close()
@@ -579,7 +579,7 @@ func createConfigLibInternal(pr *ParsingResult) {
 	}
 }
 
-func createApp(pr *ParsingResult) {
+func createCorCppApp(pr *ParsingResult) {
 	var suffix string
 	if pr.Lang() == LANG_C {
 		suffix = ".c"
@@ -623,7 +623,7 @@ func createAppImpl(pr *ParsingResult, path string) {
 	}
 }
 
-func createHeader(pr *ParsingResult) {
+func createCorCppHeader(pr *ParsingResult) {
 	var suffix string
 	if pr.Lang() == LANG_C {
 		suffix = ".h"
@@ -674,7 +674,7 @@ func createHeaderImpl(pr *ParsingResult, path string) {
 	}
 }
 
-func createLib(pr *ParsingResult) {
+func createCorCppLib(pr *ParsingResult) {
 	var suffix string
 	if pr.Lang() == LANG_C {
 		suffix = ".c"
@@ -725,7 +725,7 @@ func createLibImpl(pr *ParsingResult, path string) {
 	}
 }
 
-func createAppTest(pr *ParsingResult) {
+func createCorCppAppTest(pr *ParsingResult) {
 	var path string
 	if pr.Layout() == LAYOUT_FLAT {
 		path = filepath.Join(
