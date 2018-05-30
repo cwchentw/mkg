@@ -26,10 +26,10 @@ go build
 runApp
 
 # Create a flat application project for C++.
-./$PROGRAM -f --flat -cxx myapp
+#./$PROGRAM -f --flat -cxx myapp
 
 # Run the test
-runApp
+#runApp
 
 # Create a nested application project for C.
 ./$PROGRAM -f myapp
@@ -38,10 +38,10 @@ runApp
 runApp
 
 # Create a nested application project for C++.
-./$PROGRAM -f -cpp myapp
+#./$PROGRAM -f -cpp myapp
 
 # Run the test
-runApp
+#runApp
 
 # Remove the project.
 rm -rf myapp
@@ -50,7 +50,7 @@ rm -rf myapp
 ./$PROGRAM -f --flat --library mylib
 
 # Run the test.
-runLib
+#runLib
 
 # Create a nested library project for C.
 ./$PROGRAM -f --library mylib
@@ -59,13 +59,13 @@ runLib
 #runLib
 
 # Create a flat library project for C++.
-./$PROGRAM -f -cxx --flat --library mylib
+#./$PROGRAM -f -cxx --flat --library mylib
 
 # Run the test.
-runLib
+#runLib
 
 # Create a nested library project for C++.
-./$PROGRAM -f -cpp --library mylib
+#./$PROGRAM -f -cpp --library mylib
 
 # Run the test.
 #runLib

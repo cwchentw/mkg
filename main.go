@@ -50,12 +50,15 @@ func main() {
 	}
 
 	// Remove it later.
+	/*
+		fmt.Println("")
 
-	fmt.Println("")
+		fmt.Print(pr)
 
-	fmt.Print(pr)
+		fmt.Println("")
+	*/
 
-	fmt.Println("")
-
-	CreateCorCppProject(pr)
+	CreateDir(pr)
+	p := GetProject(pr)
+	p.Create()
 }

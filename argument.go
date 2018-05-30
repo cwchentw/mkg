@@ -262,3 +262,8 @@ func (r *ParsingResult) SetExample(ex string) error {
 
 	return nil
 }
+
+// Dummy func
+func (r *ParsingResult) Create() {
+
+}

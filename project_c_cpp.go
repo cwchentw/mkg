@@ -32,7 +32,7 @@ func CreateCorCppProject(pr *ParsingResult) {
 
 	createLicense(pr)
 	createREADME(pr)
-	createGitignore(pr)
+	//createGitignore(pr)
 
 	if pr.Layout() == LAYOUT_FLAT && pr.Proj() == PROJ_CONSOLE {
 		createCorCppConfigAppFlat(pr)

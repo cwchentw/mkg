@@ -7,7 +7,30 @@ import (
 	"time"
 )
 
-func createLicense(pr *ParsingResult) {
+func CreateDir(pr *ParsingResult) {
+	_, err := os.Stat(pr.Path())
+	if !os.IsNotExist(err) {
+		if pr.IsForced() {
+			err = os.RemoveAll(pr.Path())
+			if err != nil {
+				fmt.Fprintln(os.Stderr, err)
+				os.Exit(1)
+			}
+		} else {
+			fmt.Fprintln(os.Stderr,
+				fmt.Sprintf("File or directory %s exists", pr.Path()))
+			os.Exit(1)
+		}
+	}
+
+	err = os.MkdirAll(pr.Path(), os.ModePerm)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func createLicense(pr IProject) {
 	if pr.License() == LICENSE_NONE {
 		return
 	}
@@ -40,7 +63,7 @@ func isNoAuthor(license License) bool {
 		license == LICENSE_GPL3 || license == LICENSE_MPL2
 }
 
-func createREADME(pr *ParsingResult) {
+func createREADME(pr IProject) {
 	path := filepath.Join(pr.Path(), "README.md")
 	file, err := os.Create(path)
 	defer file.Close()
@@ -59,7 +82,8 @@ func createREADME(pr *ParsingResult) {
 	}
 }
 
-func createGitignore(pr *ParsingResult) {
+/*
+func createGitignore(pr IProject) {
 	path := filepath.Join(pr.Path(), ".gitignore")
 	file, err := os.Create(path)
 	defer file.Close()
@@ -84,8 +108,9 @@ func createGitignore(pr *ParsingResult) {
 		os.Exit(1)
 	}
 }
+*/
 
-func createProjStruct(pr *ParsingResult) {
+func createProjStruct(pr IProject) {
 	// Create source dir
 	path := filepath.Join(pr.Path(), pr.Src())
 	err := os.MkdirAll(path, os.ModePerm)
