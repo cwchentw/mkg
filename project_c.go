@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"text/template"
 )
 
@@ -124,8 +125,16 @@ func (p *CProject) Create() {
 	} else if p.Proj() == PROJ_LIBRARY {
 		if p.Layout() == LAYOUT_FLAT {
 			p.createConfigLibFlat()
+			p.createHeader()
+			p.createLib()
+			p.createLibTest()
 		} else if p.Layout() == LAYOUT_NESTED {
 			createProjStruct(p)
+			p.createConfigLibNested()
+			p.createConfigLibInternal()
+			p.createHeader()
+			p.createLib()
+			p.createLibTest()
 		} else {
 			panic("Unknown project layout")
 		}
@@ -409,6 +418,103 @@ func (p *CProject) createConfigAppNested() {
 	}
 }
 
+func (p *CProject) createConfigLibNested() {
+	path := filepath.Join(p.Path(), p.Config())
+	file, err := os.Create(path)
+	defer file.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	/* Makefile layout
+	PLATFORM
+
+	CC
+
+	CFLAGS_DEBUG
+
+	CFLAGS_RELEASE
+
+	TARGET
+
+	CFLAGS
+
+	RM
+
+	SEP
+
+	PROJECT_STRUCTURE
+
+	LIBRARY
+
+	OBJECTS
+
+	EXTERNAL_LIBRARY
+
+	RULE_LIB_C
+
+	RULE_RM
+	*/
+	const config = `%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+
+%s
+%s`
+
+	tpl := fmt.Sprintf(config,
+		makefile_platform,
+		makefile_cc,
+		makefile_cflags_debug,
+		makefile_cflags_release,
+		makefile_target,
+		makefile_cflags,
+		makefile_rm,
+		makefile_sep,
+		makefile_project_structure,
+		makefile_library,
+		makefile_objects,
+		makefile_external_library,
+		makefile_lib_nested,
+		makefile_lib_nested_clean)
+
+	tmpl, err := template.New("libNested").Parse(tpl)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	err = tmpl.Execute(file, struct {
+		Program    string
+		SrcDir     string
+		IncludeDir string
+		DistDir    string
+		TestDir    string
+		ExampleDir string
+	}{
+		p.Prog(),
+		p.Src(),
+		p.Include(),
+		p.Dist(),
+		p.Test(),
+		p.Example(),
+	})
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
 func (p *CProject) createConfigAppInternal() {
 	path := filepath.Join(p.Path(), p.Src(), "Makefile")
 	file, err := os.Create(path)
@@ -429,6 +535,39 @@ func (p *CProject) createConfigAppInternal() {
 	tmpl, err := template.New("internal").Parse(
 		fmt.Sprintf(config,
 			makefile_internal_app_c,
+			makefile_internal_clean))
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	err = tmpl.Execute(file, nil)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func (p *CProject) createConfigLibInternal() {
+	path := filepath.Join(p.Path(), p.Src(), "Makefile")
+	file, err := os.Create(path)
+	defer file.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	/* Makefile layout
+	RULE_LIB_C
+
+	RULE_RM
+	*/
+	const config = `%s
+%s`
+
+	tmpl, err := template.New("internal").Parse(
+		fmt.Sprintf(config,
+			makefile_internal_lib_c,
 			makefile_internal_clean))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -466,6 +605,89 @@ func (p *CProject) createAppImpl(path string) {
 	program := program_app_c
 
 	_, err = file.WriteString(program)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func (p *CProject) createHeader() {
+	suffix := ".h"
+
+	var path string
+
+	if p.Layout() == LAYOUT_FLAT {
+		path = filepath.Join(
+			p.Path(), fmt.Sprintf("%s%s", p.Prog(), suffix))
+	} else {
+		path = filepath.Join(
+			p.Path(), p.Include(), fmt.Sprintf("%s%s", p.Prog(), suffix))
+	}
+
+	p.createHeaderImpl(path)
+}
+
+func (p *CProject) createHeaderImpl(path string) {
+	file, err := os.Create(path)
+	defer file.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	header := program_header
+	progUpper := strings.ToUpper(p.Prog())
+
+	tmpl, err := template.New("header").Parse(header)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	err = tmpl.Execute(file, struct {
+		Program string
+	}{
+		progUpper,
+	})
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func (p *CProject) createLib() {
+	suffix := ".c"
+
+	var path string
+	if p.Layout() == LAYOUT_FLAT {
+		path = filepath.Join(p.Path(), fmt.Sprintf("%s%s", p.Prog(), suffix))
+	} else {
+		path = filepath.Join(
+			p.Path(), p.Src(), fmt.Sprintf("%s%s", p.Prog(), suffix))
+	}
+
+	p.createLibImpl(path)
+}
+
+func (p *CProject) createLibImpl(path string) {
+	file, err := os.Create(path)
+	defer file.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	tmpl, err := template.New("program").Parse(program_lib_c)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	err = tmpl.Execute(file, struct {
+		Program string
+	}{
+		p.Prog(),
+	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -527,4 +749,40 @@ func (p *CProject) createAppTestImpl(path string) {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+}
+
+func (p *CProject) createLibTest() {
+	suffix := ".c"
+
+	var path string
+	if p.Layout() == LAYOUT_FLAT {
+		path = filepath.Join(
+			p.Path(), fmt.Sprintf("%s%s%s", p.Prog(), "_test", suffix))
+	} else {
+		path = filepath.Join(
+			p.Path(), p.Test(), fmt.Sprintf("%s%s%s", p.Prog(), "_test", suffix))
+	}
+
+	p.createLibTestImpl(path)
+}
+
+func (p *CProject) createLibTestImpl(path string) {
+	file, err := os.Create(path)
+	defer file.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	tmpl, err := template.New("test").Parse(program_lib_test_c)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	err = tmpl.Execute(file, struct {
+		Program string
+	}{
+		p.Prog(),
+	})
 }

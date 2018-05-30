@@ -50,7 +50,7 @@ rm -rf myapp
 ./$PROGRAM -f --flat --library mylib
 
 # Run the test.
-#runLib
+runLib
 
 # Create a nested library project for C.
 ./$PROGRAM -f --library mylib
