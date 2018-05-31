@@ -62,7 +62,7 @@ const makefile_lib_flat_c = `.PHONY: all dynamic static clean
 
 all: dynamic
 
-test: dynamic $(TEST_OBJS)
+test: dynamic
 	for x in $(TEST_OBJS); do \
 		$(CC) $(CFLAGS) -c "$${x%.*}.c" -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS); \
 		$(CC) $(CFLAGS) -o "$${x%.*}" $$x -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS); \
@@ -70,7 +70,7 @@ test: dynamic $(TEST_OBJS)
 		if [ $$? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
 	done
 
-testStatic: static $(TEST_OBJS)
+testStatic: static
 	for x in $(TEST_OBJS); do \
 		$(CC) $(CFLAGS) -c "$${x%.*}.c" -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS); \
 		$(CC) $(CFLAGS) -o "$${x%.*}" $$x -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS); \
@@ -159,5 +159,10 @@ const makefile_app_clean = `clean:
 `
 
 const makefile_lib_clean = `clean:
-	$(RM) $(DYNAMIC_LIB) $(STATIC_LIB) $(OBJS)
+	$(RM) $(DYNAMIC_LIB) $(STATIC_LIB) $(OBJS) $(TEST_OBJS)
+ifeq ($(detected_OS),Windows)
+	for %%x in ($(TEST_OBJS.o=.exe)) do $(RM) %%x
+else
+	for x in $(TEST_OBJS:.o=); do $(RM) $$x; done
+endif
 `
