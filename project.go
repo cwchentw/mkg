@@ -62,6 +62,8 @@ func GetProject(pr *ParsingResult) IProject {
 
 	if pr.Lang() == LANG_C {
 		return NewCProject(param)
+	} else if pr.Lang() == LANG_CPP {
+		return NewCppProject(param)
 	} else {
 		panic("Unknown language")
 	}

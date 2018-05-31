@@ -26,7 +26,7 @@ go build
 runApp
 
 # Create a flat application project for C++.
-#./$PROGRAM -f --flat -cxx myapp
+./$PROGRAM -f --flat -cxx myapp
 
 # Run the test
 #runApp
@@ -38,7 +38,7 @@ runApp
 runApp
 
 # Create a nested application project for C++.
-#./$PROGRAM -f -cpp myapp
+./$PROGRAM -f -cpp myapp
 
 # Run the test
 #runApp
