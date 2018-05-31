@@ -41,7 +41,7 @@ runApp
 ./$PROGRAM -f -cpp myapp
 
 # Run the test
-#runApp
+runApp
 
 # Remove the project.
 rm -rf myapp
@@ -53,7 +53,7 @@ rm -rf myapp
 runLib
 
 # Create a nested library project for C.
-#./$PROGRAM -f --library mylib
+./$PROGRAM -f --library mylib
 
 # Run the test.
 #runLib
@@ -65,7 +65,7 @@ runLib
 runLib
 
 # Create a nested library project for C++.
-#./$PROGRAM -f -cpp --library mylib
+./$PROGRAM -f -cpp --library mylib
 
 # Run the test.
 #runLib

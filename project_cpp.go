@@ -130,6 +130,8 @@ func (p *CppProject) Create() {
 			p.createLibTest()
 		} else if p.Layout() == LAYOUT_NESTED {
 			createProjStruct(p)
+			p.createConfigLibNested()
+			p.createConfigLibInternal()
 			p.createHeader()
 			p.createLib()
 			p.createLibTest()
@@ -331,15 +333,15 @@ func (p *CppProject) createConfigAppNested() {
 	/* Makefile layout
 	PLATFORM
 
-	CXX
+	CC or CXX
 
-	CXXFLAGS_DEBUG
+	CFLAGS_DEBUG or CXXFLAGS_DEBUG
 
-	CXXFLAGS_RELEASE
+	CFLAGS_RELEASE or CXXFLAGS_RELEASE
 
 	TARGET
 
-	CXX_FLAGS
+	CFLAGS or CXX_FLAGS
 
 	RM
 
@@ -353,7 +355,7 @@ func (p *CppProject) createConfigAppNested() {
 
 	EXTERNAL_LIBRARY
 
-	RULE_LIB_CXX
+	RULE_LIB_C or RULE_LIB_CXX
 
 	RULE_RM
 	*/
@@ -416,7 +418,7 @@ func (p *CppProject) createConfigAppNested() {
 	}
 }
 
-func (p *CppProject) createConfigAppInternal() {
+func (p *CppProject) createConfigLibNested() {
 	path := filepath.Join(p.Path(), p.Config())
 	file, err := os.Create(path)
 	defer file.Close()
@@ -428,15 +430,15 @@ func (p *CppProject) createConfigAppInternal() {
 	/* Makefile layout
 	PLATFORM
 
-	CC or CXX
+	CXX
 
-	CFLAGS_DEBUG or CXXFLAGS_DEBUG
+	CXXFLAGS_DEBUG
 
-	CFLAGS_RELEASE or CXXFLAGS_RELEASE
+	CXXFLAGS_RELEASE
 
 	TARGET
 
-	CFLAGS or CXX_FLAGS
+	CXX_FLAGS
 
 	RM
 
@@ -450,7 +452,7 @@ func (p *CppProject) createConfigAppInternal() {
 
 	EXTERNAL_LIBRARY
 
-	RULE_LIB_C or RULE_LIB_CXX
+	RULE_LIB_CXX
 
 	RULE_RM
 	*/
@@ -507,6 +509,72 @@ func (p *CppProject) createConfigAppInternal() {
 		p.Test(),
 		p.Example(),
 	})
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func (p *CppProject) createConfigAppInternal() {
+	path := filepath.Join(p.Path(), p.Src(), "Makefile")
+	file, err := os.Create(path)
+	defer file.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	/* Makefile layout
+	RULE_LIB_CXX
+
+	RULE_RM
+	*/
+	const config = `%s
+%s`
+
+	tmpl, err := template.New("internal").Parse(
+		fmt.Sprintf(config,
+			makefile_internal_app_cxx,
+			makefile_internal_clean))
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	err = tmpl.Execute(file, nil)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func (p *CppProject) createConfigLibInternal() {
+	path := filepath.Join(p.Path(), p.Src(), "Makefile")
+	file, err := os.Create(path)
+	defer file.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	/* Makefile layout
+	RULE_LIB_C or RULE_LIB_CXX
+
+	RULE_RM
+	*/
+	const config = `%s
+%s`
+
+	tmpl, err := template.New("internal").Parse(
+		fmt.Sprintf(config,
+			makefile_internal_lib_cxx,
+			makefile_internal_clean))
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	err = tmpl.Execute(file, nil)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
