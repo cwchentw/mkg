@@ -132,6 +132,7 @@ func (p *CProject) Create() {
 			createProjStruct(p)
 			p.createConfigLibNested()
 			p.createConfigLibInternal()
+			p.createConfigLibTestInternal()
 			p.createHeader()
 			p.createLib()
 			p.createLibTest()
@@ -575,6 +576,43 @@ func (p *CProject) createConfigLibInternal() {
 	}
 
 	err = tmpl.Execute(file, nil)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func (p *CProject) createConfigLibTestInternal() {
+	path := filepath.Join(p.Path(), p.Test(), "Makefile")
+	file, err := os.Create(path)
+	defer file.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	/* Makefile layout
+	RULE_LIB_C
+
+	RULE_RM
+	*/
+	const config = `%s
+%s`
+
+	tmpl, err := template.New("internal").Parse(
+		fmt.Sprintf(config,
+			makefile_internal_lib_test_c,
+			makefile_internal_lib_test_clean))
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	err = tmpl.Execute(file, struct {
+		Program string
+	}{
+		p.Prog(),
+	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

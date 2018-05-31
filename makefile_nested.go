@@ -38,6 +38,20 @@ const makefile_lib_nested = `.PHONY: all dynamic static clean
 
 all: dynamic
 
+test: dynamic
+ifeq ($(detected_OS),Windows)
+	$(MAKE) -C $(TEST_DIR)$(SEP)Makefile.win test
+else
+	$(MAKE) -C $(TEST_DIR) test
+endif
+
+testStatic: static
+ifeq ($(detected_OS),Windows)
+	$(MAKE) -C $(TEST_DIR)$(SEP)Makefile.win testStatic
+else
+	$(MAKE) -C $(TEST_DIR) testStatic
+endif
+
 dynamic: .$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB)
 
 .$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB):
@@ -69,8 +83,10 @@ endif
 const makefile_lib_nested_clean = `clean:
 ifeq ($(detected_OS),Windows)
 	$(MAKE) -C $(SOURCE_DIR)$(SEP)Makefile.win clean
+	$(MAKE) -C $(TEST_DIR)$(SEP)Makefile.win clean
 else
 	$(MAKE) -C $(SOURCE_DIR) clean
+	$(MAKE) -C $(TEST_DIR) clean
 endif
 	$(RM) $(DIST_DIR)$(SEP)$(DYNAMIC_LIB)
 	$(RM) $(DIST_DIR)$(SEP)$(STATIC_LIB)
@@ -216,4 +232,43 @@ static: $(OBJS)
 
 const makefile_internal_clean = `clean:
 	$(RM) $(OBJS)
+`
+
+const makefile_internal_lib_test_c = `.PHONY: all test testStatic dynamic static clean
+all: test
+
+test: dynamic
+	for x in $(TEST_OBJS); do \
+		$(CC) $(CFLAGS) -c "$${x%.*}.c" \
+			-I..$(SEP)$(INCLUDE_DIR) $(INCLUDE) \
+			-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(LIBS); \
+		$(CC) $(CFLAGS) -o "$${x%.*}" $$x \
+			-I..$(SEP)$(INCLUDE_DIR) $(INCLUDE) \
+			-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(LIBS); \
+		LD_LIBRARY_PATH=..$(SEP)$(DIST_DIR) .$(SEP)"$${x%.*}"; \
+		if [ $$? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
+	done
+
+testStatic: static
+	for x in $(TEST_OBJS); do \
+		$(CC) $(CFLAGS) -c "$${x%.*}.c" \
+			-I..$(SEP)$(INCLUDE_DIR) $(INCLUDE) \
+			-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(LIBS); \
+		$(CC) $(CFLAGS) -o "$${x%.*}" $$x \
+			-I..$(SEP)$(INCLUDE_DIR) $(INCLUDE) \
+			-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(LIBS); \
+		.$(SEP)"$${x%.*}"; \
+		if [ $$? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
+	done
+
+dynamic: ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB)
+	$(MAKE) -C ..$(SEP)$(SOURCE_DIR) dynamic
+
+static: ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
+	$(MAKE) -C ..$(SEP)$(SOURCE_DIR) static
+`
+
+const makefile_internal_lib_test_clean = `clean:
+	$(RM) $(TEST_OBJS)
+	for x in $(TEST_OBJS:.o=); do $(RM) $$x; done
 `

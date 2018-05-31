@@ -56,7 +56,7 @@ runLib
 ./$PROGRAM -f --library mylib
 
 # Run the test.
-#runLib
+runLib
 
 # Create a flat library project for C++.
 ./$PROGRAM -f -cxx --flat --library mylib
