@@ -1,6 +1,6 @@
 package main
 
-const makefile_project_structure = `# Set project structure.
+const makefileProjectStructure = `# Set project structure.
 SOURCE_DIR={{.SrcDir}}
 INCLUDE_DIR={{.IncludeDir}}
 DIST_DIR={{.DistDir}}
@@ -14,7 +14,7 @@ export TEST_DIR
 export EXAMPLE_DIR
 `
 
-const makefile_app_nested = `.PHONY: all test run clean
+const makefileAppNested = `.PHONY: all test run clean
 
 all: run
 
@@ -71,7 +71,7 @@ else
 endif
 `
 
-const makefile_app_nested_clean = `clean:
+const makefileAppNested_clean = `clean:
 ifeq ($(detected_OS),Windows)
 	$(MAKE) -C $(SOURCE_DIR)$(SEP)Makefile.win clean
 else

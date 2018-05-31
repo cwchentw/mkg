@@ -1,6 +1,6 @@
 package main
 
-const makefile_app_flat_c = `.PHONY: all clean
+const makefileAppFlatC = `.PHONY: all clean
 
 all: run
 
@@ -29,7 +29,7 @@ endif
 	$(CC) $(CFLAGS) -c $< $(INCLUDE) $(LIBS)
 `
 
-const makefile_app_flat_cpp = `.PHONY: all clean
+const makefileAppFlatCpp = `.PHONY: all clean
 
 all: run
 
@@ -58,7 +58,7 @@ endif
 	$(CXX) $(CXXFLAGS) -c $< -I. $(INCLUDE) $(LIBS)
 `
 
-const makefile_lib_flat_c = `.PHONY: all dynamic static clean
+const makefileLibFlatC = `.PHONY: all dynamic static clean
 
 all: dynamic
 
@@ -108,7 +108,7 @@ endif
 	$(CC) $(CFLAGS) -c $< $(INCLUDE) $(LIBS)
 `
 
-const makefile_lib_flat_cxx = `.PHONY: all dynamic static clean
+const makefileLibFlatCxx = `.PHONY: all dynamic static clean
 
 all: dynamic
 
@@ -158,11 +158,11 @@ endif
 	$(CXX) $(CXXFLAGS) -c $< -I. $(INCLUDE) $(LIBS)
 `
 
-const makefile_app_clean = `clean:
+const makefileAppClean = `clean:
 	$(RM) $(PROGRAM) $(OBJS)
 `
 
-const makefile_lib_clean = `clean:
+const makefileLibClean = `clean:
 	$(RM) $(DYNAMIC_LIB) $(STATIC_LIB) $(OBJS) $(TEST_OBJS)
 ifeq ($(detected_OS),Windows)
 	for %%x in ($(TEST_OBJS.o=.exe)) do $(RM) %%x

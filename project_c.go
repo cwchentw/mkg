@@ -210,19 +210,19 @@ func (p *CProject) createConfigAppFlat() {
 %s`
 
 	tpl := fmt.Sprintf(config,
-		makefile_platform,
+		makefilePlatform,
 		makefile_cc,
 		makefile_cflags_debug,
 		makefile_cflags_release,
-		makefile_target,
+		makefileTarget,
 		makefile_cflags,
-		makefile_rm,
-		makefile_sep,
+		makefileRm,
+		makefileSep,
 		makefile_program,
 		makefile_objects,
 		makefile_external_library,
-		makefile_app_flat_c,
-		makefile_app_clean)
+		makefileAppFlatC,
+		makefileAppClean)
 
 	tmpl, err := template.New("appFlat").Parse(tpl)
 	if err != nil {
@@ -291,19 +291,19 @@ func (p *CProject) createConfigLibFlat() {
 %s`
 
 	tpl := fmt.Sprintf(config,
-		makefile_platform,
+		makefilePlatform,
 		makefile_cc,
 		makefile_cflags_debug,
 		makefile_cflags_release,
-		makefile_target,
+		makefileTarget,
 		makefile_cflags,
-		makefile_rm,
-		makefile_sep,
+		makefileRm,
+		makefileSep,
 		makefile_library,
 		makefile_objects,
 		makefile_external_library,
-		makefile_lib_flat_c,
-		makefile_lib_clean)
+		makefileLibFlatC,
+		makefileLibClean)
 
 	tmpl, err := template.New("libFlat").Parse(tpl)
 	if err != nil {
@@ -377,20 +377,20 @@ func (p *CProject) createConfigAppNested() {
 %s`
 
 	tpl := fmt.Sprintf(config,
-		makefile_platform,
+		makefilePlatform,
 		makefile_cc,
 		makefile_cflags_debug,
 		makefile_cflags_release,
-		makefile_target,
+		makefileTarget,
 		makefile_cflags,
-		makefile_rm,
-		makefile_sep,
-		makefile_project_structure,
+		makefileRm,
+		makefileSep,
+		makefileProjectStructure,
 		makefile_program,
 		makefile_objects,
 		makefile_external_library,
-		makefile_app_nested,
-		makefile_app_nested_clean)
+		makefileAppNested,
+		makefileAppNested_clean)
 
 	tmpl, err := template.New("appNested").Parse(tpl)
 	if err != nil {
@@ -474,15 +474,15 @@ func (p *CProject) createConfigLibNested() {
 %s`
 
 	tpl := fmt.Sprintf(config,
-		makefile_platform,
+		makefilePlatform,
 		makefile_cc,
 		makefile_cflags_debug,
 		makefile_cflags_release,
-		makefile_target,
+		makefileTarget,
 		makefile_cflags,
-		makefile_rm,
-		makefile_sep,
-		makefile_project_structure,
+		makefileRm,
+		makefileSep,
+		makefileProjectStructure,
 		makefile_library,
 		makefile_objects,
 		makefile_external_library,
