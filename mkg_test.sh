@@ -29,7 +29,7 @@ runApp
 ./$PROGRAM -f --flat -cxx myapp
 
 # Run the test
-#runApp
+runApp
 
 # Create a nested application project for C.
 ./$PROGRAM -f myapp

@@ -127,14 +127,16 @@ func (p *CppProject) createGitignore() {
 		if p.Layout() == LAYOUT_FLAT {
 			p.createConfigAppFlat()
 			p.createApp()
+			p.createAppTest()
 		} else if p.Layout() == LAYOUT_NESTED {
 			createProjStruct(p)
 			p.createApp()
+			p.createAppTest()
 		} else {
 			panic("Unknown project layout")
 		}
 	} else if p.Proj() == PROJ_LIBRARY {
-
+		// Implement it later.
 	} else {
 		panic("Unknown project type")
 	}
@@ -243,6 +245,63 @@ func (p *CppProject) createAppImpl(path string) {
 	}
 
 	_, err = file.WriteString(program_app_cpp)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func (p *CppProject) createAppTest() {
+	var path string
+	if p.Layout() == LAYOUT_FLAT {
+		path = filepath.Join(
+			p.Path(), fmt.Sprintf("%s%s", p.Prog(), ".bash"))
+	} else {
+		path = filepath.Join(
+			p.Path(), p.Test(), fmt.Sprintf("%s%s", p.Prog(), ".bash"))
+	}
+
+	p.createAppTestImpl(path)
+}
+
+func (p *CppProject) createAppTestImpl(path string) {
+	file, err := os.Create(path)
+	defer file.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	if p.Layout() == LAYOUT_FLAT {
+		tmpl, err := template.New("test").Parse(program_app_test)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+
+		err = tmpl.Execute(file, struct {
+			Program string
+		}{
+			p.Prog(),
+		})
+	} else if p.Layout() == LAYOUT_NESTED {
+		tmpl, err := template.New("test").Parse(program_app_test_nested)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		err = tmpl.Execute(file, struct {
+			Program string
+			DistDir string
+		}{
+			p.Prog(),
+			p.Dist(),
+		})
+	} else {
+		panic("Unknown project layout")
+	}
+
+	err = os.Chmod(path, 0755)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
