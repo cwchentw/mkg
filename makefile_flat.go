@@ -95,6 +95,8 @@ endif
 static: $(OBJS)
 ifeq ($(CC),cl)
 	lib /out:$(STATIC_LIB) $(OBJS)
+else ifeq ($(detected_OS),Darwin)
+	libtool -static -o $(STATIC_LIB) $(OBJS)
 else
 	$(AR) rcs -o $(STATIC_LIB) $(OBJS)
 endif
@@ -141,8 +143,10 @@ else
 endif
 
 static: $(OBJS)
-ifeq ($(CC),cl)
+ifeq ($(CXX),cl)
 	lib /out:$(STATIC_LIB) $(OBJS)
+else ifeq ($(detected_OS),Darwin)
+	libtool -static -o $(STATIC_LIB) $(OBJS)
 else
 	$(AR) rcs -o $(STATIC_LIB) $(OBJS)
 endif

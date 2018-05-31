@@ -175,7 +175,11 @@ dynamic:
 		-I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 
 static: $(OBJS)
+ifeq ($(detected_OS),Darwin)
+	libtool -static -o ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(OBJS)
+else
 	$(AR) rcs -o ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(OBJS)
+endif
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
@@ -202,6 +206,8 @@ static: $(OBJS)
 ifeq ($(CC),cl)
 	lib /I ..$(SEP)$(INCLUDE_DIR) /out:..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) \
 		$(OBJS)
+else ifeq ($(detected_OS),Darwin)
+	libtool -static -o ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(OBJS)
 else
 	$(AR) rcs -o ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(OBJS)
 endif
@@ -224,7 +230,11 @@ dynamic:
 		-I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 
 static: $(OBJS)
+ifeq ($(detected_OS),Darwin)
+	libtool -static -o ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(OBJS)
+else
 	$(AR) rcs -o ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(OBJS)
+endif
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
