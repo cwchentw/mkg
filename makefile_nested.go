@@ -268,6 +268,40 @@ static: ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
 	$(MAKE) -C ..$(SEP)$(SOURCE_DIR) static
 `
 
+const makefile_internal_lib_test_cxx = `.PHONY: all test testStatic dynamic static clean
+all: test
+
+test: dynamic
+	for x in $(TEST_OBJS); do \
+		$(CXX) $(CXXFLAGS) -c "$${x%.*}.cpp" \
+			-I..$(SEP)$(INCLUDE_DIR) $(INCLUDE) \
+			-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(LIBS); \
+		$(CXX) $(CXXFLAGS) -o "$${x%.*}" $$x \
+			-I..$(SEP)$(INCLUDE_DIR) $(INCLUDE) \
+			-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(LIBS); \
+		LD_LIBRARY_PATH=..$(SEP)$(DIST_DIR) .$(SEP)"$${x%.*}"; \
+		if [ $$? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
+	done
+
+testStatic: static
+	for x in $(TEST_OBJS); do \
+		$(CXX) $(CXXFLAGS) -c "$${x%.*}.cpp" \
+			-I..$(SEP)$(INCLUDE_DIR) $(INCLUDE) \
+			-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(LIBS); \
+		$(CXX) $(CXXFLAGS) -o "$${x%.*}" $$x \
+			-I..$(SEP)$(INCLUDE_DIR) $(INCLUDE) \
+			-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(LIBS); \
+		.$(SEP)"$${x%.*}"; \
+		if [ $$? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
+	done
+
+dynamic: ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB)
+	$(MAKE) -C ..$(SEP)$(SOURCE_DIR) dynamic
+
+static: ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
+	$(MAKE) -C ..$(SEP)$(SOURCE_DIR) static
+`
+
 const makefile_internal_lib_test_clean = `clean:
 	$(RM) $(TEST_OBJS)
 	for x in $(TEST_OBJS:.o=); do $(RM) $$x; done

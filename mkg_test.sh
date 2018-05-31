@@ -68,7 +68,7 @@ runLib
 ./$PROGRAM -f -cpp --library mylib
 
 # Run the test.
-#runLib
+runLib
 
 # Remove the project.
 rm -rf mylib
