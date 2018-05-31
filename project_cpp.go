@@ -106,6 +106,26 @@ func (p *CppProject) Create() {
 	createLicense(p)
 	createREADME(p)
 	p.createGitignore()
+
+	if p.Proj() == PROJ_CONSOLE {
+		if p.Layout() == LAYOUT_FLAT {
+			p.createConfigAppFlat()
+			p.createApp()
+			p.createAppTest()
+		} else if p.Layout() == LAYOUT_NESTED {
+			createProjStruct(p)
+			p.createConfigAppNested()
+			p.createConfigAppInternal()
+			p.createApp()
+			p.createAppTest()
+		} else {
+			panic("Unknown project layout")
+		}
+	} else if p.Proj() == PROJ_LIBRARY {
+		// Implement it later.
+	} else {
+		panic("Unknown project type")
+	}
 }
 
 func (p *CppProject) createGitignore() {
@@ -121,24 +141,6 @@ func (p *CppProject) createGitignore() {
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
-	}
-
-	if p.Proj() == PROJ_CONSOLE {
-		if p.Layout() == LAYOUT_FLAT {
-			p.createConfigAppFlat()
-			p.createApp()
-			p.createAppTest()
-		} else if p.Layout() == LAYOUT_NESTED {
-			createProjStruct(p)
-			p.createApp()
-			p.createAppTest()
-		} else {
-			panic("Unknown project layout")
-		}
-	} else if p.Proj() == PROJ_LIBRARY {
-		// Implement it later.
-	} else {
-		panic("Unknown project type")
 	}
 }
 
@@ -216,6 +218,200 @@ func (p *CppProject) createConfigAppFlat() {
 		Program string
 	}{
 		p.Prog(),
+	})
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func (p *CppProject) createConfigAppNested() {
+	path := filepath.Join(p.Path(), p.Config())
+	file, err := os.Create(path)
+	defer file.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	/* Makefile layout
+	PLATFORM
+
+	CXX
+
+	CXXFLAGS_DEBUG
+
+	CXXFLAGS_RELEASE
+
+	TARGET
+
+	CXX_FLAGS
+
+	RM
+
+	SEP
+
+	PROJECT_STRUCTURE
+
+	PROGRAM
+
+	OBJECTS
+
+	EXTERNAL_LIBRARY
+
+	RULE_LIB_CXX
+
+	RULE_RM
+	*/
+	const config = `%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+
+%s
+%s`
+
+	tpl := fmt.Sprintf(config,
+		makefile_platform,
+		makefile_cxx,
+		makefile_cxxflags_debug,
+		makefile_cxxflags_release,
+		makefile_target,
+		makefile_cxxflags,
+		makefile_rm,
+		makefile_sep,
+		makefile_project_structure,
+		makefile_program,
+		makefile_objects,
+		makefile_external_library,
+		makefile_app_nested,
+		makefile_app_nested_clean)
+
+	tmpl, err := template.New("appNested").Parse(tpl)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	err = tmpl.Execute(file, struct {
+		Program    string
+		SrcDir     string
+		IncludeDir string
+		DistDir    string
+		TestDir    string
+		ExampleDir string
+	}{
+		p.Prog(),
+		p.Src(),
+		p.Include(),
+		p.Dist(),
+		p.Test(),
+		p.Example(),
+	})
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func (p *CppProject) createConfigAppInternal() {
+	path := filepath.Join(p.Path(), p.Config())
+	file, err := os.Create(path)
+	defer file.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	/* Makefile layout
+	PLATFORM
+
+	CC or CXX
+
+	CFLAGS_DEBUG or CXXFLAGS_DEBUG
+
+	CFLAGS_RELEASE or CXXFLAGS_RELEASE
+
+	TARGET
+
+	CFLAGS or CXX_FLAGS
+
+	RM
+
+	SEP
+
+	PROJECT_STRUCTURE
+
+	LIBRARY
+
+	OBJECTS
+
+	EXTERNAL_LIBRARY
+
+	RULE_LIB_C or RULE_LIB_CXX
+
+	RULE_RM
+	*/
+	const config = `%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+%s
+
+%s
+%s`
+
+	tpl := fmt.Sprintf(config,
+		makefile_platform,
+		makefile_cxx,
+		makefile_cxxflags_debug,
+		makefile_cxxflags_release,
+		makefile_target,
+		makefile_cxxflags,
+		makefile_rm,
+		makefile_sep,
+		makefile_project_structure,
+		makefile_library,
+		makefile_objects,
+		makefile_external_library,
+		makefile_lib_nested,
+		makefile_lib_nested_clean)
+
+	tmpl, err := template.New("appNested").Parse(tpl)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	err = tmpl.Execute(file, struct {
+		Program    string
+		SrcDir     string
+		IncludeDir string
+		DistDir    string
+		TestDir    string
+		ExampleDir string
+	}{
+		p.Prog(),
+		p.Src(),
+		p.Include(),
+		p.Dist(),
+		p.Test(),
+		p.Example(),
 	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
