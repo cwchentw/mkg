@@ -669,7 +669,7 @@ func (p *CppProject) createAppTestImpl(path string) {
 	}
 
 	if p.Layout() == LAYOUT_FLAT {
-		tmpl, err := template.New("test").Parse(program_app_test)
+		tmpl, err := template.New("test").Parse(programAppTest)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
@@ -681,7 +681,7 @@ func (p *CppProject) createAppTestImpl(path string) {
 			p.Prog(),
 		})
 	} else if p.Layout() == LAYOUT_NESTED {
-		tmpl, err := template.New("test").Parse(program_app_test_nested)
+		tmpl, err := template.New("test").Parse(programAppTest_nested)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)

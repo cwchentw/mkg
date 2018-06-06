@@ -6,7 +6,7 @@ all: run
 
 test: $(PROGRAM)
 ifeq ($(detected_OS),Windows)
-	@echo "Unsupported"
+	cscript $(PROGRAM:.exe=).vbs
 else
 	./$(PROGRAM).bash
 endif

@@ -733,16 +733,23 @@ func (p *CProject) createLibImpl(path string) {
 }
 
 func (p *CProject) createAppTest() {
-	var path string
+
+	var pWindows string
+	var pUnix string
 	if p.Layout() == LAYOUT_FLAT {
-		path = filepath.Join(
+		pWindows = filepath.Join(
+			p.Path(), fmt.Sprintf("%s%s", p.Prog(), ".vbs"))
+		pUnix = filepath.Join(
 			p.Path(), fmt.Sprintf("%s%s", p.Prog(), ".bash"))
 	} else {
-		path = filepath.Join(
+		pWindows = filepath.Join(
+			p.Path(), p.Test(), fmt.Sprintf("%s%s", p.Prog(), ".vbs"))
+		pUnix = filepath.Join(
 			p.Path(), p.Test(), fmt.Sprintf("%s%s", p.Prog(), ".bash"))
 	}
 
-	p.createAppTestImpl(path)
+	p.createAppTestImpl(pWindows)
+	p.createAppTestImpl(pUnix)
 }
 
 func (p *CProject) createAppTestImpl(path string) {
@@ -754,7 +761,14 @@ func (p *CProject) createAppTestImpl(path string) {
 	}
 
 	if p.Layout() == LAYOUT_FLAT {
-		tmpl, err := template.New("test").Parse(program_app_test)
+		var test string
+		if filepath.Ext(path) == ".vbs" {
+			test = programAppTestWin
+		} else {
+			test = programAppTest
+		}
+
+		tmpl, err := template.New("test").Parse(test)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
@@ -766,7 +780,7 @@ func (p *CProject) createAppTestImpl(path string) {
 			p.Prog(),
 		})
 	} else if p.Layout() == LAYOUT_NESTED {
-		tmpl, err := template.New("test").Parse(program_app_test_nested)
+		tmpl, err := template.New("test").Parse(programAppTest_nested)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
