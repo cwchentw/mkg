@@ -34,7 +34,11 @@ const program_header = `#ifndef {{.Program}}_H
 extern "C" {
 #endif
 
+#ifdef _WIN32
+__declspec(dllexport) bool is_even(int n);
+#else
 bool is_even(int n);
+#endif
 
 #ifdef __cplusplus
 }
@@ -46,7 +50,11 @@ bool is_even(int n);
 const program_lib_c = `#include <stdbool.h>
 #include "{{.Program}}.h"
 
+#ifdef _WIN32
+__declspec(dllexport) bool is_even(int n)
+#else
 bool is_even(int n)
+#endif
 {
     return n % 2 == 0;
 }

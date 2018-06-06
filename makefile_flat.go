@@ -63,33 +63,52 @@ const makefileLibFlatC = `.PHONY: all dynamic static clean
 all: dynamic
 
 test: dynamic
+ifeq ($(detected_OS),Windows)
+ifeq ($(CC),cl)
+	$(SET_ENV) && for %%x in ($(TEST_OBJS:.obj=.c)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) /c %%x /link $(DYNAMIC_LIB)
+	$(SET_ENV) && for %%x in ($(TEST_OBJS)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) %%x /link $(DYNAMIC_LIB)
+	for %%x in ($(TEST_OBJS:.obj=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
+else
+	@echo "Unimplemented"
+endif
+else
 	for x in $(TEST_OBJS); do \
 		$(CC) $(CFLAGS) -c "$${x%.*}.c" -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS); \
 		$(CC) $(CFLAGS) -o "$${x%.*}" $$x -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS); \
 		LD_LIBRARY_PATH=. .$(SEP)"$${x%.*}"; \
 		if [ $$? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
 	done
+endif
 
 testStatic: static
+ifeq ($(detected_OS),Windows)
+ifeq ($(CC),cl)
+	$(SET_ENV) && for %%x in ($(TEST_OBJS:.obj=.c)) do $(SET_ENV) && $(CC) $(CFLAGS) /I. $(INCLUDE) /L. $(LIBS) /c %%x /link $(STATIC_LIB)
+	$(SET_ENV) && for %%x in ($(TEST_OBJS)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) %%x /link $(STATIC_LIB)
+	for %%x in ($(TEST_OBJS:.obj=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
+else
+	@echo "Unimplemented"
+endif
+else
 	for x in $(TEST_OBJS); do \
 		$(CC) $(CFLAGS) -c "$${x%.*}.c" -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS); \
 		$(CC) $(CFLAGS) -o "$${x%.*}" $$x -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS); \
 		.$(SEP)"$${x%.*}"; \
 		if [ $$? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
 	done
+endif
 
 dynamic:
 ifeq ($(detected_OS),Windows)
-	ifeq ($(CC),cl)
-		for %%x in ($(OBJS:.o=.c)) do $(CC) $(CFLAGS) $(INCLUDE) $(LIBS) /c %%x
-		link /DLL /out:$(DYNAMIC_LIB) $(INCLUDE) $(LIBS) $(OBJS)
-	else
-		for %%x in ($(OBJS:.o=.c)) do $(CC) $(CFLAGS) -fPIC -c %%x $(INCLUDE) $(LIBS)
-		$(CC) $(CFLAGS) -shared -o $(DYNAMIC_LIB) $(OBJS) $(INCLUDE) $(LIBS)
-	endif
+ifeq ($(CC),cl)
+	$(SET_ENV) && for %%x in ($(OBJS:.obj=.c)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) /c %%x
+	$(SET_ENV) && link /DLL /out:$(DYNAMIC_LIB) $(INCLUDE) $(LIBS) $(OBJS)
 else
-	for x in $(OBJS:.o=.c); do $(CC) $(CFLAGS) -fPIC -c $$x $(INCLUDE) $(LIBS); done
-	$(CC) $(CFLAGS) -shared -o $(DYNAMIC_LIB) $(OBJS) $(INCLUDE) $(LIBS)
+	@echo "Unimplemented"
+endif
+else
+	for x in $(OBJS:.o=.c); do $(CC) $(CFLAGS) -fPIC -c $$x -I. $(INCLUDE) -L. $(LIBS); done
+	$(CC) $(CFLAGS) -shared -o $(DYNAMIC_LIB) $(OBJS) -I. $(INCLUDE) -L. $(LIBS)
 endif
 
 static: $(OBJS)
@@ -102,10 +121,10 @@ else
 endif
 
 %.obj: %.c
-	$(CC) $(CFLAGS) $(INCLUDE) $(LIBS) /c $<
+	$(SET_ENV) && $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) /c $<
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< $(INCLUDE) $(LIBS)
+	$(CC) $(CFLAGS) -c $< -I. $(INCLUDE) -L. $(LIBS)
 `
 
 const makefileLibFlatCxx = `.PHONY: all dynamic static clean
@@ -165,7 +184,7 @@ const makefileAppClean = `clean:
 const makefileLibClean = `clean:
 	$(RM) $(DYNAMIC_LIB) $(STATIC_LIB) $(OBJS) $(TEST_OBJS)
 ifeq ($(detected_OS),Windows)
-	for %%x in ($(TEST_OBJS.o=.exe)) do $(RM) %%x
+	$(RM) $(TEST_OBJS:.obj=.exe) $(TEST_OBJS:.obj=.lib) $(TEST_OBJS:.obj=.exp) $(OBJS:.obj=.exp) $(OBJS:.obj=.lib)
 else
 	for x in $(TEST_OBJS:.o=); do $(RM) $$x; done
 endif
