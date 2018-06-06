@@ -153,7 +153,7 @@ func (p *CProject) createGitignore() {
 		os.Exit(1)
 	}
 
-	_, err = file.WriteString(gitignore_c)
+	_, err = file.WriteString(gitignoreC)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -390,7 +390,7 @@ func (p *CProject) createConfigAppNested() {
 		makefile_objects,
 		makefile_external_library,
 		makefileAppNested,
-		makefileAppNested_clean)
+		makefileAppNestedClean)
 
 	tmpl, err := template.New("appNested").Parse(tpl)
 	if err != nil {
@@ -486,8 +486,8 @@ func (p *CProject) createConfigLibNested() {
 		makefile_library,
 		makefile_objects,
 		makefile_external_library,
-		makefile_lib_nested,
-		makefile_lib_nested_clean)
+		makefileLibNested,
+		makefileLibNestedClean)
 
 	tmpl, err := template.New("libNested").Parse(tpl)
 	if err != nil {
@@ -535,8 +535,8 @@ func (p *CProject) createConfigAppInternal() {
 
 	tmpl, err := template.New("internal").Parse(
 		fmt.Sprintf(config,
-			makefile_internal_app_c,
-			makefile_internal_clean))
+			makefileInternalAppC,
+			makefileInternalClean))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -568,8 +568,8 @@ func (p *CProject) createConfigLibInternal() {
 
 	tmpl, err := template.New("internal").Parse(
 		fmt.Sprintf(config,
-			makefile_internal_lib_c,
-			makefile_internal_clean))
+			makefileInternalLibC,
+			makefileInternalClean))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -780,7 +780,7 @@ func (p *CProject) createAppTestImpl(path string) {
 			p.Prog(),
 		})
 	} else if p.Layout() == LAYOUT_NESTED {
-		tmpl, err := template.New("test").Parse(programAppTest_nested)
+		tmpl, err := template.New("test").Parse(programAppTestNested)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)

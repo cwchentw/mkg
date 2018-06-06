@@ -10,7 +10,7 @@ PROGRAM={{.Program}}
 }
 `
 
-const programAppTest_nested = `#!/usr/bin/env bats
+const programAppTestNested = `#!/usr/bin/env bats
 
 PROGRAM={{.Program}}
 DIST_DIR={{.DistDir}}

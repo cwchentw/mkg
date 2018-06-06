@@ -74,7 +74,7 @@ func createREADME(pr IProject) {
 
 	now := time.Now()
 	_, err = file.WriteString(
-		fmt.Sprintf(template_readme,
+		fmt.Sprintf(templateREADME,
 			pr.Prog(), pr.Brief(), fmt.Sprint(now.Year()), pr.Author()))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -95,9 +95,9 @@ func createGitignore(pr IProject) {
 	var ignore string
 	switch pr.Lang() {
 	case LANG_C:
-		ignore = gitignore_c
+		ignore = gitignoreC
 	case LANG_CPP:
-		ignore = gitignore_cpp
+		ignore = gitignoreCpp
 	default:
 		panic("Unknown language")
 	}

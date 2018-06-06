@@ -34,7 +34,7 @@ else
 endif
 `
 
-const makefile_lib_nested = `.PHONY: all dynamic static clean
+const makefileLibNested = `.PHONY: all dynamic static clean
 
 all: dynamic
 
@@ -71,7 +71,7 @@ else
 endif
 `
 
-const makefileAppNested_clean = `clean:
+const makefileAppNestedClean = `clean:
 ifeq ($(detected_OS),Windows)
 	$(MAKE) -C $(SOURCE_DIR)$(SEP)Makefile.win clean
 else
@@ -80,7 +80,7 @@ endif
 	$(RM) $(DIST_DIR)$(SEP)$(PROGRAM)
 `
 
-const makefile_lib_nested_clean = `clean:
+const makefileLibNestedClean = `clean:
 ifeq ($(detected_OS),Windows)
 	$(MAKE) -C $(SOURCE_DIR)$(SEP)Makefile.win clean
 	$(MAKE) -C $(TEST_DIR)$(SEP)Makefile.win clean
@@ -92,7 +92,7 @@ endif
 	$(RM) $(DIST_DIR)$(SEP)$(STATIC_LIB)
 `
 
-const makefile_internal_app_c = `.SUFFIXES:
+const makefileInternalAppC = `.SUFFIXES:
 
 .PHONY: all clean
 
@@ -106,7 +106,7 @@ all: ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
-const makefile_internal_app_c_win = `.SUFFIXES:
+const makefileInternalAppCWin = `.SUFFIXES:
 
 .PHONY: all clean
 
@@ -128,7 +128,7 @@ endif
 	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
-const makefile_internal_app_cxx = `.SUFFIXES:
+const makefileInternalAppCxx = `.SUFFIXES:
 
 .PHONY: all clean
 
@@ -142,7 +142,7 @@ all: ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
-const makefile_internal_app_cxx_win = `.SUFFIXES:
+const makefileInternalAppCxxWin = `.SUFFIXES:
 
 .PHONY: all clean
 
@@ -164,7 +164,7 @@ endif
 	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
-const makefile_internal_lib_c = `.PHONY: all dynamic static clean
+const makefileInternalLibC = `.PHONY: all dynamic static clean
 
 all: dynamic
 
@@ -185,7 +185,7 @@ endif
 	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
-const makefile_internal_lib_c_win = `.PHONY: all dynamic static clean
+const makefileInternalLibCWin = `.PHONY: all dynamic static clean
 
 all: dynamic
 
@@ -219,7 +219,7 @@ endif
 	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
-const makefile_internal_lib_cxx = `.PHONY: all dynamic static clean
+const makefileInternalLibCxx = `.PHONY: all dynamic static clean
 
 all: dynamic
 
@@ -240,7 +240,7 @@ endif
 	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
-const makefile_internal_clean = `clean:
+const makefileInternalClean = `clean:
 	$(RM) $(OBJS)
 `
 

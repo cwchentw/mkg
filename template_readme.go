@@ -1,6 +1,6 @@
 package main
 
-const template_readme = `# %s
+const templateREADME = `# %s
 
 %s
 

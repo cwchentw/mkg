@@ -1,6 +1,6 @@
 package main
 
-const gitignore_cpp = `# Prerequisites
+const gitignoreCpp = `# Prerequisites
 *.d
 
 # Compiled Object files
