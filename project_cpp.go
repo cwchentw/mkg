@@ -219,8 +219,8 @@ func (p *CppProject) createConfigAppFlat() {
 		makefileRm,
 		makefileSep,
 		makefile_program,
-		makefile_objects,
-		makefile_external_library,
+		makefileObjectCpp,
+		makefileExternalLibraryCpp,
 		makefileAppFlatCpp,
 		makefileAppClean)
 
@@ -648,16 +648,22 @@ func (p *CppProject) createAppImpl(path string) {
 }
 
 func (p *CppProject) createAppTest() {
-	var path string
+	var pWindows string
+	var pUnix string
 	if p.Layout() == LAYOUT_FLAT {
-		path = filepath.Join(
+		pWindows = filepath.Join(
+			p.Path(), fmt.Sprintf("%s%s", p.Prog(), ".vbs"))
+		pUnix = filepath.Join(
 			p.Path(), fmt.Sprintf("%s%s", p.Prog(), ".bash"))
 	} else {
-		path = filepath.Join(
+		pWindows = filepath.Join(
+			p.Path(), p.Test(), fmt.Sprintf("%s%s", p.Prog(), ".vbs"))
+		pUnix = filepath.Join(
 			p.Path(), p.Test(), fmt.Sprintf("%s%s", p.Prog(), ".bash"))
 	}
 
-	p.createAppTestImpl(path)
+	p.createAppTestImpl(pWindows)
+	p.createAppTestImpl(pUnix)
 }
 
 func (p *CppProject) createAppTestImpl(path string) {
@@ -669,7 +675,14 @@ func (p *CppProject) createAppTestImpl(path string) {
 	}
 
 	if p.Layout() == LAYOUT_FLAT {
-		tmpl, err := template.New("test").Parse(programAppTest)
+		var test string
+		if filepath.Ext(path) == ".vbs" {
+			test = programAppTestWin
+		} else {
+			test = programAppTest
+		}
+
+		tmpl, err := template.New("test").Parse(test)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)

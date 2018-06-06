@@ -35,7 +35,7 @@ all: run
 
 test: $(PROGRAM)
 ifeq ($(detected_OS),Windows)
-	@echo "Unsupported"
+	cscript $(PROGRAM:.exe=).vbs
 else
 	./$(PROGRAM).bash
 endif
@@ -45,14 +45,14 @@ run: $(PROGRAM)
 	echo $$?
 
 $(PROGRAM): $(OBJS)
-ifeq (($CXX),cl)
-	$(CXX) $(CXXFLAGS) /Fe $(PROGRAM) $(INCLUDE) $(LIBS) $(OBJS) 
+ifeq ($(CXX),cl)
+	$(SET_ENV) && $(CXX) $(CXXFLAGS) /Fe:$(PROGRAM) $(INCLUDE) $(LIBS) $(OBJS) 
 else
 	$(CXX) $(CXXFLAGS) -o $(PROGRAM) $(OBJS) $(INCLUDE) $(LIBS)
 endif
 
 %.obj: %.cpp
-	$(CXX) $(CXXFLAGS) /I. $(INCLUDE) $(LIBS) /c $< 
+	$(SET_ENV) && $(CXX) $(CXXFLAGS) /I. $(INCLUDE) $(LIBS) /c $< 
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -I. $(INCLUDE) $(LIBS)

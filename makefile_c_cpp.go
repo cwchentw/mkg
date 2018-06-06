@@ -57,8 +57,8 @@ ifndef CXXFLAGS_DEBUG
 	ifeq ($(CXX),cl)
 		CXXFLAGS_DEBUG=/Wall /sdl /EHsc /std:c++11 /Zi
 	else ifeq ($(detected_OS),Darwin)
-		ifeq ($(CC),clang)
-			CXXFLAGS_DEBUG=-Wall -Wextra -O1 -g -std=c++11 -fsanitize=address -fno-omit-frame-pointer
+		ifeq ($(CXX),clang)
+			CXXFLAGS_DEBUG=-Wall -Wextra -O1 -g -std=c++14 -fsanitize=address -fno-omit-frame-pointer
 		else
 			CXXFLAGS_DEBUG=-Wall -Wextra -g -std=c++11
 		endif
@@ -84,8 +84,8 @@ export CFLAGS_RELEASE
 
 const makefile_cxxflags_release = `# Set CXXFLAGS for Release target.
 ifndef CXXFLAGS_RELEASE
-	ifeq ($(CC),cl)
-		CXXFLAGS_RELEASE=/Wall /sdl /EHsc /std:c++11 /O2
+	ifeq ($(CXX),cl)
+		CXXFLAGS_RELEASE=/Wall /sdl /EHsc /std:c++14 /O2
 	else
 		CXXFLAGS_RELEASE=-Wall -Wextra -O2 -std=c++11
 	endif
@@ -187,9 +187,39 @@ SET_ENV=VsDevCmd.bat
 export SET_ENV
 `
 
+const makefileObjectCpp = `# Set object files.
+# Modify it if more than one source files.
+ifeq ($(CXX),cl)
+	OBJS=$(PROGRAM:.exe=).obj
+else
+	OBJS=$(PROGRAM).o
+endif  # OBJS
+
+export OBJS
+
+# Set to VSVARS32.bat on Visual Studio 2015 or earlier version
+SET_ENV=VsDevCmd.bat
+
+export SET_ENV
+`
+
 const makefile_external_library = `# Set third-party include and library path
 # Modify it as needed.
 ifeq ($(CC),cl)
+	INCLUDE=
+	LIBS=
+else
+	INCLUDE=
+	LIBS=
+endif
+
+export INCLUDE
+export LIBS
+`
+
+const makefileExternalLibraryCpp = `# Set third-party include and library path
+# Modify it as needed.
+ifeq ($(CXX),cl)
 	INCLUDE=
 	LIBS=
 else
