@@ -65,8 +65,8 @@ all: dynamic
 test: dynamic
 ifeq ($(detected_OS),Windows)
 ifeq ($(CC),cl)
-	$(SET_ENV) && for %%x in ($(TEST_OBJS:.obj=.c)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) /c %%x /link $(DYNAMIC_LIB)
-	$(SET_ENV) && for %%x in ($(TEST_OBJS)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) %%x /link $(DYNAMIC_LIB)
+	$(SET_ENV) && for %%x in ($(TEST_OBJS:.obj=.c)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) /c %%x /link $(DYNAMIC_LIB:.dll=.lib)
+	$(SET_ENV) && for %%x in ($(TEST_OBJS)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) %%x /link $(DYNAMIC_LIB:.dll=.lib)
 	for %%x in ($(TEST_OBJS:.obj=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
 	@echo "Unimplemented"
@@ -102,7 +102,7 @@ dynamic:
 ifeq ($(detected_OS),Windows)
 ifeq ($(CC),cl)
 	$(SET_ENV) && for %%x in ($(OBJS:.obj=.c)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) /c %%x
-	$(SET_ENV) && link /DLL /out:$(DYNAMIC_LIB) $(INCLUDE) $(LIBS) $(OBJS)
+	$(SET_ENV) && link /DLL /DEF:$(DYNAMIC_LIB:.dll=.def) /out:$(DYNAMIC_LIB) $(INCLUDE) $(LIBS) $(OBJS)
 else
 	@echo "Unimplemented"
 endif
