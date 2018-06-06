@@ -174,12 +174,17 @@ export TEST_OBJS
 const makefile_objects = `# Set object files.
 # Modify it if more than one source files.
 ifeq ($(CC),cl)
-	OBJS=$(PROGRAM).obj
+	OBJS=$(PROGRAM:.exe=).obj
 else
 	OBJS=$(PROGRAM).o
 endif  # OBJS
 
 export OBJS
+
+# Set to VSVARS32.bat on Visual Studio 2015 or earlier version
+SET_ENV=VsDevCmd.bat
+
+export SET_ENV
 `
 
 const makefile_external_library = `# Set third-party include and library path

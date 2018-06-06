@@ -16,14 +16,14 @@ run: $(PROGRAM)
 	echo $$?
 
 $(PROGRAM): $(OBJS)
-ifeq (($CC),cl)
-	$(CC) $(CFLAGS) /Fe $(PROGRAM) $(INCLUDE) $(LIBS) $(OBJS)
+ifeq ($(CC),cl)
+	$(SET_ENV) && $(CC) $(CFLAGS) /Fe:$(PROGRAM) $(INCLUDE) $(LIBS) $(OBJS)
 else
 	$(CC) $(CFLAGS) -o $(PROGRAM) $(OBJS) $(INCLUDE) $(LIBS)
 endif
 
 %.obj: %.c
-	$(CC) $(CFLAGS) $(INCLUDE) $(LIBS) /c $< 
+	$(SET_ENV) && $(CC) $(CFLAGS) $(INCLUDE) $(LIBS) /c $< 
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< $(INCLUDE) $(LIBS)
