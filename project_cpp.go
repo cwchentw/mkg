@@ -126,6 +126,7 @@ func (p *CppProject) Create() {
 		if p.Layout() == LAYOUT_FLAT {
 			p.createConfigLibFlat()
 			p.createHeader()
+			p.createDef()
 			p.createLib()
 			p.createLibTest()
 		} else if p.Layout() == LAYOUT_NESTED {
@@ -134,6 +135,7 @@ func (p *CppProject) Create() {
 			p.createConfigLibInternal()
 			p.createConfigLibTestInternal()
 			p.createHeader()
+			p.createDef()
 			p.createLib()
 			p.createLibTest()
 		} else {
@@ -299,8 +301,8 @@ func (p *CppProject) createConfigLibFlat() {
 		makefile_cxxflags,
 		makefileRm,
 		makefileSep,
-		makefile_library,
-		makefile_objects,
+		makefileLibCpp,
+		makefileObjectCpp,
 		makefile_external_library,
 		makefileLibFlatCxx,
 		makefileLibClean)
@@ -754,6 +756,47 @@ func (p *CppProject) createHeaderImpl(path string) {
 		Program string
 	}{
 		progUpper,
+	})
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func (p *CppProject) createDef() {
+	suffix := ".def"
+
+	var path string
+
+	if p.Layout() == LAYOUT_FLAT {
+		path = filepath.Join(
+			p.Path(), fmt.Sprintf("%s%s", p.Prog(), suffix))
+	} else {
+		path = filepath.Join(
+			p.Path(), p.Src(), fmt.Sprintf("%s%s", p.Prog(), suffix))
+	}
+
+	p.createDefImpl(path)
+}
+
+func (p *CppProject) createDefImpl(path string) {
+	file, err := os.Create(path)
+	defer file.Close()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	tmpl, err := template.New("def").Parse(programLibDef)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	err = tmpl.Execute(file, struct {
+		Program string
+	}{
+		p.Prog(),
 	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)

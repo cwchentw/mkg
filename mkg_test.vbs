@@ -20,7 +20,17 @@ Shell.Run "cmd /c .\mkg --flat -cxx --force myapp " &_
     "&& rmdir /s /q myapp ", 1, True
 
 ' Test a flat library project for C.
-Shell.Run "cmd /c .\mkg --flat --library -f mylib " &_
+Shell.Run "cmd /c .\mkg --library --flat -f mylib " &_
+    "&& cd mylib " &_
+    "&& make test " &_
+    "&& make clean " &_
+    "&& make testStatic " &_
+    "&& make clean " &_
+    "&& cd .. " &_
+    "&& rmdir /s /q mylib ", 1, True
+
+' Test a flat library project for C++.
+Shell.Run "cmd /c .\mkg --library --flat -cxx --force mylib " &_
     "&& cd mylib " &_
     "&& make test " &_
     "&& make clean " &_

@@ -138,18 +138,18 @@ const makefile_library = `# Set proper library name.
 PROGRAM={{.Program}}
 
 ifeq ($(detected_OS),Windows)
-	ifeq ($(CC),cl)
-		DYNAMIC_LIB=$(PROGRAM).dll
-	else
-		DYNAMIC_LIB=lib$(PROGRAM).dll
-	endif
+ifeq ($(CC),cl)
+	DYNAMIC_LIB=$(PROGRAM).dll
 else
-	ifeq ($(detected_OS),Darwin)
-		DYNAMIC_LIB=lib$(PROGRAM).dylib
-	else
-		DYNAMIC_LIB=lib$(PROGRAM).so
-	endif
-endif
+	DYNAMIC_LIB=lib$(PROGRAM).dll
+endif  # $(CC)
+else
+ifeq ($(detected_OS),Darwin)
+	DYNAMIC_LIB=lib$(PROGRAM).dylib
+else
+	DYNAMIC_LIB=lib$(PROGRAM).so
+endif  # $(detected_OS),Darwin
+endif  # $(detected_OS),Windows
 
 export DYNAMIC_LIB
 
@@ -171,6 +171,43 @@ endif
 export TEST_OBJS
 `
 
+const makefileLibCpp = `# Set proper library name.
+PROGRAM={{.Program}}
+
+ifeq ($(detected_OS),Windows)
+ifeq ($(CXX),cl)
+	DYNAMIC_LIB=$(PROGRAM).dll
+else
+	DYNAMIC_LIB=lib$(PROGRAM).dll
+endif  # $(CXX)
+else
+ifeq ($(detected_OS),Darwin)
+	DYNAMIC_LIB=lib$(PROGRAM).dylib
+else
+	DYNAMIC_LIB=lib$(PROGRAM).so
+endif  # $(detected_OS),Darwin
+endif  # $(detected_OS),Windows
+
+export DYNAMIC_LIB
+
+ifeq ($(CXX),cl)
+	STATIC_LIB=$(PROGRAM).lib
+else
+	STATIC_LIB=lib$(PROGRAM).a
+endif
+
+export STATIC_LIB
+
+# Add your own objects for the test programs
+ifeq ($(CXX),cl)
+	TEST_OBJS=$(PROGRAM)_test.obj
+else
+	TEST_OBJS=$(PROGRAM)_test.o
+endif
+
+export TEST_OBJS
+`
+
 const makefile_objects = `# Set object files.
 # Modify it if more than one source files.
 ifeq ($(CC),cl)
@@ -182,7 +219,7 @@ endif  # OBJS
 export OBJS
 
 # Set to VSVARS32.bat on Visual Studio 2015 or earlier version
-SET_ENV=VsDevCmd.bat
+SET_ENV=VsDevCmd.bat 0arch=amd64
 
 export SET_ENV
 `
@@ -198,7 +235,7 @@ endif  # OBJS
 export OBJS
 
 # Set to VSVARS32.bat on Visual Studio 2015 or earlier version
-SET_ENV=VsDevCmd.bat
+SET_ENV=VsDevCmd.bat -arch=amd64
 
 export SET_ENV
 `
