@@ -176,7 +176,7 @@ else
 	@echo "Unimplemented"
 endif  # $(CXX)
 else
-	for x in $(OBJS:.obj=.cpp); do $(CXX) $(CXXFLAGS) -fPIC -c $$x $(INCLUDE) $(LIBS); done
+	for x in $(OBJS:.o=.cpp); do $(CXX) $(CXXFLAGS) -fPIC -c $$x $(INCLUDE) $(LIBS); done
 	$(CXX) $(CXXFLAGS) -shared -o $(DYNAMIC_LIB) $(OBJS) $(INCLUDE) $(LIBS)
 endif  # $(detected_OS)
 
