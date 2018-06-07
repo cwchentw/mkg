@@ -27,6 +27,14 @@ Shell.Run "cmd /c .\mkg --flat -cxx --force myapp " &_
     "&& cd .. " &_
     "&& rmdir /s /q myapp ", 1, True
 
+' Test a nested application project for C++.
+Shell.Run "cmd /c .\mkg -cpp --force myapp " &_
+    "&& cd myapp " &_
+    "&& make test " &_
+    "&& make clean " &_
+    "&& cd .. " &_
+    "&& rmdir /s /q myapp", 1, True
+
 ' Test a flat library project for C.
 Shell.Run "cmd /c .\mkg --library --flat -f mylib " &_
     "&& cd mylib " &_

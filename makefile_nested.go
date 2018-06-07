@@ -152,8 +152,8 @@ const makefileInternalAppCxxWin = `.SUFFIXES:
 
 all: ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 ifeq ($(CXX),cl)
-	$(CXX) $(CXXFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS) \
-		/Fe ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM) $(OBJS)
+	$(SET_ENV) && $(CXX) $(CXXFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS) \
+		/Fe:..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM) $(OBJS)
 else
 	$(CXX) $(CXXFLAGS) -o ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM) $(OBJS) \
 		-I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
@@ -162,7 +162,7 @@ endif
 ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM): $(OBJS)
 
 %.obj: %.cpp
-	$(CXX) $(CXXFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS) /c $<
+	$(SET_ENV) && $(CXX) $(CXXFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS) /c $<
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)

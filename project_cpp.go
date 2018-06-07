@@ -389,7 +389,7 @@ func (p *CppProject) createConfigAppNested() {
 		makefileSep,
 		makefileProjectStructure,
 		makefile_program,
-		makefile_objects,
+		makefileObjectCpp,
 		makefile_external_library,
 		makefileAppNested,
 		makefileAppNestedClean)
@@ -519,7 +519,14 @@ func (p *CppProject) createConfigLibNested() {
 }
 
 func (p *CppProject) createConfigAppInternal() {
-	path := filepath.Join(p.Path(), p.Src(), "Makefile")
+	pWindows := filepath.Join(p.Path(), p.Src(), "Makefile.win")
+	pUnix := filepath.Join(p.Path(), p.Src(), "Makefile")
+
+	p.createConfigAppInternalImpl(pWindows)
+	p.createConfigAppInternalImpl(pUnix)
+}
+
+func (p *CppProject) createConfigAppInternalImpl(path string) {
 	file, err := os.Create(path)
 	defer file.Close()
 	if err != nil {
@@ -535,9 +542,15 @@ func (p *CppProject) createConfigAppInternal() {
 	const config = `%s
 %s`
 
+	var app string
+	if filepath.Ext(path) == ".win" {
+		app = makefileInternalAppCxxWin
+	} else {
+		app = makefileInternalAppCxx
+	}
+
 	tmpl, err := template.New("internal").Parse(
-		fmt.Sprintf(config,
-			makefileInternalAppCxx,
+		fmt.Sprintf(config, app,
 			makefileInternalClean))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -696,7 +709,14 @@ func (p *CppProject) createAppTestImpl(path string) {
 			p.Prog(),
 		})
 	} else if p.Layout() == LAYOUT_NESTED {
-		tmpl, err := template.New("test").Parse(programAppTestNested)
+		var test string
+		if filepath.Ext(path) == ".vbs" {
+			test = programAppTestNestedWin
+		} else {
+			test = programAppTestNested
+		}
+
+		tmpl, err := template.New("test").Parse(test)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
