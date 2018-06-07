@@ -219,7 +219,7 @@ endif  # OBJS
 export OBJS
 
 # Set to VSVARS32.bat on Visual Studio 2015 or earlier version
-SET_ENV=VsDevCmd.bat 0arch=amd64
+SET_ENV=VsDevCmd.bat -arch=amd64
 
 export SET_ENV
 `

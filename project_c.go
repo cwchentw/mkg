@@ -519,12 +519,26 @@ func (p *CProject) createConfigLibNested() {
 }
 
 func (p *CProject) createConfigAppInternal() {
-	path := filepath.Join(p.Path(), p.Src(), "Makefile")
+	pWindows := filepath.Join(p.Path(), p.Src(), "Makefile.win")
+	pUnix := filepath.Join(p.Path(), p.Src(), "Makefile")
+
+	p.createConfigAppInternalImpl(pWindows)
+	p.createConfigAppInternalImpl(pUnix)
+}
+
+func (p *CProject) createConfigAppInternalImpl(path string) {
 	file, err := os.Create(path)
 	defer file.Close()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
+	}
+
+	var app string
+	if filepath.Ext(path) == ".win" {
+		app = makefileInternalAppCWin
+	} else {
+		app = makefileInternalAppC
 	}
 
 	/* Makefile layout
@@ -536,8 +550,7 @@ func (p *CProject) createConfigAppInternal() {
 %s`
 
 	tmpl, err := template.New("internal").Parse(
-		fmt.Sprintf(config,
-			makefileInternalAppC,
+		fmt.Sprintf(config, app,
 			makefileInternalClean))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -823,7 +836,21 @@ func (p *CProject) createAppTestImpl(path string) {
 			p.Prog(),
 		})
 	} else if p.Layout() == LAYOUT_NESTED {
-		tmpl, err := template.New("test").Parse(programAppTestNested)
+		var test string
+		if filepath.Ext(path) == ".vbs" {
+			test = programAppTestNestedWin
+		} else {
+			test = programAppTestNested
+		}
+
+		var prog string
+		if filepath.Ext(path) == ".vbs" {
+			prog = fmt.Sprintf("%s%s", p.Prog(), ".exe")
+		} else {
+			prog = p.Prog()
+		}
+
+		tmpl, err := template.New("test").Parse(test)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
@@ -832,7 +859,7 @@ func (p *CProject) createAppTestImpl(path string) {
 			Program string
 			DistDir string
 		}{
-			p.Prog(),
+			prog,
 			p.Dist(),
 		})
 	} else {

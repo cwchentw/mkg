@@ -19,8 +19,12 @@ const makefileAppNested = `.PHONY: all test run clean
 all: run
 
 test: .$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
+ifeq ($(detected_OS),Windows)
+	cscript $(TEST_DIR)/$(PROGRAM:.exe=.vbs)
+else
 	bats $(TEST_DIR)/$(PROGRAM).bash
 	echo $$?
+endif  # $(detected_OS)
 
 run: .$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 	.$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
@@ -28,7 +32,7 @@ run: .$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 
 .$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM):
 ifeq ($(detected_OS),Windows)
-	$(MAKE) -C $(SOURCE_DIR)$(SEP)Makefile.win
+	$(MAKE) -C $(SOURCE_DIR) -f Makefile.win
 else
 	$(MAKE) -C $(SOURCE_DIR)
 endif
@@ -40,14 +44,14 @@ all: dynamic
 
 test: dynamic
 ifeq ($(detected_OS),Windows)
-	$(MAKE) -C $(TEST_DIR)$(SEP)Makefile.win test
+	$(MAKE) -C $(TEST_DIR) -f Makefile.win test
 else
 	$(MAKE) -C $(TEST_DIR) test
 endif
 
 testStatic: static
 ifeq ($(detected_OS),Windows)
-	$(MAKE) -C $(TEST_DIR)$(SEP)Makefile.win testStatic
+	$(MAKE) -C $(TEST_DIR) -f Makefile.win testStatic
 else
 	$(MAKE) -C $(TEST_DIR) testStatic
 endif
@@ -56,7 +60,7 @@ dynamic: .$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB)
 
 .$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB):
 ifeq ($(detected_OS),Windows)
-	$(MAKE) -C $(SOURCE_DIR)$(SEP)Makefile.win
+	$(MAKE) -C $(SOURCE_DIR) -f Makefile.win
 else
 	$(MAKE) -C $(SOURCE_DIR)
 endif
@@ -65,7 +69,7 @@ static: .$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
 
 .$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB):
 ifeq ($(detected_OS),Windows)
-	$(MAKE) -C $(SOURCE_DIR)$(SEP)Makefile.win static
+	$(MAKE) -C $(SOURCE_DIR) -f Makefile.win static
 else
 	$(MAKE) -C $(SOURCE_DIR) static
 endif
@@ -73,7 +77,7 @@ endif
 
 const makefileAppNestedClean = `clean:
 ifeq ($(detected_OS),Windows)
-	$(MAKE) -C $(SOURCE_DIR)$(SEP)Makefile.win clean
+	$(MAKE) -C $(SOURCE_DIR) -f Makefile.win clean
 else
 	$(MAKE) -C $(SOURCE_DIR) clean
 endif
@@ -112,8 +116,8 @@ const makefileInternalAppCWin = `.SUFFIXES:
 
 all: ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 ifeq ($(CC),cl)
-	$(CC) $(CFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS) \
-		/Fe ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM) $(OBJS)
+	$(SET_ENV) && $(CC) $(CFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS) \
+		/Fe:..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM) $(OBJS)
 else
 	$(CC) $(CFLAGS) -o ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM) $(OBJS) \
 		-I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
@@ -122,7 +126,7 @@ endif
 ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM): $(OBJS)
 
 %.obj: %.c
-	$(CC) $(CFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS) /c $<
+	$(SET_ENV) && $(CC) $(CFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS) /c $<
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
