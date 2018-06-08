@@ -565,12 +565,26 @@ func (p *CProject) createConfigAppInternalImpl(path string) {
 }
 
 func (p *CProject) createConfigLibInternal() {
-	path := filepath.Join(p.Path(), p.Src(), "Makefile")
+	pWindows := filepath.Join(p.Path(), p.Src(), "Makefile.win")
+	pUnix := filepath.Join(p.Path(), p.Src(), "Makefile")
+
+	p.createConfigLibInternalImpl(pWindows)
+	p.createConfigLibInternalImpl(pUnix)
+}
+
+func (p *CProject) createConfigLibInternalImpl(path string) {
 	file, err := os.Create(path)
 	defer file.Close()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
+	}
+
+	var lib string
+	if filepath.Ext(path) == ".win" {
+		lib = makefileInternalLibCWin
+	} else {
+		lib = makefileInternalLibC
 	}
 
 	/* Makefile layout
@@ -582,8 +596,7 @@ func (p *CProject) createConfigLibInternal() {
 %s`
 
 	tmpl, err := template.New("internal").Parse(
-		fmt.Sprintf(config,
-			makefileInternalLibC,
+		fmt.Sprintf(config, lib,
 			makefileInternalClean))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -598,7 +611,14 @@ func (p *CProject) createConfigLibInternal() {
 }
 
 func (p *CProject) createConfigLibTestInternal() {
-	path := filepath.Join(p.Path(), p.Test(), "Makefile")
+	pWindows := filepath.Join(p.Path(), p.Test(), "Makefile.win")
+	pUnix := filepath.Join(p.Path(), p.Test(), "Makefile")
+
+	p.createConfigLibTestInternalImpl(pWindows)
+	p.createConfigLibTestInternalImpl(pUnix)
+}
+
+func (p *CProject) createConfigLibTestInternalImpl(path string) {
 	file, err := os.Create(path)
 	defer file.Close()
 	if err != nil {
@@ -614,10 +634,19 @@ func (p *CProject) createConfigLibTestInternal() {
 	const config = `%s
 %s`
 
+	var lib string
+	var clean string
+
+	if filepath.Ext(path) == ".win" {
+		lib = makefileInternalLibTestCWin
+		clean = makefileInternalLibTestCleanWin
+	} else {
+		lib = makefile_internal_lib_test_c
+		clean = makefile_internal_lib_test_clean
+	}
+
 	tmpl, err := template.New("internal").Parse(
-		fmt.Sprintf(config,
-			makefile_internal_lib_test_c,
-			makefile_internal_lib_test_clean))
+		fmt.Sprintf(config, lib, clean))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

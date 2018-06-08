@@ -86,14 +86,15 @@ endif
 
 const makefileLibNestedClean = `clean:
 ifeq ($(detected_OS),Windows)
-	$(MAKE) -C $(SOURCE_DIR)$(SEP)Makefile.win clean
-	$(MAKE) -C $(TEST_DIR)$(SEP)Makefile.win clean
+	$(MAKE) -C $(SOURCE_DIR) -f Makefile.win clean
+	$(MAKE) -C $(TEST_DIR) -f Makefile.win clean
 else
 	$(MAKE) -C $(SOURCE_DIR) clean
 	$(MAKE) -C $(TEST_DIR) clean
 endif
-	$(RM) $(DIST_DIR)$(SEP)$(DYNAMIC_LIB)
-	$(RM) $(DIST_DIR)$(SEP)$(STATIC_LIB)
+	$(RM) $(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
+		$(DIST_DIR)$(SEP)$(STATIC_LIB) \
+		$(DIST_DIR)$(SEP)$(DYNAMIC_LIB:.dll=.exp)
 `
 
 const makefileInternalAppC = `.SUFFIXES:
@@ -195,10 +196,10 @@ all: dynamic
 
 dynamic:
 ifeq ($(CC),cl)
-	for %%x in (*.c) do $(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) \
+	$(SET_ENV) && for %%x in (*.c) do $(CC) $(CFLAGS) $(INCLUDE) $(LIBS) \
 		/I ..$(SEP)$(INCLUDE_DIR) /c %%x
-	link /DLL /out:..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
-		$(INCLUDE) $(LIBS) /I ..$(SEP)$(INCLUDE_DIR) $(OBJS)
+	link /DLL /DEF:$(DYNAMIC_LIB:.dll=.def) /out:..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
+		$(INCLUDE) $(LIBS) $(OBJS)
 else
 	for %%x in (*.c) do $(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) \
 		-I ..$(SEP)$(INCLUDE_DIR) /c %%x
@@ -208,8 +209,7 @@ endif
 
 static: $(OBJS)
 ifeq ($(CC),cl)
-	lib /I ..$(SEP)$(INCLUDE_DIR) /out:..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) \
-		$(OBJS)
+	lib /out:..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(OBJS)
 else ifeq ($(detected_OS),Darwin)
 	libtool -static -o ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(OBJS)
 else
@@ -217,7 +217,7 @@ else
 endif
 
 %.obj: %.c
-	$(CC) $(CFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS) /c $<
+	$(SET_ENV) && $(CC) $(CFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS) /c $<
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
@@ -282,6 +282,11 @@ static: ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
 	$(MAKE) -C ..$(SEP)$(SOURCE_DIR) static
 `
 
+const makefileInternalLibTestCWin = `.PHONY: all clean
+all:
+	@echo "Unimplemented"
+`
+
 const makefile_internal_lib_test_cxx = `.PHONY: all test testStatic dynamic static clean
 all: test
 
@@ -317,6 +322,8 @@ static: ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
 `
 
 const makefile_internal_lib_test_clean = `clean:
-	$(RM) $(TEST_OBJS)
-	for x in $(TEST_OBJS:.o=); do $(RM) $$x; done
+	$(RM) $(TEST_OBJS) $(TEST_OBJS:.o=)
+`
+const makefileInternalLibTestCleanWin = `clean:
+	$(RM) $(TEST_OBJS) $(TEST_OBJS:.obj=)
 `
