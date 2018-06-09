@@ -485,8 +485,8 @@ func (p *CppProject) createConfigLibNested() {
 		makefileRm,
 		makefileSep,
 		makefileProjectStructure,
-		makefile_library,
-		makefile_objects,
+		makefileLibCpp,
+		makefileObjectCpp,
 		makefile_external_library,
 		makefileLibNested,
 		makefileLibNestedClean)
@@ -565,7 +565,14 @@ func (p *CppProject) createConfigAppInternalImpl(path string) {
 }
 
 func (p *CppProject) createConfigLibInternal() {
-	path := filepath.Join(p.Path(), p.Src(), "Makefile")
+	pWindows := filepath.Join(p.Path(), p.Src(), "Makefile.win")
+	pUnix := filepath.Join(p.Path(), p.Src(), "Makefile")
+
+	p.createConfigLibInternalImpl(pWindows)
+	p.createConfigLibInternalImpl(pUnix)
+}
+
+func (p *CppProject) createConfigLibInternalImpl(path string) {
 	file, err := os.Create(path)
 	defer file.Close()
 	if err != nil {
@@ -581,9 +588,15 @@ func (p *CppProject) createConfigLibInternal() {
 	const config = `%s
 %s`
 
+	var lib string
+	if filepath.Ext(path) == ".win" {
+		lib = makefileInternalLibCxxWin
+	} else {
+		lib = makefileInternalLibCxx
+	}
+
 	tmpl, err := template.New("internal").Parse(
-		fmt.Sprintf(config,
-			makefileInternalLibCxx,
+		fmt.Sprintf(config, lib,
 			makefileInternalClean))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -598,7 +611,14 @@ func (p *CppProject) createConfigLibInternal() {
 }
 
 func (p *CppProject) createConfigLibTestInternal() {
-	path := filepath.Join(p.Path(), p.Test(), "Makefile")
+	pWindows := filepath.Join(p.Path(), p.Test(), "Makefile.win")
+	pUnix := filepath.Join(p.Path(), p.Test(), "Makefile")
+
+	p.createConfigLibTestInternalImpl(pWindows)
+	p.createConfigLibTestInternalImpl(pUnix)
+}
+
+func (p *CppProject) createConfigLibTestInternalImpl(path string) {
 	file, err := os.Create(path)
 	defer file.Close()
 	if err != nil {
@@ -614,10 +634,18 @@ func (p *CppProject) createConfigLibTestInternal() {
 	const config = `%s
 %s`
 
+	var lib string
+	var test string
+	if filepath.Ext(path) == ".win" {
+		lib = makefileInternalLibTestCxxWin
+		test = makefileInternalLibTestCleanWin
+	} else {
+		lib = makefile_internal_lib_test_cxx
+		test = makefile_internal_lib_test_clean
+	}
+
 	tmpl, err := template.New("internal").Parse(
-		fmt.Sprintf(config,
-			makefile_internal_lib_test_cxx,
-			makefile_internal_lib_test_clean))
+		fmt.Sprintf(config, lib, test))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

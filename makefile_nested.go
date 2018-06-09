@@ -244,6 +244,39 @@ endif
 	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
 `
 
+const makefileInternalLibCxxWin = `.PHONY: all dynamic static clean
+
+all: dynamic
+
+dynamic:
+ifeq ($(CXX),cl)
+	$(SET_ENV) && for %%x in (*.cpp) do $(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) \
+		/I ..$(SEP)$(INCLUDE_DIR) /c %%x
+	link /DLL /DEF:$(DYNAMIC_LIB:.dll=.def) /out:..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
+		$(INCLUDE) $(LIBS) $(OBJS)
+else
+	for %%x in (*.cpp) do $(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) \
+		-I ..$(SEP)$(INCLUDE_DIR) /c %%x
+	$(CXX) $(CXXFLAGS) -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
+		$(OBJS) $(INCLUDE) $(LIBS) -I ..$(SEP)$(INCLUDE_DIR)
+endif
+
+static: $(OBJS)
+ifeq ($(CXX),cl)
+	lib /out:..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(OBJS)
+else ifeq ($(detected_OS),Darwin)
+	libtool -static -o ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(OBJS)
+else
+	$(AR) rcs -o ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(OBJS)
+endif
+
+%.obj: %.cpp
+	$(SET_ENV) && $(CXX) $(CXXFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS) /c $<
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(INCLUDE) $(LIBS)
+`
+
 const makefileInternalClean = `clean:
 	$(RM) $(OBJS)
 `
@@ -319,6 +352,11 @@ dynamic: ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB)
 
 static: ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
 	$(MAKE) -C ..$(SEP)$(SOURCE_DIR) static
+`
+
+const makefileInternalLibTestCxxWin = `.PHONY: all clean
+all:
+	@echo "Unimplemented"
 `
 
 const makefile_internal_lib_test_clean = `clean:
