@@ -99,3 +99,44 @@ Function Capture(cmd)
 	Capture = arr
 End Function
 `
+
+const program_lib_test_c = `#include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include "{{.Program}}.h"
+
+#define TEST(cond) { \
+        if (!cond) { \
+            fprintf(stderr, "%s %d: Failed on %s\n", __FILE__, __LINE__, #cond); \
+            exit(1); \
+        } \
+    }
+
+int main(void)
+{
+    TEST(is_even(3) == false);
+    TEST(is_even(4) == true);
+    
+    return 0;
+}
+`
+
+const program_lib_test_cxx = `#include <cstdlib>
+#include <cstdio>
+#include "{{.Program}}.hpp"
+
+#define TEST(cond) { \
+        if (!cond) { \
+            fprintf(stderr, "%s %d: Failed on %s\n", __FILE__, __LINE__, #cond); \
+            exit(1); \
+        } \
+    }
+
+int main(void)
+{
+    TEST(is_even(3) == false);
+    TEST(is_even(4) == true);
+    
+    return 0;
+}
+`
