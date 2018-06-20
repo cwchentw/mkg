@@ -45,12 +45,12 @@ Shell.Run "cmd /c .\mkg --library --flat -f mylib " &_
     "&& cd .. " &_
     "&& rmdir /s /q mylib ", 1, True
 
-' Run a nested library project for C. Modify it later.
+' Run a nested library project for C.
 Shell.Run "cmd /c .\mkg --library --force mylib " &_
     "&& cd mylib " &_
     "&& make test " &_
     "&& make clean " &_
-    "&& make static " &_
+    "&& make testStatic " &_
     "&& make clean " &_
     "&& cd .. " &_
     "&& rmkdir /s /q mylib", 1, True
