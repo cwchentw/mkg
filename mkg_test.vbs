@@ -48,7 +48,7 @@ Shell.Run "cmd /c .\mkg --library --flat -f mylib " &_
 ' Run a nested library project for C. Modify it later.
 Shell.Run "cmd /c .\mkg --library --force mylib " &_
     "&& cd mylib " &_
-    "&& make " &_
+    "&& make test " &_
     "&& make clean " &_
     "&& make static " &_
     "&& make clean " &_

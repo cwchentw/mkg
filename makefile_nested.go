@@ -316,8 +316,26 @@ static: ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
 `
 
 const makefileInternalLibTestCWin = `.PHONY: all clean
-all:
+all: test
+
+test: $(TEST_OBJS:.obj=.exe)
+	copy ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) . \
+		&& for %%x in ($(TEST_OBJS:.obj=.exe)) do .$(SEP)%%x \
+		&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
+
+$(TEST_OBJS:.obj=.exe): dynamic
+ifeq ($(CC),cl)
+	$(SET_ENV) && for %%x in (*.c) do $(CC) $(CFLAGS) \
+		$(INCLUDE) $(LIBS) /I..$(SEP)$(INCLUDE_DIR) %%x \
+		..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB:.dll=.lib) 
+else
 	@echo "Unimplemented"
+endif
+
+dynamic: ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB)
+
+..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB):
+	$(MAKE) -C ..$(SEP)$(SOURCE_DIR)$(SEP)Makefile.win dynamic
 `
 
 const makefile_internal_lib_test_cxx = `.PHONY: all test testStatic dynamic static clean
@@ -363,5 +381,5 @@ const makefile_internal_lib_test_clean = `clean:
 	$(RM) $(TEST_OBJS) $(TEST_OBJS:.o=)
 `
 const makefileInternalLibTestCleanWin = `clean:
-	$(RM) $(TEST_OBJS) $(TEST_OBJS:.obj=)
+	$(RM) $(TEST_OBJS) $(TEST_OBJS:.obj=.exe) $(DYNAMIC_LIB)
 `
