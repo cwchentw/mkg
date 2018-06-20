@@ -384,9 +384,41 @@ static: ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
 	$(MAKE) -C ..$(SEP)$(SOURCE_DIR) static
 `
 
-const makefileInternalLibTestCxxWin = `.PHONY: all clean
-all:
+const makefileInternalLibTestCxxWin = `.PHONY: all test dynamic clean
+
+all: test
+
+test: dynamic
+ifeq ($(CXX),cl)
+	$(SET_ENV) && for %%x in ($(TEST_OBJS:.obj=.cpp)) do \
+		$(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) \
+		/I..$(SEP)$(INCLUDE_DIR) %%x \
+		..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB:.dll=.lib)
+	copy ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) . \
+		&& for %%x in ($(TEST_OBJS:.obj=.exe)) do .$(SEP)%%x \
+		&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
+else
 	@echo "Unimplemented"
+endif
+
+dynamic: ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB)
+
+..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB):
+	$(MAKE) -C ..$(SEP)$(SOURCE_DIR)$(SEP)Makefile.win dynamic
+
+testStatic: $(TEST_OBJS:.obj=.exe)
+	for %%x in ($(TEST_OBJS:.obj=.exe)) do .$(SEP)%%x \
+	&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
+
+$(TEST_OBJS:.obj=.exe): static
+	$(SET_ENV) && for %%x in ($(TEST_OBJS:.obj=.cpp)) do \
+		$(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) /I..$(SEP)$(INCLUDE_DIR) %%x \
+		..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
+
+static: ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
+
+..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB):
+	$(MAKE) -C ..$(SEP)$(SOURCE_DIR)$(SEP)Makefile.win static
 `
 
 const makefile_internal_lib_test_clean = `clean:
