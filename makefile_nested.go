@@ -333,7 +333,7 @@ endif
 dynamic: ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB)
 
 ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB):
-	$(MAKE) -C ..$(SEP)$(SOURCE_DIR)$(SEP)Makefile.win dynamic
+	$(MAKE) -C ..$(SEP)$(SOURCE_DIR) -f Makefile.win dynamic
 
 testStatic: $(TEST_OBJS:.obj=.exe)
 	for %%x in ($(TEST_OBJS:.obj=.exe)) do .$(SEP)%%x \
@@ -347,7 +347,7 @@ $(TEST_OBJS:.obj=.exe): static
 static: ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
 
 ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB):
-	$(MAKE) -C ..$(SEP)$(SOURCE_DIR)$(SEP)Makefile.win static
+	$(MAKE) -C ..$(SEP)$(SOURCE_DIR) -f Makefile.win static
 `
 
 const makefile_internal_lib_test_cxx = `.PHONY: all test testStatic dynamic static clean
@@ -404,7 +404,7 @@ endif
 dynamic: ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB)
 
 ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB):
-	$(MAKE) -C ..$(SEP)$(SOURCE_DIR)$(SEP)Makefile.win dynamic
+	$(MAKE) -C ..$(SEP)$(SOURCE_DIR) -f Makefile.win dynamic
 
 testStatic: $(TEST_OBJS:.obj=.exe)
 	for %%x in ($(TEST_OBJS:.obj=.exe)) do .$(SEP)%%x \
@@ -418,7 +418,7 @@ $(TEST_OBJS:.obj=.exe): static
 static: ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
 
 ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB):
-	$(MAKE) -C ..$(SEP)$(SOURCE_DIR)$(SEP)Makefile.win static
+	$(MAKE) -C ..$(SEP)$(SOURCE_DIR) -f Makefile.win static
 `
 
 const makefile_internal_lib_test_clean = `clean:
