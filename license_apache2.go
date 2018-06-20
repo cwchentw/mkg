@@ -1,6 +1,6 @@
 package main
 
-const license_apache2 = `Copyright %s, %s
+const LicenseApache2 = `Copyright %s, %s
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

@@ -142,13 +142,13 @@ func getTemplate(license License) string {
 	case LICENSE_NONE:
 		return ""
 	case LICENSE_APACHE2:
-		return license_apache2
+		return LicenseApache2
 	case LICENSE_MIT:
 		return LicenseMIT
 	case LICENSE_BSD2:
-		return license_bsd2
+		return LicenseBSD2
 	case LICENSE_BSD3:
-		return license_bsd3
+		return LicenseBSD3
 	case LICENSE_EPL2:
 		return licenseEPL2
 	case LICENSE_GPL2:
@@ -156,7 +156,7 @@ func getTemplate(license License) string {
 	case LICENSE_GPL3:
 		return license_gpl3
 	case LICENSE_AGPL3:
-		return license_agpl3
+		return LicenseAGPL3
 	case LICENSE_LGPL2:
 		return LicenseLGPL2
 	case LICENSE_LGPL3:
