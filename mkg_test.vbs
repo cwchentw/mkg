@@ -35,13 +35,23 @@ Shell.Run "cmd /c .\mkg -cpp --force myapp " &_
     "&& cd .. " &_
     "&& rmdir /s /q myapp", 1, True
 
-' Test a flat library project for C.
+' Test a flat library project for C (MSVC).
 Shell.Run "cmd /c .\mkg --library --flat -f mylib " &_
     "&& cd mylib " &_
     "&& make test " &_
     "&& make clean " &_
     "&& make testStatic " &_
     "&& make clean " &_
+    "&& cd .. " &_
+    "&& rmdir /s /q mylib ", 1, True
+
+' Test a flat library project for C (MinGw).
+Shell.Run "cmd /c .\mkg --library --flat -f mylib " &_
+    "&& cd mylib " &_
+    "&& make CC=gcc test " &_
+    "&& make CC=gcc clean " &_
+    "&& make CC=gcc testStatic " &_
+    "&& make CC=gcc clean " &_
     "&& cd .. " &_
     "&& rmdir /s /q mylib ", 1, True
 

@@ -69,7 +69,9 @@ ifeq ($(CC),cl)
 	$(SET_ENV) && for %%x in ($(TEST_OBJS)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) %%x /link $(DYNAMIC_LIB:.dll=.lib)
 	for %%x in ($(TEST_OBJS:.obj=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
-	@echo "Unimplemented"
+	for %%x in ($(TEST_OBJS:.o=.c)) do $(CC) $(CFLAGS) -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS) -c %%x
+	for %%x in ($(TEST_OBJS:.o=)) do $(CC) $(CFLAGS) -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS) -o %%x.exe %%x.o
+	for %%x in ($(TEST_OBJS:.o=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 endif
 else
 	for x in $(TEST_OBJS); do \
@@ -87,7 +89,8 @@ ifeq ($(CC),cl)
 	$(SET_ENV) && for %%x in ($(TEST_OBJS)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) %%x /link $(STATIC_LIB)
 	for %%x in ($(TEST_OBJS:.obj=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
-	@echo "Unimplemented"
+	for %%x in ($(TEST_OBJS:.o=)) do $(CC) $(CFLAGS) -o %%x.exe %%x.c -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS)
+	for %%x in ($(TEST_OBJS:.o=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 endif
 else
 	for x in $(TEST_OBJS); do \
@@ -104,7 +107,8 @@ ifeq ($(CC),cl)
 	$(SET_ENV) && for %%x in ($(OBJS:.obj=.c)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) /c %%x
 	$(SET_ENV) && link /DLL /DEF:$(DYNAMIC_LIB:.dll=.def) /out:$(DYNAMIC_LIB) $(INCLUDE) $(LIBS) $(OBJS)
 else
-	@echo "Unimplemented"
+	for %%x in ($(OBJS:.o=.c)) do $(CC) $(CFLAGS) -fPIC -c %%x -I. $(INCLUDE) -L. $(LIBS)
+	$(CC) $(CFLAGS) -shared -o $(DYNAMIC_LIB) $(OBJS) -I. $(INCLUDE) -L. $(LIBS)
 endif
 else
 	for x in $(OBJS:.o=.c); do $(CC) $(CFLAGS) -fPIC -c $$x -I. $(INCLUDE) -L. $(LIBS); done
@@ -203,8 +207,12 @@ const makefileAppClean = `clean:
 const makefileLibClean = `clean:
 	$(RM) $(DYNAMIC_LIB) $(STATIC_LIB) $(OBJS) $(TEST_OBJS)
 ifeq ($(detected_OS),Windows)
+ifeq ($(CC),cl)
 	$(RM) $(TEST_OBJS:.obj=.exe) $(TEST_OBJS:.obj=.lib) $(TEST_OBJS:.obj=.exp) $(OBJS:.obj=.exp) $(OBJS:.obj=.lib)
 else
-	for x in $(TEST_OBJS:.o=); do $(RM) $$x; done
+	$(RM) $(TEST_OBJS:.o=.exe)
+endif
+else
+	$(RM) $(TEST_OBJS:.o=)
 endif
 `
