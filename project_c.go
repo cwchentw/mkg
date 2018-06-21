@@ -302,7 +302,7 @@ func (p *CProject) createConfigLibFlat() {
 		makefileRm,
 		makefileSep,
 		makefile_library,
-		makefile_objects,
+		makefileObjLib,
 		makefile_external_library,
 		makefileLibFlatC,
 		makefileLibClean)
@@ -486,7 +486,7 @@ func (p *CProject) createConfigLibNested() {
 		makefileSep,
 		makefileProjectStructure,
 		makefile_library,
-		makefile_objects,
+		makefileObjLib,
 		makefile_external_library,
 		makefileLibNested,
 		makefileLibNestedClean)

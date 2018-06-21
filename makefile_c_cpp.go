@@ -228,10 +228,46 @@ SET_ENV=VsDevCmd.bat -arch=amd64
 export SET_ENV
 `
 
+const makefileObjLib = `# Set object files.
+# Modify it if more than one source files.
+ifeq ($(CC),cl)
+	OBJS=$(PROGRAM).obj
+else
+	OBJS=$(PROGRAM).o
+endif  # OBJS
+
+export OBJS
+
+# Set to VSVARS32.bat on Visual Studio 2015 or earlier version
+SET_ENV=VsDevCmd.bat -arch=amd64
+
+export SET_ENV
+`
+
 const makefileObjectCpp = `# Set object files.
 # Modify it if more than one source files.
+ifeq ($(detected_OS),Windows)
 ifeq ($(CXX),cl)
-	OBJS=$(PROGRAM:.exe=).obj
+	OBJS=$(PROGRAM:.exe=.obj)
+else
+	OBJS=$(PROGRAM:.exe=.o)
+endif
+else
+	OBJS=$(PROGRAM).o
+endif  # OBJS
+
+export OBJS
+
+# Set to VSVARS32.bat on Visual Studio 2015 or earlier version
+SET_ENV=VsDevCmd.bat -arch=amd64
+
+export SET_ENV
+`
+
+const makefileObjCppLib = `# Set object files.
+# Modify it if more than one source files.
+ifeq ($(CXX),cl)
+	OBJS=$(PROGRAM).obj
 else
 	OBJS=$(PROGRAM).o
 endif  # OBJS

@@ -35,11 +35,19 @@ Shell.Run "cmd /c .\mkg -f myapp " &_
     "&& cd .. " &_
     "&& rmdir /s /q myapp ", 1, True
 
-' Test a flat application project for C++.
-Shell.Run "cmd /c .\mkg --flat -cxx --force myapp " &_
+' Test a flat application project for C++ (MSVC).
+Shell.Run "cmd /c .\mkg -cxx --flat --force myapp " &_
     "&& cd myapp " &_
     "&& make test " &_
     "&& make clean " &_
+    "&& cd .. " &_
+    "&& rmdir /s /q myapp ", 1, True
+
+' Test a flat application project for C++ (MinGW).
+Shell.Run "cmd /c .\mkg -cxx --flat --force myapp " &_
+    "&& cd myapp " &_
+    "&& make CXX=g++ test " &_
+    "&& make CXX=g++ clean " &_
     "&& cd .. " &_
     "&& rmdir /s /q myapp ", 1, True
 
