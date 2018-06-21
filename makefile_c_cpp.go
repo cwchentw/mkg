@@ -210,8 +210,12 @@ export TEST_OBJS
 
 const makefile_objects = `# Set object files.
 # Modify it if more than one source files.
+ifeq ($(detected_OS),Windows)
 ifeq ($(CC),cl)
-	OBJS=$(PROGRAM:.exe=).obj
+	OBJS=$(PROGRAM:.exe=.obj)
+else
+	OBJS=$(PROGRAM:.exe=.o)
+endif
 else
 	OBJS=$(PROGRAM).o
 endif  # OBJS

@@ -3,11 +3,19 @@ Set Shell = WScript.CreateObject("WScript.Shell")
 ' Build the main program.
 Shell.Run "cmd /c go build", 1, True
 
-' Test a flat application project for C.
+' Test a flat application project for C (MSVC).
 Shell.Run "cmd /c .\mkg --flat -f myapp " &_
     "&& cd myapp " &_
     "&& make test " &_
     "&& make clean " &_
+    "&& cd .. " &_
+    "&& rmdir /s /q myapp ", 1, True
+
+' Test a flat application project for C (MinGW).
+Shell.Run "cmd /c .\mkg --flat -f myapp " &_
+    "&& cd myapp " &_
+    "&& make CC=gcc test " &_
+    "&& make CC=gcc clean " &_
     "&& cd .. " &_
     "&& rmdir /s /q myapp ", 1, True
 
