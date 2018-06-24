@@ -256,7 +256,7 @@ ifeq ($(CXX),cl)
 		$(INCLUDE) $(LIBS) $(OBJS)
 else
 	for %%x in (*.cpp) do $(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) \
-		-I ..$(SEP)$(INCLUDE_DIR) /c %%x
+		-I ..$(SEP)$(INCLUDE_DIR) -c %%x
 	$(CXX) $(CXXFLAGS) -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
 		$(OBJS) $(INCLUDE) $(LIBS) -I ..$(SEP)$(INCLUDE_DIR)
 endif
@@ -414,7 +414,13 @@ ifeq ($(CXX),cl)
 		&& for %%x in ($(TEST_OBJS:.obj=.exe)) do .$(SEP)%%x \
 		&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
-	@echo "Unimplemented"
+	for %%x in ($(TEST_OBJS:.o=)) do \
+		$(CXX) $(CXXFLAGS) -o %%x.exe %%x.cpp \
+		-I..$(SEP)$(INCLUDE_DIR) \
+		-L..$(SEP)$(DIST_DIR) -l{{.Program}}
+	copy ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) . \
+		&& for %%x in ($(TEST_OBJS:.o=.exe)) do .$(SEP)%%x \
+		&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 endif
 
 dynamic: ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB)
@@ -423,13 +429,25 @@ dynamic: ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB)
 	$(MAKE) -C ..$(SEP)$(SOURCE_DIR) -f Makefile.win dynamic
 
 testStatic: $(TEST_OBJS:.obj=.exe)
+ifeq ($(CC),cl)
 	for %%x in ($(TEST_OBJS:.obj=.exe)) do .$(SEP)%%x \
 	&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
+else
+	for %%x in ($(TEST_OBJS:.o=.exe)) do .$(SEP)%%x \
+	&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
+endif
 
 $(TEST_OBJS:.obj=.exe): static
+ifeq ($(CC),cl)
 	$(SET_ENV) && for %%x in ($(TEST_OBJS:.obj=.cpp)) do \
 		$(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) /I..$(SEP)$(INCLUDE_DIR) %%x \
 		..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
+else
+	for %%x in ($(TEST_OBJS:.o=)) do \
+		$(CXX) $(CXXFLAGS) -o %%x.exe %%x.cpp \
+		-I..$(SEP)$(INCLUDE_DIR) $(INCLUDE) \
+		..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(LIBS)
+endif
 
 static: ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
 

@@ -117,13 +117,23 @@ Shell.Run "cmd /c .\mkg --library --flat -cxx --force mylib " &_
     "&& cd .. " &_
     "&& rmdir /s /q mylib ", 1, True
 
-' Test a nested library project for C++.
+' Test a nested library project for C++ (MSVC).
 Shell.Run "cmd /c .\mkg --library -cxx -f mylib " &_
     "&& cd mylib " &_
     "&& make test " &_
     "&& make clean " &_
     "&& make testStatic " &_
     "&& make clean " &_
+    "&& cd .. " &_
+    "&& rmdir /s /q mylib", 1, True
+
+' Test a nested library project for C++ (MinGW).
+Shell.Run "cmd /c .\mkg --library -cpp -f mylib " &_
+    "&& cd mylib " &_
+    "&& make CXX=g++ test " &_
+    "&& make CXX=g++ clean " &_
+    "&& make CXX=g++ testStatic " &_
+    "&& make CXX=g++ clean " &_
     "&& cd .. " &_
     "&& rmdir /s /q mylib", 1, True
 
