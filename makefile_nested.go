@@ -201,8 +201,8 @@ ifeq ($(CC),cl)
 	link /DLL /DEF:$(DYNAMIC_LIB:.dll=.def) /out:..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
 		$(INCLUDE) $(LIBS) $(OBJS)
 else
-	for %%x in (*.c) do $(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) \
-		-I ..$(SEP)$(INCLUDE_DIR) /c %%x
+	for %%x in (*.c) do $(CC) $(CFLAGS) $(INCLUDE) $(LIBS) \
+		-I ..$(SEP)$(INCLUDE_DIR) -c %%x
 	$(CC) $(CFLAGS) -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
 		$(OBJS) $(INCLUDE) $(LIBS) -I ..$(SEP)$(INCLUDE_DIR)
 endif
@@ -327,7 +327,12 @@ ifeq ($(CC),cl)
 		&& for %%x in ($(TEST_OBJS:.obj=.exe)) do .$(SEP)%%x \
 		&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
-	@echo "Unimplemented"
+	for %%x in ($(TEST_OBJS:.o=)) do $(CC) $(CFLAGS) -o %%x.exe %%x.c \
+		-I..$(SEP)$(INCLUDE_DIR) $(INCLUDE) \
+		-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(LIBS)
+	copy ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) . \
+		&& for %%x in ($(TEST_OBJS:.o=.exe)) do .$(SEP)%%x \
+		&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 endif
 
 dynamic: ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB)
@@ -336,13 +341,24 @@ dynamic: ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB)
 	$(MAKE) -C ..$(SEP)$(SOURCE_DIR) -f Makefile.win dynamic
 
 testStatic: $(TEST_OBJS:.obj=.exe)
+ifeq ($(CC),cl)
 	for %%x in ($(TEST_OBJS:.obj=.exe)) do .$(SEP)%%x \
 	&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
+else
+	for %%x in ($(TEST_OBJS:.o=.exe)) do .$(SEP)%%x \
+	&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
+endif
 
 $(TEST_OBJS:.obj=.exe): static
+ifeq ($(CC),cl)
 	$(SET_ENV) && for %%x in ($(TEST_OBJS:.obj=.c)) do \
 		$(CC) $(CFLAGS) $(INCLUDE) $(LIBS) /I..$(SEP)$(INCLUDE_DIR) %%x \
 		..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
+else
+	for %%x in ($(TEST_OBJS:.o=)) do \
+		$(CC) $(CFLAGS) -o %%x.exe %%x.c ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) \
+		-I..$(SEP)$(INCLUDE_DIR) $(INCLUDE)
+endif
 
 static: ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
 
@@ -425,5 +441,5 @@ const makefile_internal_lib_test_clean = `clean:
 	$(RM) $(TEST_OBJS) $(TEST_OBJS:.o=)
 `
 const makefileInternalLibTestCleanWin = `clean:
-	$(RM) $(TEST_OBJS) $(TEST_OBJS:.obj=.exe) $(DYNAMIC_LIB)
+	$(RM) $(TEST_OBJS) $(TEST_OBJS:.obj=.exe) $(TEST_OBJS:.o=.exe) $(DYNAMIC_LIB)
 `

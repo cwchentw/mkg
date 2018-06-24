@@ -87,7 +87,7 @@ Shell.Run "cmd /c .\mkg --library --flat -f mylib " &_
     "&& cd .. " &_
     "&& rmdir /s /q mylib ", 1, True
 
-' Test a nested library project for C.
+' Test a nested library project for C (MSVC).
 Shell.Run "cmd /c .\mkg --library --force mylib " &_
     "&& cd mylib " &_
     "&& make test " &_
@@ -95,7 +95,17 @@ Shell.Run "cmd /c .\mkg --library --force mylib " &_
     "&& make testStatic " &_
     "&& make clean " &_
     "&& cd .. " &_
-    "&& rmkdir /s /q mylib", 1, True
+    "&& rmdir /s /q mylib", 1, True
+
+' Test a nested library project for C (MinGW).
+Shell.Run "cmd /c .\mkg --library -f mylib " &_
+    "&& cd mylib " &_
+    "&& make CC=gcc test " &_
+    "&& make CC=gcc clean " &_
+    "&& make CC=gcc testStatic " &_
+    "&& make CC=gcc clean " &_
+    "&& cd .. " &_
+    "&& rmdir /s /q mylib", 1, True
 
 ' Test a flat library project for C++.
 Shell.Run "cmd /c .\mkg --library --flat -cxx --force mylib " &_
