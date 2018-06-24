@@ -142,7 +142,9 @@ ifeq ($(CXX),cl)
 	$(SET_ENV) && for %%x in ($(TEST_OBJS)) do $(CXX) $(CXXFLAGS) /I. $(INCLUDE) $(LIBS) %%x /link $(DYNAMIC_LIB:.dll=.lib)
 	for %%x in ($(TEST_OBJS:.obj=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
-	@echo "Unimplemented"
+	for %%x in ($(TEST_OBJS:.o=.cpp)) do $(CXX) $(CXXFLAGS) -c %%x -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS)
+	for %%x in ($(TEST_OBJS:.o=)) do $(CXX) $(CXXFLAGS) -o %%x.exe %%x.o -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS)
+	for %%x in ($(TEST_OBJS:.o=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 endif
 else
 	for x in $(TEST_OBJS); do \
@@ -160,7 +162,9 @@ ifeq ($(CXX),cl)
 	$(SET_ENV) && for %%x in ($(TEST_OBJS)) do $(CXX) $(CXXFLAGS) /I. $(INCLUDE) $(LIBS) %%x /link $(STATIC_LIB)
 	for %%x in ($(TEST_OBJS:.obj=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
-	@echo "Unimplemented"
+	for %%x in ($(TEST_OBJS:.o=.cpp)) do $(CXX) $(CXXFLAGS) -c %%x $(STATIC_LIB) -I. $(INCLUDE) $(LIBS)
+	for %%x in ($(TEST_OBJS:.o=)) do $(CXX) $(CXXFLAGS) -o %%x.exe %%x.o $(STATIC_LIB) -I. $(INCLUDE) $(LIBS)
+	for %%x in ($(TEST_OBJS:.o=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 endif  # $(CXX)
 else
 	for x in $(TEST_OBJS); do \
@@ -177,7 +181,8 @@ ifeq ($(CXX),cl)
 	for %%x in ($(OBJS:.obj=.cpp)) do $(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) /c %%x
 	link /DLL /DEF:$(DYNAMIC_LIB:.dll=.def) /out:$(DYNAMIC_LIB) $(INCLUDE) $(LIBS) $(OBJS)
 else
-	@echo "Unimplemented"
+	for %%x in ($(OBJS:.o=.cpp)) do $(CXX) $(CXXFLAGS) -fPIC -c %%x $(INCLUDE) $(LIBS)
+	$(CXX) $(CXXFLAGS) -shared -o $(DYNAMIC_LIB) $(OBJS) $(INCLUDE) $(LIBS)
 endif  # $(CXX)
 else
 	for x in $(OBJS:.o=.cpp); do $(CXX) $(CXXFLAGS) -fPIC -c $$x $(INCLUDE) $(LIBS); done
