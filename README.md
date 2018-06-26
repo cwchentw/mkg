@@ -1,8 +1,15 @@
 # mkg - Opinioned Makefile-based Project Generator
 
-`mkg` generates cross-platform, GNU Make-based projects for C or C++.
+`mkg` generates cross-platform, GNU Make-based projects for either C or C++.
 
 ## System Requirements
+
+To use `mkg`-generated projects, you need
+
+* A recent C (or C++) compiler
+* GNU Make
+
+To compile `mkg` from source, you need
 
 * A recent Go compiler
 
@@ -170,7 +177,7 @@ These parameters only make effects in nested projects.
 * Portable: `mkg` itself and the generated projects are portable on the big three desktop systems
 * Simple: no yet another Makefile-generating language but only the dead-simple Makefile mini-language
 
-[Autotools](https://www.gnu.org/savannah-checkouts/gnu/autoconf/manual/autoconf-2.69/html_node/The-GNU-Build-System.html#The-GNU-Build-System) is a well-known Makefile generating tool, but only feasible on Unix-like systems. [CMake](https://cmake.org/) is famous and cross-platform, but CMake users need a full language to utilize CMake. [Bakefile](https://bakefile.org/) is a less famous CMake alternative, but you still need yet another high-level language to utilize it. There have been some community projects like [PyMake](https://github.com/Melinysh/PyMake) or [vfnmake](https://github.com/Vifon/vfnmake), but they rely on some runtime environments. Therefore, we made our own wheel.
+[Autotools](https://www.gnu.org/savannah-checkouts/gnu/autoconf/manual/autoconf-2.69/html_node/The-GNU-Build-System.html#The-GNU-Build-System) is a well-known Makefile generating tool, but only feasible on Unix-like systems. [CMake](https://cmake.org/) is famous and cross-platform, but CMake users need a full language to utilize CMake. [Bakefile](https://bakefile.org/) is a less famous CMake alternative, but you still need yet another high-level language to utilize it. There have been some community projects like [PyMake](https://github.com/Melinysh/PyMake) or [vfnmake](https://github.com/Vifon/vfnmake), but they rely on some runtime environments and provide no support to Windows-family systems. Therefore, we made our own wheel.
 
 ## TODO
 
