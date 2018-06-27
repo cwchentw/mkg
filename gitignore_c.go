@@ -52,4 +52,8 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Dist files
+{{.DistDir}}/*
+!{{.DistDir}}/.gitkeep
 `

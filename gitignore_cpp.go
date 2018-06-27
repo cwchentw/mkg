@@ -32,4 +32,8 @@ const gitignoreCpp = `# Prerequisites
 *.exe
 *.out
 *.app
+
+# Dist files
+{{.DistDir}}/*
+!{{.DistDir}}/.gitkeep
 `

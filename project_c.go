@@ -155,7 +155,18 @@ func (p *CProject) createGitignore() {
 		os.Exit(1)
 	}
 
-	_, err = file.WriteString(gitignoreC)
+	tpl := fmt.Sprintf(gitignoreC)
+	tmpl, err := template.New("gitignore").Parse(tpl)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
+	err = tmpl.Execute(file, struct {
+		DistDir string
+	}{
+		p.Dist(),
+	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
