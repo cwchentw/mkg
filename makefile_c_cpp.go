@@ -132,6 +132,13 @@ else
 endif
 
 export PROGRAM
+
+# Add your own test programs as needed.
+ifeq ($(detected_OS),Windows)
+	TEST_PROGRAM={{.Program}}.vbs
+else
+	TEST_PROGRAM={{.Program}}.bash
+endif
 `
 
 const makefile_library = `# Set proper library name.
