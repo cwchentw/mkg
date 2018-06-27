@@ -1,0 +1,422 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Using Generated Projects &#8212; mkg 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="License" href="license.html" />
+    <link rel="prev" title="Options" href="option.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="license.html" title="License"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="option.html" title="Options"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">mkg 0.1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="using-generated-projects">
+<h1>Using Generated Projects<a class="headerlink" href="#using-generated-projects" title="Permalink to this headline">¶</a></h1>
+<p>Here we illustrate how to use the generated projects created by <code class="docutils literal notranslate"><span class="pre">mkg</span></code>.</p>
+<p>Currently, <code class="docutils literal notranslate"><span class="pre">mkg</span></code> supports either flat or nested project structure. The former
+is suitable for simple projects while the latter fits more complex ones. All the
+projects created by <code class="docutils literal notranslate"><span class="pre">mkg</span></code> are ready as Git repos.</p>
+<p>Implicitly, <code class="docutils literal notranslate"><span class="pre">mkg</span></code> users need some knowledge to GNU Make to smoothly use these
+generated projects.</p>
+<div class="section" id="system-requirements">
+<h2>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>A recent C or C++ compiler</li>
+<li>GNU Make</li>
+<li><a class="reference external" href="https://github.com/sstephenson/bats">Bats (Bash Automated Testing System)</a> on Unix-like systems</li>
+</ul>
+<p>We assume the default compiler on each platform, namely</p>
+<ul class="simple">
+<li>Visual C++ on Windows</li>
+<li>Clang on Mac</li>
+<li>GCC on other Unix-like systems such as GNU/Linux</li>
+</ul>
+<p>For Windows users, you may get a port of GNU Make at <a class="reference external" href="https://www.msys2.org/">MSYS2</a>
+or <a class="reference external" href="http://gnuwin32.sourceforge.net/">GnuWin32</a>. Besides, MinGW, a Windows port of GCC,
+is supported in these projects as well.</p>
+</div>
+<div class="section" id="flat-console-application-projects-for-c">
+<h2>Flat Console Application Projects for C<a class="headerlink" href="#flat-console-application-projects-for-c" title="Permalink to this headline">¶</a></h2>
+<p>Let’s say that we want to create such a project <em>myapp</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkg --flat myapp
+<span class="gp">$</span> <span class="nb">cd</span> myap
+</pre></div>
+</div>
+<p>You may invoke these commands at the root of the project:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">make</span></code> compiles the main application</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code> compiles the main application and run a test against it</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> cleans generated files such as executable and objects</li>
+</ul>
+<p>On Windows, the projects assume MSVC; however, MinGW is supported as well:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=gcc</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=gcc</span> <span class="pre">test</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=gcc</span> <span class="pre">clean</span></code></li>
+</ul>
+</div>
+<div class="section" id="nested-console-application-projects-for-c">
+<h2>Nested Console Application Projects for C<a class="headerlink" href="#nested-console-application-projects-for-c" title="Permalink to this headline">¶</a></h2>
+<p>Let’s say that we want to create such a project <em>myapp</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkg myapp
+<span class="gp">$</span> <span class="nb">cd</span> myapp
+</pre></div>
+</div>
+<p>You may invoke these commands at the root of the project:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">make</span></code> compiles the main application</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code> compiles the main application and run a test against it</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> cleans generated files such as executable and objects</li>
+</ul>
+<p>On Windows, the projects assume MSVC; however, MinGW is supported as well:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=gcc</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=gcc</span> <span class="pre">test</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=gcc</span> <span class="pre">clean</span></code></li>
+</ul>
+<p><em>myapp</em> owns a nested project structure like this:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> tree
+<span class="go">.</span>
+<span class="go">├── dist</span>
+<span class="go">├── examples</span>
+<span class="go">├── include</span>
+<span class="go">├── Makefile</span>
+<span class="go">├── README.md</span>
+<span class="go">├── src</span>
+<span class="go">│   ├── Makefile</span>
+<span class="go">│   ├── Makefile.win</span>
+<span class="go">│   └── myapp.c</span>
+<span class="go">└── tests</span>
+<span class="go">    ├── myapp.bash</span>
+<span class="go">    └── myapp.vbs</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><em>dist</em> for generated executable</li>
+<li><em>examples</em> for example code</li>
+<li><em>include</em> for headers</li>
+<li><em>src</em> for application source code</li>
+<li><em>tests</em> for test programs</li>
+</ul>
+<p>All these directory destinations are customizable.</p>
+</div>
+<div class="section" id="id1">
+<h2>Flat Console Application Projects for C++<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Let’s say that we want to create such a project <em>myapp</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkg -cxx --flat myapp
+<span class="gp">$</span> <span class="nb">cd</span> myap
+</pre></div>
+</div>
+<p>You may invoke these commands at the root of the project:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">make</span></code> compiles the main application</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code> compiles the main application and run a test against it</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> cleans generated files such as executable and objects</li>
+</ul>
+<p>On Windows, the projects assume MSVC; however, MinGW is supported as well:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CXX=g++</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CXX=g++</span> <span class="pre">test</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CXX=g++</span> <span class="pre">clean</span></code></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>Nested Console Application Projects for C++<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>Let’s say that we want to create such a project <em>myapp</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkg -cxx myapp
+<span class="gp">$</span> <span class="nb">cd</span> myapp
+</pre></div>
+</div>
+<p>You may invoke these commands at the root of the project:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">make</span></code> compiles the main application</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code> compiles the main application and run a test against it</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> cleans generated files such as executable and objects</li>
+</ul>
+<p>On Windows, the projects assume MSVC; however, MinGW is supported as well:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CXX=g++</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CXX=g++</span> <span class="pre">test</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CXX=g++</span> <span class="pre">clean</span></code></li>
+</ul>
+<p><em>myapp</em> owns a nested project structure like this:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> tree
+<span class="go">.</span>
+<span class="go">├── dist</span>
+<span class="go">├── examples</span>
+<span class="go">├── include</span>
+<span class="go">├── Makefile</span>
+<span class="go">├── README.md</span>
+<span class="go">├── src</span>
+<span class="go">│   ├── Makefile</span>
+<span class="go">│   ├── Makefile.win</span>
+<span class="go">│   └── myapp.cpp</span>
+<span class="go">└── tests</span>
+<span class="go">    ├── myapp.bash</span>
+<span class="go">    └── myapp.vbs</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><em>dist</em> for generated executable</li>
+<li><em>examples</em> for example code</li>
+<li><em>include</em> for headers</li>
+<li><em>src</em> for application source code</li>
+<li><em>tests</em> for test programs</li>
+</ul>
+<p>All these directory destinations are customizable.</p>
+</div>
+<div class="section" id="flat-library-projects-for-c">
+<h2>Flat Library Projects for C<a class="headerlink" href="#flat-library-projects-for-c" title="Permalink to this headline">¶</a></h2>
+<p>Let’s say that we want to create such a project <em>mylib</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkg --library --flat mylib
+<span class="gp">$</span> <span class="nb">cd</span> mylib
+</pre></div>
+</div>
+<p>You may invoke these commands at the root of the project:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">make</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">dynamic</span></code> compiles the dynamic library</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">static</span></code> compiles the static library</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code> compiles and tests against the dynamic library</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">testStatic</span></code> compiles and tests against the static library</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> cleans generated files</li>
+</ul>
+<p>On Windows, the projects assume MSVC; however, MinGW is supported as well:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=gcc</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=gcc</span> <span class="pre">dynamic</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=gcc</span> <span class="pre">static</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=gcc</span> <span class="pre">test</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=gcc</span> <span class="pre">testStatic</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=gcc</span> <span class="pre">clean</span></code></li>
+</ul>
+</div>
+<div class="section" id="nested-library-projects-for-c">
+<h2>Nested Library Projects for C<a class="headerlink" href="#nested-library-projects-for-c" title="Permalink to this headline">¶</a></h2>
+<p>Let’s say that we want to create such a project <em>mylib</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkg --library mylib
+<span class="gp">$</span> <span class="nb">cd</span> mylib
+</pre></div>
+</div>
+<p>You may invoke these commands at the root of the project:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">make</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">dynamic</span></code> compiles the dynamic library</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">static</span></code> compiles the static library</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code> compiles and tests against the dynamic library</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">testStatic</span></code> compiles and tests against the static library</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> cleans generated files</li>
+</ul>
+<p>On Windows, the projects assume MSVC; however, MinGW is supported as well:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=gcc</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=gcc</span> <span class="pre">dynamic</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=gcc</span> <span class="pre">static</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=gcc</span> <span class="pre">test</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=gcc</span> <span class="pre">testStatic</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=gcc</span> <span class="pre">clean</span></code></li>
+</ul>
+<p><em>mylib</em> owns a nested project structure like this:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> tree
+<span class="go">.</span>
+<span class="go">├── dist</span>
+<span class="go">├── examples</span>
+<span class="go">├── include</span>
+<span class="go">│   └── mylib.h</span>
+<span class="go">├── Makefile</span>
+<span class="go">├── README.md</span>
+<span class="go">├── src</span>
+<span class="go">│   ├── Makefile</span>
+<span class="go">│   ├── Makefile.win</span>
+<span class="go">│   ├── mylib.c</span>
+<span class="go">│   └── mylib.def</span>
+<span class="go">└── tests</span>
+<span class="go">    ├── Makefile</span>
+<span class="go">    ├── Makefile.win</span>
+<span class="go">    └── mylib_test.c</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><em>dist</em> for generated executable</li>
+<li><em>examples</em> for example code</li>
+<li><em>include</em> for headers</li>
+<li><em>src</em> for application source code</li>
+<li><em>tests</em> for test programs</li>
+</ul>
+<p>All these directory destinations are customizable.</p>
+</div>
+<div class="section" id="id3">
+<h2>Flat Library Projects for C++<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>Let’s say that we want to create such a project <em>mylib</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkg --library -cxx --flat mylib
+<span class="gp">$</span> <span class="nb">cd</span> mylib
+</pre></div>
+</div>
+<p>You may invoke these commands at the root of the project:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">make</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">dynamic</span></code> compiles the dynamic library</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">static</span></code> compiles the static library</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code> compiles and tests against the dynamic library</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">testStatic</span></code> compiles and tests against the static library</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> cleans generated files</li>
+</ul>
+<p>On Windows, the projects assume MSVC; however, MinGW is supported as well:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CXX=g++</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=g++</span> <span class="pre">dynamic</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CXX=g++</span> <span class="pre">static</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CXX=g++</span> <span class="pre">test</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CXX=g++</span> <span class="pre">testStatic</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CXX=g++</span> <span class="pre">clean</span></code></li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2>Nested Library Projects for C++<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>Let’s say that we want to create such a project <em>mylib</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkg --library -cxx mylib
+<span class="gp">$</span> <span class="nb">cd</span> mylib
+</pre></div>
+</div>
+<p>You may invoke these commands at the root of the project:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">make</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">dynamic</span></code> compiles the dynamic library</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">static</span></code> compiles the static library</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code> compiles and tests against the dynamic library</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">testStatic</span></code> compiles and tests against the static library</li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span></code> cleans generated files</li>
+</ul>
+<p>On Windows, the projects assume MSVC; however, MinGW is supported as well:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CXX=g++</span></code> or <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CC=g++</span> <span class="pre">dynamic</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CXX=g++</span> <span class="pre">static</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CXX=g++</span> <span class="pre">test</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CXX=g++</span> <span class="pre">testStatic</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">CXX=g++</span> <span class="pre">clean</span></code></li>
+</ul>
+<p><em>mylib</em> owns a nested project structure like this:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> tree
+<span class="go">.</span>
+<span class="go">├── dist</span>
+<span class="go">├── examples</span>
+<span class="go">├── include</span>
+<span class="go">│   └── mylib.hpp</span>
+<span class="go">├── Makefile</span>
+<span class="go">├── README.md</span>
+<span class="go">├── src</span>
+<span class="go">│   ├── Makefile</span>
+<span class="go">│   ├── Makefile.win</span>
+<span class="go">│   ├── mylib.cpp</span>
+<span class="go">│   └── mylib.def</span>
+<span class="go">└── tests</span>
+<span class="go">    ├── Makefile</span>
+<span class="go">    ├── Makefile.win</span>
+<span class="go">    └── mylib_test.cpp</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><em>dist</em> for generated executable</li>
+<li><em>examples</em> for example code</li>
+<li><em>include</em> for headers</li>
+<li><em>src</em> for application source code</li>
+<li><em>tests</em> for test programs</li>
+</ul>
+<p>All these directory destinations are customizable.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Using Generated Projects</a><ul>
+<li><a class="reference internal" href="#system-requirements">System Requirements</a></li>
+<li><a class="reference internal" href="#flat-console-application-projects-for-c">Flat Console Application Projects for C</a></li>
+<li><a class="reference internal" href="#nested-console-application-projects-for-c">Nested Console Application Projects for C</a></li>
+<li><a class="reference internal" href="#id1">Flat Console Application Projects for C++</a></li>
+<li><a class="reference internal" href="#id2">Nested Console Application Projects for C++</a></li>
+<li><a class="reference internal" href="#flat-library-projects-for-c">Flat Library Projects for C</a></li>
+<li><a class="reference internal" href="#nested-library-projects-for-c">Nested Library Projects for C</a></li>
+<li><a class="reference internal" href="#id3">Flat Library Projects for C++</a></li>
+<li><a class="reference internal" href="#id4">Nested Library Projects for C++</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="option.html"
+                        title="previous chapter">Options</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="license.html"
+                        title="next chapter">License</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/project.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="license.html" title="License"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="option.html" title="Options"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">mkg 0.1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Michael Chen.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
+    </div>
+  </body>
+</html>

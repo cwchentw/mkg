@@ -1,0 +1,44 @@
+=============
+Introduction
+=============
+
+**mkg is still at early stage. We may introduce compatibility-breaking changes**
+**without any warning.**
+
+``mkg`` stands for Makefile Generator, a opinioned GNU Make-based project generator.
+The utility aims to simplify the routines to write boilerplate code for cross-platform
+Makefile and to create common project structures. Currently, ``mkg`` supports console 
+application and library projects for either C or C++.
+
+``mkg`` is hosted on the following sites:
+
+* Main: `mkg on GitHub <https://github.com/cwchentw/mkg>`_
+* Mirror: `mkg on GitLab <https://gitlab.com/cwchen/mkg>`_
+
+We made a wheel that is
+
+* **Green**: ``mkg`` is a statically-compiled executable that relies on no external runtime
+* **Portable**: ``mkg`` itself and generated projects are portable across major desktop platforms
+* **Simple**: no yet another Makefile generating language but the dead simple Make mini-language
+
+There have been several software projects with similar objective of ``mkg``.
+`Autotools <https://www.gnu.org/savannah-checkouts/gnu/autoconf/manual/autoconf-2.69/html_node/The-GNU-Build-System.html#The-GNU-Build-System>`_
+is a well-known Makefile-generating tool but only feasible on Unix-like systems.
+`CMake <https://cmake.org/>`_ is famous and cross-platform, but CMake users needs another full
+language to utilize this tool. `Bakefile <https://bakefile.org/>`_ is a less famous alternative to
+CMake, sharing similar pros and cons of CMake. There are some community Makefile generators like
+`PyMake <https://github.com/Melinysh/PyMake>`_ and `vfnmake <https://github.com/Vifon/vfnmake>`_ but
+they rely on some external runtimes and provide no support for Windows-family systems. Therefore,
+we made our own wheel.
+
+``mkg`` *doesn't intend to compete with Autotools or CMake but works as a simple tool.*
+
+In the future, we may add the following features:
+
+* Fortran projects based on gFortran
+* Objective-C projects based on GNUStep
+* Vala projects
+* LaTeX projects
+* CMake-based projects besides GNU Make-based ones
+
+``mkg`` is licensed under `the MIT License <https://opensource.org/licenses/MIT>`_.

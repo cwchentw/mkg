@@ -1,0 +1,165 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Using the Program &#8212; mkg 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Options" href="option.html" />
+    <link rel="prev" title="Installation" href="install.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="option.html" title="Options"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">mkg 0.1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="using-the-program">
+<h1>Using the Program<a class="headerlink" href="#using-the-program" title="Permalink to this headline">¶</a></h1>
+<p>You may invoke <code class="docutils literal notranslate"><span class="pre">mkg</span></code> in either interactive or batch mode. In the former mode,
+you will enter interactive prompts to enter project-related information; in the
+latter mode, <code class="docutils literal notranslate"><span class="pre">mkg</span></code> will create a project on-th-fly, which is customizable
+through command-line arguments.</p>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">mkg</span></code> will create a console application project for C with a
+sensible project structure on the destination path:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkg /path/to/myapp
+</pre></div>
+</div>
+<p>You may run <code class="docutils literal notranslate"><span class="pre">mkg</span></code> with different parameters to create different types of projects:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkg --library -cxx /path/to/mylib
+</pre></div>
+</div>
+<p>When you run <code class="docutils literal notranslate"><span class="pre">mkg</span></code> without any argument, it will enter interactive mode:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkg
+<span class="go">Program name [myapp]:</span>
+<span class="go">Project path [myapp]:</span>
+<span class="go">Project author [somebody]: Michael Chen</span>
+<span class="go">Project brief description [something]: Yet Another Application</span>
+<span class="go">Project language (c/cpp) [c]:</span>
+<span class="go">Project type (app/lib) [app]:</span>
+
+<span class="go">None (none)</span>
+<span class="go">Apache License 2.0 (apache2)</span>
+<span class="go">GNU General Public License v3.0 (gpl3)</span>
+<span class="go">MIT License (mit)</span>
+<span class="go">---</span>
+<span class="go">BSD 2-clause &quot;Simplified&quot; license (bsd2)</span>
+<span class="go">BSD 3-clause &quot;New&quot; or &quot;Revised&quot; license (bsd3)</span>
+<span class="go">Eclipse Public License 2.0 (epl2)</span>
+<span class="go">GNU Affero General Public License v3.0 (agpl3)</span>
+<span class="go">GNU General Public License v2.0 (gpl2)</span>
+<span class="go">GNU Lesser General Public License v2.1 (lgpl2)</span>
+<span class="go">GNU Lesser General Public License v3.0 (lgpl3)</span>
+<span class="go">Mozilla Public License 2.0 (mpl2)</span>
+<span class="go">The Unlicense (unlicense)</span>
+
+<span class="go">Project licensing [none]:</span>
+</pre></div>
+</div>
+<p>You may execute <code class="docutils literal notranslate"><span class="pre">mkg</span></code> interactively with more customization:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkg --custom
+<span class="go">Program name [myapp]:</span>
+<span class="go">Project path [myapp]:</span>
+<span class="go">Project author [somebody]: Michael Chen</span>
+<span class="go">Project brief description [something]: Yet Another Application</span>
+<span class="go">Project language (c/cpp) [c]:</span>
+<span class="go">Project type (app/lib) [app]:</span>
+
+<span class="go">(Choose licensing as above...)</span>
+
+<span class="go">Project structure (nested/flat) [nested]:</span>
+<span class="go">Project source directory [src]:</span>
+<span class="go">Project include directory [include]:</span>
+<span class="go">Project test directory [tests]:</span>
+<span class="go">Project example directory [examples]:</span>
+<span class="go">Project config file [Makefile]:</span>
+</pre></div>
+</div>
+<p>Currently, <code class="docutils literal notranslate"><span class="pre">mkg</span></code> generates the following types of projects:</p>
+<ul class="simple">
+<li>Console application projects for C or C++</li>
+<li>Library projects for C or C++</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="install.html"
+                        title="previous chapter">Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="option.html"
+                        title="next chapter">Options</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/usage.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="option.html" title="Options"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Installation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">mkg 0.1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Michael Chen.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
+    </div>
+  </body>
+</html>
