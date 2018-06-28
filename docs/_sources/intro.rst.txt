@@ -5,7 +5,7 @@ Introduction
 **mkg is still at early stage. We may introduce compatibility-breaking changes**
 **without any warning.**
 
-``mkg`` stands for Makefile Generator, a opinioned GNU Make-based project generator.
+``mkg`` stands for Makefile Generator, a opinionated GNU Make-based project generator.
 The utility aims to simplify the routines to write boilerplate code for cross-platform
 Makefile and to create common project structures. Currently, ``mkg`` supports console 
 application and library projects for either C or C++.

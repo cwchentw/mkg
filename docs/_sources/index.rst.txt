@@ -7,10 +7,10 @@
 Using mkg
 =========
 
-``mkg`` is an opinioned, GNU Make-based project generator that runs on 
+``mkg`` is an opinionated, GNU Make-based project generator that runs on 
 Windows, MacOS, GNU/Linux, and FreeBSD. The objective of this utility is 
 to reduce the routines to write boilerplate Makefile\ *s* and  to create 
-project structures.
+sensible project structures.
 
 You may find the source of ``mkg`` at
 `GitHub <https://github.com/cwchentw/mkg>`_ or
