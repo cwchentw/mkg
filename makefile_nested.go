@@ -20,11 +20,10 @@ all: run
 
 test: .$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 ifeq ($(detected_OS),Windows)
-	cscript $(TEST_DIR)/$(PROGRAM:.exe=.vbs)
+	for %%x in ($(TEST_PROGRAM) do cscript $(TEST_DIR)/%%x
 else
-	bats $(TEST_DIR)/$(PROGRAM).bash
-	echo $$?
-endif  # $(detected_OS)
+	for t in $(TEST_PROGRAM); do bats $(TEST_DIR)/$$t; done
+endif
 
 run: .$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 	.$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)

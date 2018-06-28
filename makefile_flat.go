@@ -6,9 +6,9 @@ all: run
 
 test: $(PROGRAM)
 ifeq ($(detected_OS),Windows)
-	cscript $(PROGRAM:.exe=).vbs
+	for %%x in ($(TEST_PROGRAM) do cscript %%x
 else
-	./$(PROGRAM).bash
+	for t in $(TEST_PROGRAM); do bats $$t; done
 endif
 
 run: $(PROGRAM)
@@ -35,9 +35,9 @@ all: run
 
 test: $(PROGRAM)
 ifeq ($(detected_OS),Windows)
-	cscript $(PROGRAM:.exe=).vbs
+	for %%x in ($(TEST_PROGRAM) do cscript %%x
 else
-	./$(PROGRAM).bash
+	for t in $(TEST_PROGRAM); do bats $$t; done
 endif
 
 run: $(PROGRAM)

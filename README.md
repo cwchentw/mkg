@@ -1,6 +1,6 @@
-# mkg - Opinioned Makefile-based Project Generator
+# mkg - Opinionated Makefile-based Project Generator
 
-`mkg` generates cross-platform, GNU Make-based projects for either C or C++.
+`mkg` generates GNU Make-based projects for either C or C++.
 
 ## System Requirements
 

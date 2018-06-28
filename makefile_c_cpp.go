@@ -132,6 +132,13 @@ else
 endif
 
 export PROGRAM
+
+# Add your own test programs as needed.
+ifeq ($(detected_OS),Windows)
+	TEST_PROGRAM={{.Program}}.vbs
+else
+	TEST_PROGRAM={{.Program}}.bash
+endif
 `
 
 const makefile_library = `# Set proper library name.
@@ -161,11 +168,13 @@ endif
 
 export STATIC_LIB
 
-# Add your own objects for the test programs
+# Add your own test programs as needed.
+TEST_SOURCE=$(PROGRAM)_test.c
+
 ifeq ($(CC),cl)
-	TEST_OBJS=$(PROGRAM)_test.obj
+	TEST_OBJS=$(TEST_SOURCE:.c=.obj)
 else
-	TEST_OBJS=$(PROGRAM)_test.o
+	TEST_OBJS=$(TEST_SOURCE:.c=.o)
 endif
 
 export TEST_OBJS
@@ -198,26 +207,26 @@ endif
 
 export STATIC_LIB
 
-# Add your own objects for the test programs
+# Add your own test programs as needed.
+TEST_SOURCE=$(PROGRAM)_test.cpp
+
 ifeq ($(CXX),cl)
-	TEST_OBJS=$(PROGRAM)_test.obj
+	TEST_OBJS=$(TEST_SOURCE:.cpp=.obj)
 else
-	TEST_OBJS=$(PROGRAM)_test.o
+	TEST_OBJS=$(TEST_SOURCE:.cpp=.o)
 endif
 
 export TEST_OBJS
 `
 
-const makefile_objects = `# Set object files.
-# Modify it if more than one source files.
-ifeq ($(detected_OS),Windows)
+const makefile_objects = `# Modify it if more than one source files.
+SOURCE=$(PROGRAM).c
+
+# Set object files.
 ifeq ($(CC),cl)
-	OBJS=$(PROGRAM:.exe=.obj)
+	OBJS=$(SOURCE:.c=.obj)
 else
-	OBJS=$(PROGRAM:.exe=.o)
-endif
-else
-	OBJS=$(PROGRAM).o
+	OBJS=$(SOURCE:.c=.o)
 endif  # OBJS
 
 export OBJS
@@ -228,12 +237,14 @@ SET_ENV=VsDevCmd.bat -arch=amd64
 export SET_ENV
 `
 
-const makefileObjLib = `# Set object files.
-# Modify it if more than one source files.
+const makefileObjLib = `# Modify it if more than one source files.
+SOURCE=$(PROGRAM).c
+
+# Set object files.
 ifeq ($(CC),cl)
-	OBJS=$(PROGRAM).obj
+	OBJS=$(SOURCE:.c=.obj)
 else
-	OBJS=$(PROGRAM).o
+	OBJS=$(SOURCE:.c=.o)
 endif  # OBJS
 
 export OBJS
@@ -244,16 +255,14 @@ SET_ENV=VsDevCmd.bat -arch=amd64
 export SET_ENV
 `
 
-const makefileObjectCpp = `# Set object files.
-# Modify it if more than one source files.
-ifeq ($(detected_OS),Windows)
+const makefileObjectCpp = `# Modify it if more than one source files.
+SOURCE=$(PROGRAM).cpp
+
+# Set object files.
 ifeq ($(CXX),cl)
-	OBJS=$(PROGRAM:.exe=.obj)
+	OBJS=$(SOURCE:.cpp=.obj)
 else
-	OBJS=$(PROGRAM:.exe=.o)
-endif
-else
-	OBJS=$(PROGRAM).o
+	OBJS=$(SOURCE:.cpp=.o)
 endif  # OBJS
 
 export OBJS
@@ -264,12 +273,14 @@ SET_ENV=VsDevCmd.bat -arch=amd64
 export SET_ENV
 `
 
-const makefileObjCppLib = `# Set object files.
-# Modify it if more than one source files.
+const makefileObjCppLib = `# Modify it if more than one source files.
+SOURCE=$(PROGRAM).cpp
+
+# Set object files.
 ifeq ($(CXX),cl)
-	OBJS=$(PROGRAM).obj
+	OBJS=$(SOURCE:.cpp=.obj)
 else
-	OBJS=$(PROGRAM).o
+	OBJS=$(SOURCE:.cpp=.o)
 endif  # OBJS
 
 export OBJS
