@@ -21,9 +21,6 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 			return PARSING_EVENT_ERROR, errors.New("--custom should be the first argument")
 		case "-f", "--force":
 			r.SetForced(true)
-		case "-p", "--program":
-			r.SetProg(args[i])
-			setProg = true
 		case "-c", "-C":
 			r.SetLang(LANG_C)
 		case "-cpp", "-cxx":
@@ -36,6 +33,14 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 			r.SetLayout(LAYOUT_NESTED)
 		case "--flat":
 			r.SetLayout(LAYOUT_FLAT)
+		case "-p", "--program":
+			if i+1 >= len(args) {
+				return PARSING_EVENT_ERROR, errors.New("No valid program")
+			}
+
+			r.SetProg(args[i+1])
+			setProg = true
+			i++
 		case "-a", "--author":
 			if i+1 >= len(args) {
 				return PARSING_EVENT_ERROR, errors.New("No valid author")
