@@ -6,7 +6,7 @@ all: run
 
 test: $(PROGRAM)
 ifeq ($(detected_OS),Windows)
-	for %%x in ($(TEST_PROGRAM) do cscript %%x
+	for %%x in ($(TEST_PROGRAM)) do cscript %%x
 else
 	for t in $(TEST_PROGRAM); do bats $$t; done
 endif
@@ -35,7 +35,7 @@ all: run
 
 test: $(PROGRAM)
 ifeq ($(detected_OS),Windows)
-	for %%x in ($(TEST_PROGRAM) do cscript %%x
+	for %%x in ($(TEST_PROGRAM)) do cscript %%x
 else
 	for t in $(TEST_PROGRAM); do bats $$t; done
 endif

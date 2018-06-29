@@ -20,7 +20,7 @@ all: run
 
 test: .$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 ifeq ($(detected_OS),Windows)
-	for %%x in ($(TEST_PROGRAM) do cscript $(TEST_DIR)/%%x
+	for %%x in ($(TEST_PROGRAM)) do cscript $(TEST_DIR)/%%x
 else
 	for t in $(TEST_PROGRAM); do bats $(TEST_DIR)/$$t; done
 endif
@@ -428,7 +428,7 @@ dynamic: ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB)
 	$(MAKE) -C ..$(SEP)$(SOURCE_DIR) -f Makefile.win dynamic
 
 testStatic: $(TEST_OBJS:.obj=.exe)
-ifeq ($(CC),cl)
+ifeq ($(CXX),cl)
 	for %%x in ($(TEST_OBJS:.obj=.exe)) do .$(SEP)%%x \
 	&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
@@ -437,7 +437,7 @@ else
 endif
 
 $(TEST_OBJS:.obj=.exe): static
-ifeq ($(CC),cl)
+ifeq ($(CXX),cl)
 	$(SET_ENV) && for %%x in ($(TEST_OBJS:.obj=.cpp)) do \
 		$(CXX) $(CXXFLAGS) $(INCLUDE) $(LIBS) /I..$(SEP)$(INCLUDE_DIR) %%x \
 		..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)

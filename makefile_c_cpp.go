@@ -220,7 +220,7 @@ export TEST_OBJS
 `
 
 const makefile_objects = `# Modify it if more than one source files.
-SOURCE=$(PROGRAM).c
+SOURCE=$(PROGRAM:.exe=).c
 
 # Set object files.
 ifeq ($(CC),cl)
@@ -238,7 +238,7 @@ export SET_ENV
 `
 
 const makefileObjLib = `# Modify it if more than one source files.
-SOURCE=$(PROGRAM).c
+SOURCE=$(PROGRAM:.exe=).c
 
 # Set object files.
 ifeq ($(CC),cl)
@@ -256,7 +256,7 @@ export SET_ENV
 `
 
 const makefileObjectCpp = `# Modify it if more than one source files.
-SOURCE=$(PROGRAM).cpp
+SOURCE=$(PROGRAM:.exe=).cpp
 
 # Set object files.
 ifeq ($(CXX),cl)
@@ -274,7 +274,7 @@ export SET_ENV
 `
 
 const makefileObjCppLib = `# Modify it if more than one source files.
-SOURCE=$(PROGRAM).cpp
+SOURCE=$(PROGRAM:.exe=).cpp
 
 # Set object files.
 ifeq ($(CXX),cl)
