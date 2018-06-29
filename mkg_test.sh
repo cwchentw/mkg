@@ -73,6 +73,21 @@ runLib
 # Remove the project.
 rm -rf mylib
 
+# Create a project with -p parameter.
+./$PROGRAM -p app myapp
+
+# Run the test.
+runApp
+
+# Create a project with -a and -b parameter.
+./$PROGRAM -a "Michael Chen" -b "Hello World App" -f myapp
+
+# Run the test
+runApp
+
+# Remove the project.
+rm -rf myapp
+
 # Clean executables
 go clean
 

@@ -6,5 +6,5 @@ const templateREADME = `# %s
 
 ## Author
 
-%s %s
+%s, %s
 `
