@@ -211,5 +211,30 @@ If Err <> 0 Then
     WScript.Quit
 End If
 
+' Test a project with -p parameter.
+Err = Shell.Run("cmd /c .\mkg -p app myapp " &_
+    "&& cd myapp " &_
+    "&& make test " &_
+    "&& make clean " &_
+    "&& cd .. " &_
+    "&& rmdir /s /q myapp ", 1, True)
+
+If Err <> 0 Then
+    WScript.Quit
+End If
+
+' Test a project with -a and -b parameter.
+Err = Shell.Run("cmd /c .\mkg -a " & """ & Michael Chen & """ &_
+    " -b " & """ & Hello World App & """ & " myapp " &_
+    "&& cd myapp " &_
+    "&& make test " &_
+    "&& make clean " &_
+    "&& cd .. " &_
+    "&& rmdir /s /q myapp ", 1, True)
+
+If Err <> 0 Then
+    WScript.Quit
+End If
+
 ' Clean the main program.
 Shell.Run "cmd /c go clean && go fmt", 1, True
