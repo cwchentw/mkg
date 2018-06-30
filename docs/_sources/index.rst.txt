@@ -25,6 +25,7 @@ You may find the source of ``mkg`` at
    usage
    option
    project
+   history
    license
 
 
