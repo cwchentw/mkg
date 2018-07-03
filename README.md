@@ -13,7 +13,7 @@ To compile `mkg` from source, you need
 
 * A recent Go compiler
 
-We provide pre-compiled executables. If in doubt, check our source and compile it by yourself.
+We provide pre-compiled executables [here](https://github.com/cwchentw/mkg/releases). If in doubt, check our source and compile it by yourself.
 
 ## Install
 
