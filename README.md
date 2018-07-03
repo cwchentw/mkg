@@ -1,4 +1,4 @@
-# mkg - Opinionated Makefile-based Project Generator
+# mkg - Opinionated GNU Make-based Project Generator
 
 `mkg` generates GNU Make-based projects for either C or C++.
 
