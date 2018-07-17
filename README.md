@@ -1,4 +1,4 @@
-# mkg - Opinionated Makefile-based Project Generator
+# mkg - Opinionated GNU Make-based Project Generator
 
 `mkg` generates GNU Make-based projects for either C or C++.
 
@@ -13,7 +13,7 @@ To compile `mkg` from source, you need
 
 * A recent Go compiler
 
-We provide pre-compiled executables. If in doubt, check our source and compile it by yourself.
+We provide pre-compiled executables [here](https://github.com/cwchentw/mkg/releases). If in doubt, check our source and compile it by yourself.
 
 ## Install
 
