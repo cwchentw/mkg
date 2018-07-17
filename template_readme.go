@@ -1,10 +1,14 @@
 package main
 
-const templateREADME = `# %s
+const templateREADME = `# {{.Prog}}
 
-%s
+{{.Brief}}
 
 ## Author
 
-%s, %s
-`
+{{.Year}}, {{.Author}}
+
+{{ if .License -}}
+## Copyright
+
+{{ .License }}{{- end}}`

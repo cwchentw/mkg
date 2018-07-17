@@ -66,7 +66,7 @@ Project license: %s
 Project layout: %s
 `, r.Prog(), r.Path(), r.Author(), r.Brief(),
 		langToString(r.Lang()), projToString(r.Proj()),
-		licenseToString(r.License()), layoutToString(r.Layout()),
+		licenseToRepr(r.License()), layoutToString(r.Layout()),
 	)
 
 	if !r.IsNested() {

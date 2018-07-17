@@ -12,13 +12,13 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 	for i := 1; i < size; i++ {
 		switch args[i] {
 		case "-v", "--version":
-			return PARSING_EVENT_VERSION, nil
+			return PARSING_FSS_EVENT_VERSION, nil
 		case "-h", "--help":
-			return PARSING_EVENT_HELP, nil
+			return PARSING_FSS_EVENT_HELP, nil
 		case "--licenses":
-			return PARSING_EVENT_LICENSES, nil
+			return PARSING_FSS_EVENT_LICENSES, nil
 		case "--custom":
-			return PARSING_EVENT_ERROR, errors.New("--custom should be the first argument")
+			return PARSING_FSS_EVENT_ERROR, errors.New("--custom should be the first argument")
 		case "-f", "--force":
 			r.SetForced(true)
 		case "-c", "-C":
@@ -35,7 +35,7 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 			r.SetLayout(LAYOUT_FLAT)
 		case "-p", "--program":
 			if i+1 >= len(args) {
-				return PARSING_EVENT_ERROR, errors.New("No valid program")
+				return PARSING_FSS_EVENT_ERROR, errors.New("No valid program")
 			}
 
 			r.SetProg(args[i+1])
@@ -43,33 +43,33 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 			i++
 		case "-a", "--author":
 			if i+1 >= len(args) {
-				return PARSING_EVENT_ERROR, errors.New("No valid author")
+				return PARSING_FSS_EVENT_ERROR, errors.New("No valid author")
 			}
 
 			r.SetAuthor(args[i+1])
 			i++
 		case "-b", "--brief":
 			if i+1 >= len(args) {
-				return PARSING_EVENT_ERROR, errors.New("No valid description")
+				return PARSING_FSS_EVENT_ERROR, errors.New("No valid description")
 			}
 
 			r.SetBrief(args[i+1])
 			i++
 		case "-l", "--license":
 			if i+1 >= len(args) {
-				return PARSING_EVENT_ERROR, errors.New("No valid license")
+				return PARSING_FSS_EVENT_ERROR, errors.New("No valid license")
 			}
 
-			l, err := stringToLicense(args[i+1])
+			l, err := reprToLicense(args[i+1])
 			if err != nil {
-				return PARSING_EVENT_ERROR, err
+				return PARSING_FSS_EVENT_ERROR, err
 			}
 
 			r.SetLicense(l)
 			i++
 		case "-s", "--source":
 			if i+1 >= len(args) {
-				return PARSING_EVENT_ERROR, errors.New("No valid source directory name")
+				return PARSING_FSS_EVENT_ERROR, errors.New("No valid source directory name")
 			}
 
 			if r.IsNested() {
@@ -79,7 +79,7 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 			i++
 		case "-i", "--include":
 			if i+1 >= len(args) {
-				return PARSING_EVENT_ERROR, errors.New("No valid include directory name")
+				return PARSING_FSS_EVENT_ERROR, errors.New("No valid include directory name")
 			}
 
 			if r.IsNested() {
@@ -89,7 +89,7 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 			i++
 		case "-d", "--dist":
 			if i+1 >= len(args) {
-				return PARSING_EVENT_ERROR, errors.New("No valid dist directory name")
+				return PARSING_FSS_EVENT_ERROR, errors.New("No valid dist directory name")
 			}
 
 			if r.IsNested() {
@@ -99,7 +99,7 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 			i++
 		case "-t", "--test":
 			if i+1 >= len(args) {
-				return PARSING_EVENT_ERROR, errors.New("No valid test directory name")
+				return PARSING_FSS_EVENT_ERROR, errors.New("No valid test directory name")
 			}
 
 			if r.IsNested() {
@@ -109,7 +109,7 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 			i++
 		case "-e", "--example":
 			if i+1 >= len(args) {
-				return PARSING_EVENT_ERROR, errors.New("No valid example directory name")
+				return PARSING_FSS_EVENT_ERROR, errors.New("No valid example directory name")
 			}
 
 			if r.IsNested() {
@@ -119,7 +119,7 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 			i++
 		default:
 			if !isValidPath(args[i]) {
-				return PARSING_EVENT_ERROR, errors.New("Invalid path")
+				return PARSING_FSS_EVENT_ERROR, errors.New("Invalid path")
 			}
 
 			r.SetPath(args[i])
@@ -136,5 +136,5 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 		}
 	}
 
-	return PARSING_EVENT_RUN, nil
+	return PARSING_FSS_EVENT_RUN, nil
 }

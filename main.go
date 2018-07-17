@@ -8,7 +8,7 @@ import (
 func main() {
 	pr := NewParsingResult()
 
-	ev := PARSING_EVENT_ERROR
+	ev := PARSING_FSS_EVENT_ERROR
 	var err error
 
 	if len(os.Args) <= 1 {
@@ -38,13 +38,13 @@ func main() {
 	}
 
 	switch ev {
-	case PARSING_EVENT_VERSION:
+	case PARSING_FSS_EVENT_VERSION:
 		printVersion()
 		os.Exit(0)
-	case PARSING_EVENT_HELP:
+	case PARSING_FSS_EVENT_HELP:
 		printHelp(os.Stdout)
 		os.Exit(0)
-	case PARSING_EVENT_LICENSES:
+	case PARSING_FSS_EVENT_LICENSES:
 		printLicenses()
 		os.Exit(0)
 	}

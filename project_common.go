@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"text/template"
 	"time"
 )
 
@@ -72,43 +73,50 @@ func createREADME(pr IProject) {
 		os.Exit(1)
 	}
 
+	tpl := fmt.Sprintf(templateREADME)
+	tmpl, err := template.New("readmd").Parse(tpl)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+
 	now := time.Now()
-	_, err = file.WriteString(
-		fmt.Sprintf(templateREADME,
-			pr.Prog(), pr.Brief(), fmt.Sprint(now.Year()), pr.Author()))
+
+	if pr.License() == LICENSE_NONE {
+		err = tmpl.Execute(file, struct {
+			Prog    string
+			Author  string
+			Brief   string
+			Year    int
+			License string
+		}{
+			pr.Prog(),
+			pr.Author(),
+			pr.Brief(),
+			now.Year(),
+			"",
+		})
+	} else {
+		err = tmpl.Execute(file, struct {
+			Prog    string
+			Author  string
+			Brief   string
+			Year    int
+			License string
+		}{
+			pr.Prog(),
+			pr.Author(),
+			pr.Brief(),
+			now.Year(),
+			licenseToString(pr.License()),
+		})
+	}
+
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 }
-
-/*
-func createGitignore(pr IProject) {
-	path := filepath.Join(pr.Path(), ".gitignore")
-	file, err := os.Create(path)
-	defer file.Close()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-
-	var ignore string
-	switch pr.Lang() {
-	case LANG_C:
-		ignore = gitignoreC
-	case LANG_CPP:
-		ignore = gitignoreCpp
-	default:
-		panic("Unknown language")
-	}
-
-	_, err = file.WriteString(ignore)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-}
-*/
 
 func createProjStruct(pr IProject) {
 	// Create source dir

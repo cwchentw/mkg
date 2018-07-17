@@ -93,13 +93,13 @@ func (r *ParsingResult) RunWithDefaults() error {
 	fmt.Println("")
 
 	cert, err := prompt(
-		fmt.Sprintf("Project license [%s]: ", licenseToString(r.License())))
+		fmt.Sprintf("Project license [%s]: ", licenseToRepr(r.License())))
 	if err != nil {
 		return err
 	}
 
 	if cert != "" {
-		c, err := stringToLicense(cert)
+		c, err := reprToLicense(cert)
 		if err != nil {
 			return err
 		}

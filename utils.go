@@ -71,7 +71,7 @@ func stringToLayout(layout string) (ProjectLayout, error) {
 	}
 }
 
-func licenseToString(license License) string {
+func licenseToRepr(license License) string {
 	switch license {
 	case LICENSE_NONE:
 		return "none"
@@ -104,7 +104,7 @@ func licenseToString(license License) string {
 	}
 }
 
-func stringToLicense(cert string) (License, error) {
+func reprToLicense(cert string) (License, error) {
 	switch cert {
 	case "none":
 		return LICENSE_NONE, nil
@@ -134,6 +134,39 @@ func stringToLicense(cert string) (License, error) {
 		return LICENSE_UNLICENSE, nil
 	default:
 		return LICENSE_MIT, errors.New("Invalid license")
+	}
+}
+
+func licenseToString(license License) string {
+	switch license {
+	case LICENSE_NONE:
+		return "None"
+	case LICENSE_APACHE2:
+		return "Apache 2.0"
+	case LICENSE_MIT:
+		return "MIT"
+	case LICENSE_GPL3:
+		return "GPL 3.0"
+	case LICENSE_BSD2:
+		return "BSD 2.0"
+	case LICENSE_BSD3:
+		return "BSD 3.0"
+	case LICENSE_EPL2:
+		return "EPL 2"
+	case LICENSE_AGPL3:
+		return "AGPL 3.0"
+	case LICENSE_GPL2:
+		return "GPL 2.1"
+	case LICENSE_LGPL2:
+		return "LGPL 2.1"
+	case LICENSE_LGPL3:
+		return "LGPL 3.0"
+	case LICENSE_MPL2:
+		return "MPL 2.0"
+	case LICENSE_UNLICENSE:
+		return "Unlicense"
+	default:
+		panic("Unknown license")
 	}
 }
 
