@@ -1,7 +1,7 @@
 package main
 
 const PROGRAM = "mkg"
-const VERSION = "0.1.1"
+const VERSION = "0.1.2"
 
 type Language int
 
