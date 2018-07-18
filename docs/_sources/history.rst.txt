@@ -2,6 +2,10 @@
 History
 ========
 
+* 0.1.2
+
+  * Update copyright related info
+
 * 0.1.1
 
   * Refactor generated Makefile
