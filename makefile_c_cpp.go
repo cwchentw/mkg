@@ -55,10 +55,10 @@ export CFLAGS_DEBUG
 const makefile_cxxflags_debug = `# Set CXXFLAGS for Debug target.
 ifndef CXXFLAGS_DEBUG
 	ifeq ($(CXX),cl)
-		CXXFLAGS_DEBUG=/Wall /sdl /EHsc /std:c++11 /Zi
+		CXXFLAGS_DEBUG=/Wall /sdl /EHsc /std:c++14 /Zi
 	else ifeq ($(detected_OS),Darwin)
 		ifeq ($(CXX),clang)
-			CXXFLAGS_DEBUG=-Wall -Wextra -O1 -g -std=c++14 -fsanitize=address -fno-omit-frame-pointer
+			CXXFLAGS_DEBUG=-Wall -Wextra -O1 -g -std=c++11 -fsanitize=address -fno-omit-frame-pointer
 		else
 			CXXFLAGS_DEBUG=-Wall -Wextra -g -std=c++11
 		endif
