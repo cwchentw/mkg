@@ -4,11 +4,6 @@ const templateREADME = `# {{.Prog}}
 
 {{.Brief}}
 
-## Author
-
-{{.Year}}, {{.Author}}
-
-{{ if .License -}}
 ## Copyright
 
-{{ .License }}{{- end}}`
+{{.Year}}, {{.Author}}{{ if .License -}}; {{ .License }}{{- end}}`
