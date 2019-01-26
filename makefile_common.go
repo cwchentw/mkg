@@ -1,6 +1,6 @@
 package main
 
-const makefilePlatform = `# Detect underlying system.
+const MakefilePlatform = `# Detect underlying system.
 ifeq ($(OS),Windows_NT)
 	detected_OS := Windows
 else
@@ -10,7 +10,7 @@ endif
 export detected_OS
 `
 
-const makefileTarget = `# Set default target.
+const MakefileTarget = `# Set default target.
 TARGET=
 
 ifndef TARGET
@@ -20,7 +20,7 @@ endif  # TARGET
 export TARGET
 `
 
-const makefileRm = `# Set proper RM on Windows.
+const MakefileRM = `# Set proper RM on Windows.
 ifeq ($(detected_OS),Windows)
 	RM=del
 endif
@@ -28,7 +28,7 @@ endif
 export RM
 `
 
-const makefileSep = `# Set proper path separator.
+const MakefileSep = `# Set proper path separator.
 ifeq ($(detected_OS),Windows)
 	SEP=\\
 else
