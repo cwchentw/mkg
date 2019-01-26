@@ -1,6 +1,6 @@
 package main
 
-const license_mpl2 = `Mozilla Public License Version 2.0
+const LicenseMPL2 = `Mozilla Public License Version 2.0
 ==================================
 
 1. Definitions
