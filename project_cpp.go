@@ -235,7 +235,7 @@ func (p *CppProject) createConfigAppFlat() {
 		makefile_cxxflags,
 		makefileRm,
 		makefileSep,
-		makefile_program,
+		MakefileProgram,
 		makefileObjectCpp,
 		makefileExternalLibraryCpp,
 		makefileAppFlatCpp,
@@ -322,7 +322,7 @@ func (p *CppProject) createConfigLibFlat() {
 		makefileSep,
 		makefileLibCpp,
 		makefileObjCppLib,
-		makefile_external_library,
+		MakefileCExtLib,
 		makefileLibFlatCxx,
 		makefileLibClean)
 
@@ -411,9 +411,9 @@ func (p *CppProject) createConfigAppNested() {
 		makefileRm,
 		makefileSep,
 		makefileProjectStructure,
-		makefile_program,
+		MakefileProgram,
 		makefileObjectCpp,
-		makefile_external_library,
+		MakefileCExtLib,
 		makefileAppNested,
 		makefileAppNestedClean)
 
@@ -514,7 +514,7 @@ func (p *CppProject) createConfigLibNested() {
 		makefileProjectStructure,
 		makefileLibCpp,
 		makefileObjCppLib,
-		makefile_external_library,
+		MakefileCExtLib,
 		makefileLibNested,
 		makefileLibNestedClean)
 

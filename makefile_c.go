@@ -1,6 +1,6 @@
 package main
 
-const makefile_cc = `# Set default C compiler.
+const MakefileCC = `# Set default C compiler.
 # Clean implict CC variable.
 CC=
 
@@ -17,7 +17,7 @@ endif  # CC
 export CC
 `
 
-const makefile_c_standard = `# Clean C_STD variable.
+const MakefileCStandard = `# Clean C_STD variable.
 C_STD=
 
 ifndef C_STD
@@ -33,7 +33,7 @@ endif  # C_STD
 export C_STD
 `
 
-const makefile_cflags_debug = `# Set CFLAGS for Debug target.
+const MakefileCFlagsDebug = `# Set CFLAGS for Debug target.
 ifndef CFLAGS_DEBUG
 	ifeq ($(CC),cl)
 		CFLAGS_DEBUG=/Wall /sdl /Zi
@@ -51,7 +51,7 @@ endif  # CFLAGS_DEBUG
 export CFLAGS_DEBUG
 `
 
-const makefile_cflags_release = `# Set CFLAGS for Release target.
+const MakefileCFlagsRelease = `# Set CFLAGS for Release target.
 ifndef CFLAGS_RELEASE
 	ifeq ($(CC),cl)
 		CFLAGS_RELEASE=/Wall /sdl /O2
@@ -63,7 +63,7 @@ endif  # CFLAGS_RELEASE
 export CFLAGS_RELEASE
 `
 
-const makefile_cflags = `# Set default CFLAGS
+const MakefileCFlags = `# Set default CFLAGS
 # Clean implict CFLAGS
 CFLAGS=
 
@@ -78,7 +78,7 @@ endif  # CFLAGS
 export CFLAGS
 `
 
-const makefile_program = `# Set proper program name.
+const MakefileProgram = `# Set proper program name.
 ifeq ($(detected_OS),Windows)
 	PROGRAM={{.Program}}.exe
 else
@@ -95,7 +95,7 @@ else
 endif
 `
 
-const makefile_library = `# Set proper library name.
+const MakefileCLib = `# Set proper library name.
 PROGRAM={{.Program}}
 
 ifeq ($(detected_OS),Windows)
@@ -134,7 +134,7 @@ endif
 export TEST_OBJS
 `
 
-const makefile_objects = `# Modify it if more than one source files.
+const MakefileCObj = `# Modify it if more than one source files.
 SOURCE=$(PROGRAM:.exe=).c
 
 # Set object files.
@@ -152,7 +152,7 @@ SET_ENV=VsDevCmd.bat -arch=amd64
 export SET_ENV
 `
 
-const makefileObjLib = `# Modify it if more than one source files.
+const MakefileCObjLib = `# Modify it if more than one source files.
 SOURCE=$(PROGRAM:.exe=).c
 
 # Set object files.
@@ -170,7 +170,7 @@ SET_ENV=VsDevCmd.bat -arch=amd64
 export SET_ENV
 `
 
-const makefile_external_library = `# Set third-party include and library path
+const MakefileCExtLib = `# Set third-party include and library path
 # Modify it as needed.
 ifeq ($(CC),cl)
 	INCLUDE=
