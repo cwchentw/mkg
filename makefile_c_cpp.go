@@ -34,18 +34,34 @@ endif  # CXX
 export CXX
 `
 
+const makefile_c_standard = `# Clean C_STD variable.
+C_STD=
+
+ifndef C_STD
+	ifeq ($(detected_OS),Windows)
+		C_STD=
+	else ifeq ($(detected_OS),Darwin)
+		C_STD=c99
+	else
+		C_STD=c99
+	endif
+endif  # C_STD
+
+export C_STD
+`
+
 const makefile_cflags_debug = `# Set CFLAGS for Debug target.
 ifndef CFLAGS_DEBUG
 	ifeq ($(CC),cl)
 		CFLAGS_DEBUG=/Wall /sdl /Zi
 	else ifeq ($(detected_OS),Darwin)
 		ifeq ($(CC),clang)
-			CFLAGS_DEBUG=-Wall -Wextra -O1 -g -std=c99 -fsanitize=address -fno-omit-frame-pointer
+			CFLAGS_DEBUG:=-Wall -Wextra -O1 -g -std=$(C_STD) -fsanitize=address -fno-omit-frame-pointer
 		else
-			CFLAGS_DEBUG=-Wall -Wextra -g -std=c99
+			CFLAGS_DEBUG:=-Wall -Wextra -g -std=$(C_STD)
 		endif
 	else
-		CFLAGS_DEBUG=-Wall -Wextra -g -std=c99
+		CFLAGS_DEBUG:=-Wall -Wextra -g -std=$(C_STD)
 	endif
 endif  # CFLAGS_DEBUG
 
@@ -75,7 +91,7 @@ ifndef CFLAGS_RELEASE
 	ifeq ($(CC),cl)
 		CFLAGS_RELEASE=/Wall /sdl /O2
 	else
-		CFLAGS_RELEASE=-Wall -Wextra -O2 -std=c99
+		CFLAGS_RELEASE:=-Wall -Wextra -O2 -std=$(C_STD)
 	endif
 endif  # CFLAGS_RELEASE
 

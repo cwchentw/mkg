@@ -187,6 +187,8 @@ func (p *CProject) createConfigAppFlat() {
 
 	CC
 
+	C_STD
+
 	CFLAGS_DEBUG
 
 	CFLAGS_RELEASE
@@ -218,6 +220,7 @@ func (p *CProject) createConfigAppFlat() {
 %s
 %s
 %s
+%s
 
 %s
 %s`
@@ -225,6 +228,7 @@ func (p *CProject) createConfigAppFlat() {
 	tpl := fmt.Sprintf(config,
 		makefilePlatform,
 		makefile_cc,
+		makefile_c_standard,
 		makefile_cflags_debug,
 		makefile_cflags_release,
 		makefileTarget,
@@ -268,6 +272,8 @@ func (p *CProject) createConfigLibFlat() {
 
 	CC
 
+	C_STD
+
 	CFLAGS_DEBUG
 
 	CFLAGS_RELEASE
@@ -299,6 +305,7 @@ func (p *CProject) createConfigLibFlat() {
 %s
 %s
 %s
+%s
 
 %s
 %s`
@@ -306,6 +313,7 @@ func (p *CProject) createConfigLibFlat() {
 	tpl := fmt.Sprintf(config,
 		makefilePlatform,
 		makefile_cc,
+		makefile_c_standard,
 		makefile_cflags_debug,
 		makefile_cflags_release,
 		makefileTarget,
@@ -349,6 +357,8 @@ func (p *CProject) createConfigAppNested() {
 
 	CC or CXX
 
+	C_STD
+
 	CFLAGS_DEBUG or CXXFLAGS_DEBUG
 
 	CFLAGS_RELEASE or CXXFLAGS_RELEASE
@@ -385,6 +395,7 @@ func (p *CProject) createConfigAppNested() {
 %s
 %s
 %s
+%s
 
 %s
 %s`
@@ -392,6 +403,7 @@ func (p *CProject) createConfigAppNested() {
 	tpl := fmt.Sprintf(config,
 		makefilePlatform,
 		makefile_cc,
+		makefile_c_standard,
 		makefile_cflags_debug,
 		makefile_cflags_release,
 		makefileTarget,
@@ -446,6 +458,8 @@ func (p *CProject) createConfigLibNested() {
 
 	CC
 
+	C_STD
+
 	CFLAGS_DEBUG
 
 	CFLAGS_RELEASE
@@ -482,6 +496,7 @@ func (p *CProject) createConfigLibNested() {
 %s
 %s
 %s
+%s
 
 %s
 %s`
@@ -489,6 +504,7 @@ func (p *CProject) createConfigLibNested() {
 	tpl := fmt.Sprintf(config,
 		makefilePlatform,
 		makefile_cc,
+		makefile_c_standard,
 		makefile_cflags_debug,
 		makefile_cflags_release,
 		makefileTarget,
