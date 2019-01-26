@@ -17,18 +17,34 @@ endif  # CXX
 export CXX
 `
 
+const MakefileCXXStandard = `# Clean CXX_STD variable.
+CXX_STD=
+
+ifndef CXX_STD
+	ifeq ($(detected_OS),Windows)
+		CXX_STD=c++14
+	else ifeq ($(detected_OS),Darwin)
+		CXX_STD=c++11
+	else
+		CXX_STD=c++11
+	endif
+endif  # CXX_STD
+
+export CXX_STD
+`
+
 const makefile_cxxflags_debug = `# Set CXXFLAGS for Debug target.
 ifndef CXXFLAGS_DEBUG
 	ifeq ($(CXX),cl)
-		CXXFLAGS_DEBUG=/Wall /sdl /EHsc /std:c++14 /Zi
+		CXXFLAGS_DEBUG:=/Wall /sdl /EHsc /std:$(CXX_STD) /Zi
 	else ifeq ($(detected_OS),Darwin)
 		ifeq ($(CXX),clang)
-			CXXFLAGS_DEBUG=-Wall -Wextra -O1 -g -std=c++11 -fsanitize=address -fno-omit-frame-pointer
+			CXXFLAGS_DEBUG:=-Wall -Wextra -O1 -g -std=$(CXX_STD) -fsanitize=address -fno-omit-frame-pointer
 		else
-			CXXFLAGS_DEBUG=-Wall -Wextra -g -std=c++11
+			CXXFLAGS_DEBUG:=-Wall -Wextra -g -std=$(CXX_STD)
 		endif
 	else
-		CXXFLAGS_DEBUG=-Wall -Wextra -g -std=c++11
+		CXXFLAGS_DEBUG:=-Wall -Wextra -g -std=$(CXX_STD)
 	endif
 endif  # CXXFLAGS_DEBUG
 
@@ -38,9 +54,9 @@ export CXXFLAGS_DEBUG
 const makefile_cxxflags_release = `# Set CXXFLAGS for Release target.
 ifndef CXXFLAGS_RELEASE
 	ifeq ($(CXX),cl)
-		CXXFLAGS_RELEASE=/Wall /sdl /EHsc /std:c++14 /O2
+		CXXFLAGS_RELEASE:=/Wall /sdl /EHsc /std:$(CXX_STD) /O2
 	else
-		CXXFLAGS_RELEASE=-Wall -Wextra -O2 -std=c++11
+		CXXFLAGS_RELEASE:=-Wall -Wextra -O2 -std=$(CXX_STD)
 	endif
 endif  # CXXFLAGS_RELEASE
 
