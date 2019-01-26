@@ -1,6 +1,6 @@
 package main
 
-const licenseEPL2 = `Eclipse Public License - v 2.0
+const LicenseEPL2 = `Eclipse Public License - v 2.0
 
 THE ACCOMPANYING PROGRAM IS PROVIDED UNDER THE TERMS OF THIS ECLIPSE
 PUBLIC LICENSE ("AGREEMENT"). ANY USE, REPRODUCTION OR DISTRIBUTION
