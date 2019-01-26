@@ -1,6 +1,6 @@
 package main
 
-const license_gpl2 = `                    GNU GENERAL PUBLIC LICENSE
+const LicenseGPL2 = `                    GNU GENERAL PUBLIC LICENSE
                        Version 2, June 1991
 
  Copyright (C) 1989, 1991 Free Software Foundation, Inc.,

@@ -185,7 +185,7 @@ func getTemplate(license License) string {
 	case LICENSE_EPL2:
 		return LicenseEPL2
 	case LICENSE_GPL2:
-		return license_gpl2
+		return LicenseGPL2
 	case LICENSE_GPL3:
 		return license_gpl3
 	case LICENSE_AGPL3:
