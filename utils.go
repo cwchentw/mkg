@@ -197,7 +197,7 @@ func getTemplate(license License) string {
 	case LICENSE_MPL2:
 		return LicenseMPL2
 	case LICENSE_UNLICENSE:
-		return licenseUnlicense
+		return LicenseUnlicense
 	default:
 		panic("Unknown license")
 	}
