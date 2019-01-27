@@ -16,6 +16,7 @@ type CProject struct {
 	author string
 	brief  string
 
+	std    Standard
 	proj   ProjectType
 	layout ProjectLayout
 
@@ -39,6 +40,7 @@ func NewCProject(param ProjectParam) *CProject {
 	p.brief = param.Brief
 
 	p.proj = param.Proj
+	p.std = param.Std
 	p.layout = param.Layout
 	p.license = param.PLicense
 
@@ -69,6 +71,10 @@ func (p *CProject) Author() string {
 
 func (p *CProject) Brief() string {
 	return p.brief
+}
+
+func (p *CProject) Std() Standard {
+	return p.std
 }
 
 func (p *CProject) Proj() ProjectType {
@@ -248,9 +254,11 @@ func (p *CProject) createConfigAppFlat() {
 	}
 
 	err = tmpl.Execute(file, struct {
-		Program string
+		Program  string
+		Standard string
 	}{
 		p.Prog(),
+		stdToString(p.Std()),
 	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -333,9 +341,11 @@ func (p *CProject) createConfigLibFlat() {
 	}
 
 	err = tmpl.Execute(file, struct {
-		Program string
+		Program  string
+		Standard string
 	}{
 		p.Prog(),
+		stdToString(p.Std()),
 	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -425,6 +435,7 @@ func (p *CProject) createConfigAppNested() {
 
 	err = tmpl.Execute(file, struct {
 		Program    string
+		Standard   string
 		SrcDir     string
 		IncludeDir string
 		DistDir    string
@@ -432,6 +443,7 @@ func (p *CProject) createConfigAppNested() {
 		ExampleDir string
 	}{
 		p.Prog(),
+		stdToString(p.Std()),
 		p.Src(),
 		p.Include(),
 		p.Dist(),
@@ -526,6 +538,7 @@ func (p *CProject) createConfigLibNested() {
 
 	err = tmpl.Execute(file, struct {
 		Program    string
+		Standard   string
 		SrcDir     string
 		IncludeDir string
 		DistDir    string
@@ -533,6 +546,7 @@ func (p *CProject) createConfigLibNested() {
 		ExampleDir string
 	}{
 		p.Prog(),
+		stdToString(p.Std()),
 		p.Src(),
 		p.Include(),
 		p.Dist(),

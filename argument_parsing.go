@@ -40,6 +40,19 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 				return PARSING_FSS_EVENT_ERROR, errors.New("No valid standard")
 			}
 
+			if args[i+1] == "ansi" {
+				if r.Lang() == LANG_C {
+					r.SetStd(STD_C89)
+				} else if r.Lang() == LANG_CPP {
+					r.SetStd(STD_CXX98)
+				} else {
+					return PARSING_FSS_EVENT_ERROR, errors.New("Invalid standard")
+				}
+
+				i++
+				continue
+			}
+
 			std, err := stringToStd(args[i+1])
 			if err != nil {
 				return PARSING_FSS_EVENT_ERROR, err
@@ -148,6 +161,11 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 		if setPath {
 			break
 		}
+	}
+
+	// Auto-correct the language standard.
+	if r.Lang() == LANG_CPP && r.Std() == STD_C99 {
+		r.SetStd(STD_CXX11)
 	}
 
 	return PARSING_FSS_EVENT_RUN, nil

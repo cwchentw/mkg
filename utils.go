@@ -300,3 +300,42 @@ func isValidPath(path string) bool {
 
 	return true
 }
+
+func IsValidCStd(std Standard) bool {
+	switch std {
+	case STD_C89:
+		fallthrough
+	case STD_C99:
+		fallthrough
+	case STD_C11:
+		fallthrough
+	case STD_C17:
+		fallthrough
+	case STD_C_GNU89:
+		fallthrough
+	case STD_C_GNU99:
+		fallthrough
+	case STD_C_GNU11:
+		fallthrough
+	case STD_C_GNU17:
+		return true
+	}
+
+	return false
+}
+
+func IsValidCXXStd(std Standard) bool {
+	switch std {
+	case STD_CXX98:
+	case STD_CXX11:
+	case STD_CXX14:
+	case STD_CXX17:
+	case STD_CXX_GNU98:
+	case STD_CXX_GNU11:
+	case STD_CXX_GNU14:
+	case STD_CXX_GNU17:
+		return true
+	}
+
+	return false
+}

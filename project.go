@@ -29,6 +29,7 @@ type ProjectParam struct {
 	Author string
 	Brief  string
 
+	Std      Standard
 	Proj     ProjectType
 	Layout   ProjectLayout
 	PLicense License
@@ -40,7 +41,7 @@ type ProjectParam struct {
 	Example string
 }
 
-func GetProject(pr *ParsingResult) IProject {
+func NewProject(pr *ParsingResult) IProject {
 	param := ProjectParam{
 		Program: pr.Prog(),
 		Path:    pr.Path(),
@@ -49,6 +50,7 @@ func GetProject(pr *ParsingResult) IProject {
 		Author: pr.Author(),
 		Brief:  pr.Brief(),
 
+		Std:      pr.Std(),
 		Proj:     pr.Proj(),
 		Layout:   pr.Layout(),
 		PLicense: pr.License(),
@@ -61,8 +63,16 @@ func GetProject(pr *ParsingResult) IProject {
 	}
 
 	if pr.Lang() == LANG_C {
+		if !IsValidCStd(param.Std) {
+			panic("Invalid C Standard")
+		}
+
 		return NewCProject(param)
 	} else if pr.Lang() == LANG_CPP {
+		if !IsValidCXXStd(param.Std) {
+			panic("Invalid C++ Standard")
+		}
+
 		return NewCppProject(param)
 	} else {
 		panic("Unknown language")

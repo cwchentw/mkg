@@ -52,16 +52,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	// Remove it later.
-	/*
-		fmt.Println("")
-
-		fmt.Print(pr)
-
-		fmt.Println("")
-	*/
-
-	p := GetProject(pr)
+	p := NewProject(pr)
 	CreateDir(pr)
 	p.Create()
 }

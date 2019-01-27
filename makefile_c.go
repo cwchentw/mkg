@@ -24,9 +24,9 @@ ifndef C_STD
 	ifeq ($(detected_OS),Windows)
 		C_STD=
 	else ifeq ($(detected_OS),Darwin)
-		C_STD=c99
+		C_STD={{ .Standard }}
 	else
-		C_STD=c99
+		C_STD={{ .Standard }}
 	endif
 endif  # C_STD
 
