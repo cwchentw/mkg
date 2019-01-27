@@ -122,6 +122,7 @@ Project config file [Makefile]:
 * `-v` or `--version`: Show version info and exit the program
 * `-h` or `--help`: Show help message and exit the program
 * `--licenses`: Show the available open-source licenses and exit the program
+* `--standards`: Show available language standards and exit the program
 
 ### Project metadata
 
@@ -152,12 +153,39 @@ Here are the available licenses in our program:
 
 * `-c` or `-C`: generate a C project (default)
 * `-cpp` or `-cxx`: generate a C++ project
+* `-std _std_` or `--standard _std_` set the language standard to *std*
 * `--console`: generate an console application project (default)
 * `--library`: generate a library project
 * `--nested`: generate a nested project (default)
 * `--flat`: generate a flat project
 * `-f` or `--force`: Remove all existing contents on path (Dangerous!)
 * `--custom`: run it interactively with more customization
+
+Here are the available language standard for C:
+
+* `c89` or `c90`
+* `c99`
+* `c11`
+* `c17` or `c18`
+* `gnu89` or `gnu90`
+* `gnu99`
+* `gnu11`
+* `gnu17` or `gnu18`
+
+Due to the limitation from Visual C++, this setting won't take effect when using Visual C++.
+
+Here are the available language standard for C++:
+
+* `c++98` or `c++03`
+* `c++11`
+* `c++14`
+* `c++17`
+* `gnu++98` or `gnu++03`
+* `gnu++11`
+* `gnu++14`
+* `gnu++17`
+
+Due to the limitation from Visual C++, `mkg` will automatically set to the most appropriate language standard for C++ when using Visual C++.
 
 ### Project structure
 
