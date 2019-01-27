@@ -16,6 +16,45 @@ func langToString(lang Language) string {
 	}
 }
 
+func stdToString(std Standard) string {
+	switch std {
+	case STD_C89:
+		return "c89"
+	case STD_C99:
+		return "c99"
+	case STD_C11:
+		return "c11"
+	case STD_C17:
+		return "c17"
+	case STD_C_GNU89:
+		return "gnu89"
+	case STD_C_GNU99:
+		return "gnu99"
+	case STD_C_GNU11:
+		return "gnu11"
+	case STD_C_GNU17:
+		return "gnu17"
+	case STD_CXX98:
+		return "c++98"
+	case STD_CXX11:
+		return "c++11"
+	case STD_CXX14:
+		return "c++14"
+	case STD_CXX17:
+		return "c++17"
+	case STD_CXX_GNU98:
+		return "gnu++98"
+	case STD_CXX_GNU11:
+		return "gnu++11"
+	case STD_CXX_GNU14:
+		return "gnu++14"
+	case STD_CXX_GNU17:
+		return "gnu++17"
+	default:
+		panic("Unknown standard")
+	}
+}
+
 func stringToLang(lang string) (Language, error) {
 	switch lang {
 	case "c":
@@ -24,6 +63,45 @@ func stringToLang(lang string) (Language, error) {
 		return LANG_CPP, nil
 	default:
 		return LANG_C, errors.New("Invalid language")
+	}
+}
+
+func stringToStd(std string) (Standard, error) {
+	switch std {
+	case "c89", "c90":
+		return STD_C89, nil
+	case "c99":
+		return STD_C99, nil
+	case "c11":
+		return STD_C11, nil
+	case "c17", "c18":
+		return STD_C17, nil
+	case "gnu89", "gnu90":
+		return STD_C_GNU89, nil
+	case "gnu99":
+		return STD_C_GNU99, nil
+	case "gnu11":
+		return STD_C_GNU11, nil
+	case "gnu17", "gnu18":
+		return STD_C_GNU17, nil
+	case "c++98", "c++03":
+		return STD_CXX98, nil
+	case "c++11":
+		return STD_CXX11, nil
+	case "c++14":
+		return STD_CXX14, nil
+	case "c++17":
+		return STD_CXX17, nil
+	case "gnu++98", "gnu++03":
+		return STD_CXX_GNU98, nil
+	case "gnu++11":
+		return STD_CXX_GNU11, nil
+	case "gnu++14":
+		return STD_CXX_GNU14, nil
+	case "gnu++17":
+		return STD_CXX_GNU17, nil
+	default:
+		return STD_C99, errors.New("Invalid standard")
 	}
 }
 

@@ -16,6 +16,7 @@ type ParsingResult struct {
 	brief  string
 
 	lang   Language
+	std    Standard
 	proj   ProjectType
 	layout ProjectLayout
 
@@ -41,6 +42,7 @@ func NewParsingResult() *ParsingResult {
 	result.brief = "something"
 
 	result.lang = LANG_C
+	result.std = STD_C99
 	result.proj = PROJ_CONSOLE
 	result.layout = LAYOUT_NESTED
 
@@ -61,12 +63,13 @@ Project path: %s
 Project author: %s
 Project brief description: %s
 Project language: %s
+Project standard: %s
 Project type: %s
 Project license: %s
 Project layout: %s
 `, r.Prog(), r.Path(), r.Author(), r.Brief(),
-		langToString(r.Lang()), projToString(r.Proj()),
-		licenseToRepr(r.License()), layoutToString(r.Layout()),
+		langToString(r.Lang()), stdToString(r.Std()),
+		projToString(r.Proj()), licenseToRepr(r.License()), layoutToString(r.Layout()),
 	)
 
 	if !r.IsNested() {
@@ -163,6 +166,14 @@ func (r *ParsingResult) Lang() Language {
 
 func (r *ParsingResult) SetLang(lang Language) {
 	r.lang = lang
+}
+
+func (r *ParsingResult) Std() Standard {
+	return r.std
+}
+
+func (r *ParsingResult) SetStd(std Standard) {
+	r.std = std
 }
 
 func (r *ParsingResult) Proj() ProjectType {

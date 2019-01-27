@@ -10,7 +10,7 @@ func printVersion() {
 }
 
 func printHelp(stream io.Writer) {
-	fmt.Fprintf(stream, `Usage: %s [option] /path/to/project
+	fmt.Fprintf(stream, `Usage: %s [option] path/to/project
 
 Options:
     -p _prog_           Set program name as _prog_
@@ -19,7 +19,7 @@ Options:
     --author _author_
     -b _brief_          Set project description as _brief_
     --brief _brief_
-    -o _makefile_         Set config file to _makefile_, default to Makefile
+    -o _makefile_       Set config file to _makefile_, default to Makefile
     --output _makefile_
     -l _license_        Choose a open-source _license_
     --license _license_
@@ -27,6 +27,9 @@ Options:
 
     -c, -C              Generate a C project (default)
     -cpp, -cxx          Generate a C++ project
+    -std _std_          Set the standard version of the project
+    --standard _std_
+    --standards         Show available standards
     --console           Generate a console project (default)
     --library           Generate a library project
     --nested            Generate a nested project (default)
@@ -69,5 +72,31 @@ GNU Lesser General Public License v2.1 (lgpl2)
 GNU Lesser General Public License v3.0 (lgpl3)
 Mozilla Public License 2.0 (mpl2)
 The Unlicense (unlicense)
+`)
+}
+
+func printStandards() {
+	fmt.Printf(`c89
+c90
+c99
+c11
+c17
+c18
+gnu89
+gnu90
+gnu99
+gnu11
+gnu17
+gnu18
+c++98
+c++03
+c++11
+c++14
+c++17
+gnu++98
+gnu++03
+gnu++11
+gnu++14
+gnu++17
 `)
 }
