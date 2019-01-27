@@ -11,6 +11,7 @@ Program Metadata
 * ``-v`` or ``--version`` shows version number and exits the program
 * ``-h`` or ``--help`` shows help message and exits the program
 * ``--licenses`` show the available open-source licenses and exits the program
+* ``--standards``: Show available language standards and exit the program
 
 -----------------
 Project Metadata
@@ -80,7 +81,7 @@ Here are the available language standard for C++:
 * ``gnu++14``
 * ``gnu++17``
 
-Due to the limitation from Visual C++, `mkg` will automatically set to the most appropriate language standard for C++ when using Visual C++.
+Due to the limitation from Visual C++, ``mkg`` will automatically set to the most appropriate language standard for C++ when using Visual C++.
 
 ------------------
 Project Structure
