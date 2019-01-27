@@ -22,11 +22,11 @@ CXX_STD=
 
 ifndef CXX_STD
 	ifeq ($(detected_OS),Windows)
-		CXX_STD=c++14
+		CXX_STD={{ .StandardWin }}
 	else ifeq ($(detected_OS),Darwin)
-		CXX_STD=c++11
+		CXX_STD={{ .Standard }}
 	else
-		CXX_STD=c++11
+		CXX_STD={{ .Standard }}
 	endif
 endif  # CXX_STD
 

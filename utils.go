@@ -105,6 +105,29 @@ func stringToStd(std string) (Standard, error) {
 	}
 }
 
+func stdToStringWin(std Standard) string {
+	switch std {
+	case STD_CXX98:
+		fallthrough
+	case STD_CXX11:
+		fallthrough
+	case STD_CXX14:
+		fallthrough
+	case STD_CXX_GNU98:
+		fallthrough
+	case STD_CXX_GNU11:
+		fallthrough
+	case STD_CXX_GNU14:
+		return "c++14"
+	case STD_CXX17:
+		fallthrough
+	case STD_CXX_GNU17:
+		return "c++17"
+	}
+
+	panic("Invalid C++ standard for Visual C++")
+}
+
 func projToString(proj ProjectType) string {
 	switch proj {
 	case PROJ_CONSOLE:
@@ -327,12 +350,19 @@ func IsValidCStd(std Standard) bool {
 func IsValidCXXStd(std Standard) bool {
 	switch std {
 	case STD_CXX98:
+		fallthrough
 	case STD_CXX11:
+		fallthrough
 	case STD_CXX14:
+		fallthrough
 	case STD_CXX17:
+		fallthrough
 	case STD_CXX_GNU98:
+		fallthrough
 	case STD_CXX_GNU11:
+		fallthrough
 	case STD_CXX_GNU14:
+		fallthrough
 	case STD_CXX_GNU17:
 		return true
 	}

@@ -16,6 +16,7 @@ type CppProject struct {
 	author string
 	brief  string
 
+	std    Standard
 	proj   ProjectType
 	layout ProjectLayout
 
@@ -38,6 +39,7 @@ func NewCppProject(param ProjectParam) *CppProject {
 	p.author = param.Author
 	p.brief = param.Brief
 
+	p.std = param.Std
 	p.proj = param.Proj
 	p.layout = param.Layout
 	p.license = param.PLicense
@@ -69,6 +71,10 @@ func (p *CppProject) Author() string {
 
 func (p *CppProject) Brief() string {
 	return p.brief
+}
+
+func (p *CppProject) Std() Standard {
+	return p.std
 }
 
 func (p *CppProject) Proj() ProjectType {
@@ -248,9 +254,13 @@ func (p *CppProject) createConfigAppFlat() {
 	}
 
 	err = tmpl.Execute(file, struct {
-		Program string
+		Program     string
+		StandardWin string
+		Standard    string
 	}{
 		p.Prog(),
+		stdToStringWin(p.Std()),
+		stdToString(p.Std()),
 	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -333,9 +343,13 @@ func (p *CppProject) createConfigLibFlat() {
 	}
 
 	err = tmpl.Execute(file, struct {
-		Program string
+		Program     string
+		StandardWin string
+		Standard    string
 	}{
 		p.Prog(),
+		stdToStringWin(p.Std()),
+		stdToString(p.Std()),
 	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -424,14 +438,18 @@ func (p *CppProject) createConfigAppNested() {
 	}
 
 	err = tmpl.Execute(file, struct {
-		Program    string
-		SrcDir     string
-		IncludeDir string
-		DistDir    string
-		TestDir    string
-		ExampleDir string
+		Program     string
+		StandardWin string
+		Standard    string
+		SrcDir      string
+		IncludeDir  string
+		DistDir     string
+		TestDir     string
+		ExampleDir  string
 	}{
 		p.Prog(),
+		stdToStringWin(p.Std()),
+		stdToString(p.Std()),
 		p.Src(),
 		p.Include(),
 		p.Dist(),
@@ -525,14 +543,18 @@ func (p *CppProject) createConfigLibNested() {
 	}
 
 	err = tmpl.Execute(file, struct {
-		Program    string
-		SrcDir     string
-		IncludeDir string
-		DistDir    string
-		TestDir    string
-		ExampleDir string
+		Program     string
+		StandardWin string
+		Standard    string
+		SrcDir      string
+		IncludeDir  string
+		DistDir     string
+		TestDir     string
+		ExampleDir  string
 	}{
 		p.Prog(),
+		stdToStringWin(p.Std()),
+		stdToString(p.Std()),
 		p.Src(),
 		p.Include(),
 		p.Dist(),
