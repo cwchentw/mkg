@@ -10,7 +10,7 @@ and FreeBSD.
 *P.S. We didn't test our program on FreeBSD yet.*
 
 If doubtful, check the source of ``mkg`` on either `GitHub <https://github.com/cwchentw/mkg>`_
-or `GitLab <https://bitbucket.org/cwchen/mkg>`_. You may compile it from
+or `GitLab <https://gitlab.com/cwchen/mkg>`_. You may compile it from
 its source as well, like this:
 
 .. code-block:: console

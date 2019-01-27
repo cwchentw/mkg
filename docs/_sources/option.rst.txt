@@ -48,12 +48,39 @@ Behavior Modifiers
 
 * ``-c`` or ``-C`` generates a C project (default)
 * ``-cpp`` or ``-cxx`` generates a C++ project
+* ``-std _std_`` or ``--standard _std_`` set the language standard to *std*
 * ``--console`` generates a console application project (default)
 * ``--library`` generates a library project
 * ``--nested`` generates a nested project (default)
 * ``--flat`` generates a flat project
 * ``-f`` or ``--force`` removes all existing contents on path (**Dangerous!**)
 * ``--custom`` runs it interactively with more customization
+
+Here are the available language standard for C:
+
+* ``c89`` or ``c90``
+* ``c99``
+* ``c11``
+* ``c17`` or ``c18``
+* ``gnu89`` or ``gnu90``
+* ``gnu99``
+* ``gnu11``
+* ``gnu17`` or ``gnu18``
+
+Due to the limitation from Visual C++, this setting won't take effect when using Visual C++.
+
+Here are the available language standard for C++:
+
+* ``c++98`` or ``c++03``
+* ``c++11``
+* ``c++14``
+* ``c++17``
+* ``gnu++98`` or ``gnu++03``
+* ``gnu++11``
+* ``gnu++14``
+* ``gnu++17``
+
+Due to the limitation from Visual C++, `mkg` will automatically set to the most appropriate language standard for C++ when using Visual C++.
 
 ------------------
 Project Structure

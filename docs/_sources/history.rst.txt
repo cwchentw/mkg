@@ -2,6 +2,10 @@
 History
 ========
 
+* 0.1.3
+
+  * Language standard selection for C and C++
+
 * 0.1.2
 
   * Update copyright related info
