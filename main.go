@@ -47,6 +47,9 @@ func main() {
 	case PARSING_FSS_EVENT_LICENSES:
 		printLicenses()
 		os.Exit(0)
+	case PARSING_FSS_EVNET_STANDARDS:
+		printStandards()
+		os.Exit(0)
 	}
 
 	// Remove it later.

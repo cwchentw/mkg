@@ -17,6 +17,8 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 			return PARSING_FSS_EVENT_HELP, nil
 		case "--licenses":
 			return PARSING_FSS_EVENT_LICENSES, nil
+		case "--standards":
+			return PARSING_FSS_EVNET_STANDARDS, nil
 		case "--custom":
 			return PARSING_FSS_EVENT_ERROR, errors.New("--custom should be the first argument")
 		case "-f", "--force":
@@ -33,6 +35,18 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 			r.SetLayout(LAYOUT_NESTED)
 		case "--flat":
 			r.SetLayout(LAYOUT_FLAT)
+		case "-std", "--standard":
+			if i+1 >= len(args) {
+				return PARSING_FSS_EVENT_ERROR, errors.New("No valid standard")
+			}
+
+			std, err := stringToStd(args[i+1])
+			if err != nil {
+				return PARSING_FSS_EVENT_ERROR, err
+			}
+
+			r.SetStd(std)
+			i++
 		case "-p", "--program":
 			if i+1 >= len(args) {
 				return PARSING_FSS_EVENT_ERROR, errors.New("No valid program")
