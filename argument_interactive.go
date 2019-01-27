@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"runtime"
@@ -69,6 +70,64 @@ func (r *ParsingResult) RunWithDefaults() error {
 		}
 
 		r.SetLang(l)
+	}
+
+	fmt.Println("")
+
+	if r.Lang() == LANG_C {
+		PrintCStandards()
+	} else if r.Lang() == LANG_CPP {
+		PrintCXXStandards()
+	} else {
+		panic("Unknown language standards")
+	}
+
+	fmt.Println("")
+
+	if r.Lang() == LANG_C {
+		str, err := prompt(fmt.Sprintf("Language standard [%s]: ", stdToString(r.Std())))
+		if err != nil {
+			return err
+		}
+
+		var std Standard
+
+		if str == "" {
+			std = STD_C99
+		} else {
+			std, err = stringToStd(str)
+			if err != nil {
+				return err
+			}
+		}
+
+		if !IsValidCStd(std) {
+			return errors.New("Invalid C standard")
+		}
+		r.SetStd(std)
+	} else if r.Lang() == LANG_CPP {
+		str, err := prompt(fmt.Sprintf("Language standard [%s]: ", stdToString(STD_CXX11)))
+		if err != nil {
+			return err
+		}
+
+		var std Standard
+
+		if str == "" {
+			std = STD_CXX11
+		} else {
+			std, err = stringToStd(str)
+			if err != nil {
+				return err
+			}
+		}
+
+		if !IsValidCXXStd(std) {
+			return errors.New("Invalid C++ standard")
+		}
+		r.SetStd(std)
+	} else {
+		panic("No valid language standard")
 	}
 
 	proj, err := prompt(
