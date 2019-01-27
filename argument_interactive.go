@@ -131,7 +131,7 @@ func (r *ParsingResult) RunWithDefaults() error {
 	}
 
 	proj, err := prompt(
-		fmt.Sprintf("Project type (app/lib) [%s]: ", projToString(r.Proj())))
+		fmt.Sprintf("Project type (console/library) [%s]: ", projToString(r.Proj())))
 	if err != nil {
 		return err
 	}
