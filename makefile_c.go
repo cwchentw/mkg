@@ -21,10 +21,8 @@ const MakefileCStandard = `# Clean C_STD variable.
 C_STD=
 
 ifndef C_STD
-	ifeq ($(detected_OS),Windows)
+	ifeq ($(CC),cl)
 		C_STD=
-	else ifeq ($(detected_OS),Darwin)
-		C_STD={{ .Standard }}
 	else
 		C_STD={{ .Standard }}
 	endif
