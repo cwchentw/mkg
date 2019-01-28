@@ -25,12 +25,12 @@ Alternatively, install it with Go:
 $ go get https://github.com/cwchentw/mkg.git
 ```
 
-## Synposis
+## Synopsis
 
 Run it in batch mode:
 
 ```
-$ mkg [option] /path/to/project
+$ mkg [option] path/to/project
 ```
 
 Rut it interactively with a sensible project structure:
@@ -51,7 +51,7 @@ $ mkg --custom
 
 Make is a part of POSIX standard and many Unix-like systems adopt GNU Make as their Make implementations. In Windows, you may get a GNU Make port from either [GnuWin32](http://gnuwin32.sourceforge.net/) or [MSYS2](https://www.msys2.org/).
 
-By default, `mkg` will generate a nested C application project to the target path:
+By default, `mkg` will generate a nested C console application project to the target path:
 
 ```
 $ mkg myapp
@@ -72,7 +72,22 @@ Project path [myapp]:
 Project author [somebody]: Michael Chen
 Project brief description [something]: Yet Another Application
 Project language (c/cpp) [c]:
-Project type (app/lib) [app]:
+
+c89
+c90
+c99
+c11
+c17
+c18
+gnu89
+gnu90
+gnu99
+gnu11
+gnu17
+gnu18
+
+Language standard [c99]:
+Project type (console/library) [console]:
 
 None (none)
 Apache License 2.0 (apache2)
@@ -89,7 +104,7 @@ GNU Lesser General Public License v3.0 (lgpl3)
 Mozilla Public License 2.0 (mpl2)
 The Unlicense (unlicense)
 
-Project licensing [none]:
+Project license [none]:
 ```
 
 In this case, `mkg` will generate a project with a sensible project structure.
@@ -100,12 +115,8 @@ Alternatively, run it interactively with more customization:
 $ mkg --custom
 Program name [myapp]:
 Project path [myapp]:
-Project author [somebody]: Michael Chen
-Project brief description [something]: Yet Another Application
-Project language (c/cpp) [c]:
-Project type (app/lib) [app]:
 
-(Choose licensing as above...)
+(Same as above...)
 
 Project structure (nested/flat) [nested]:
 Project source directory [src]:
@@ -158,7 +169,7 @@ Here are the available licenses in our program:
 * `--library`: generate a library project
 * `--nested`: generate a nested project (default)
 * `--flat`: generate a flat project
-* `-f` or `--force`: Remove all existing contents on path (Dangerous!)
+* `-f` or `--force`: Remove all existing contents on path **(Dangerous!)**
 * `--custom`: run it interactively with more customization
 
 Here are the available language standard for C:
@@ -199,7 +210,7 @@ These parameters only make effects in nested projects.
 
 ## Philosophy
 
-`mkg` is a Makefile-based project generator that is
+`mkg` is a Makefile-based project generator that features
 
 * Green: `mkg` is a statically-compiled executable without any external runtime environment
 * Portable: `mkg` itself and the generated projects are portable on the big three desktop systems
