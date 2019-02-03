@@ -6,20 +6,18 @@
 
 To use `mkg`-generated projects, you need
 
-* A recent C (or C++) compiler
+* A C (or C++) compiler
 * GNU Make
 
 To compile `mkg` from source, you need
 
-* A recent Go compiler
-
-We provide pre-compiled executables [here](https://github.com/cwchentw/mkg/releases). If in doubt, check our source and compile it by yourself.
+* A Go compiler
 
 ## Install
 
-Just move pre-compiled `mkg` executable to any valid system **PATH**.
+We provide pre-compiled executables [here](https://github.com/cwchentw/mkg/releases). Just move pre-compiled `mkg` executable to any valid system **PATH**.
 
-Alternatively, install it with Go:
+Alternatively, compile and install it with a Go compiler:
 
 ```
 $ go get https://github.com/cwchentw/mkg.git
