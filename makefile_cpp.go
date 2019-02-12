@@ -36,7 +36,7 @@ export CXX_STD
 const makefile_cxxflags_debug = `# Set CXXFLAGS for Debug target.
 ifndef CXXFLAGS_DEBUG
 	ifeq ($(CXX),cl)
-		CXXFLAGS_DEBUG:=/Wall /sdl /EHsc /std:$(CXX_STD) /Zi
+		CXXFLAGS_DEBUG:=/W4 /sdl /EHsc /std:$(CXX_STD) /Zi
 	else ifeq ($(detected_OS),Darwin)
 		ifeq ($(CXX),clang)
 			CXXFLAGS_DEBUG:=-Wall -Wextra -O1 -g -std=$(CXX_STD) -fsanitize=address -fno-omit-frame-pointer
@@ -54,7 +54,7 @@ export CXXFLAGS_DEBUG
 const makefile_cxxflags_release = `# Set CXXFLAGS for Release target.
 ifndef CXXFLAGS_RELEASE
 	ifeq ($(CXX),cl)
-		CXXFLAGS_RELEASE:=/Wall /sdl /EHsc /std:$(CXX_STD) /O2
+		CXXFLAGS_RELEASE:=/W4 /sdl /EHsc /std:$(CXX_STD) /O2
 	else
 		CXXFLAGS_RELEASE:=-Wall -Wextra -O2 -std=$(CXX_STD)
 	endif

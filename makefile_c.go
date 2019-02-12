@@ -34,7 +34,7 @@ export C_STD
 const MakefileCFlagsDebug = `# Set CFLAGS for Debug target.
 ifndef CFLAGS_DEBUG
 	ifeq ($(CC),cl)
-		CFLAGS_DEBUG=/Wall /sdl /Zi
+		CFLAGS_DEBUG=/W4 /sdl /Zi
 	else ifeq ($(detected_OS),Darwin)
 		ifeq ($(CC),clang)
 			CFLAGS_DEBUG:=-Wall -Wextra -O1 -g -std=$(C_STD) -fsanitize=address -fno-omit-frame-pointer
@@ -52,7 +52,7 @@ export CFLAGS_DEBUG
 const MakefileCFlagsRelease = `# Set CFLAGS for Release target.
 ifndef CFLAGS_RELEASE
 	ifeq ($(CC),cl)
-		CFLAGS_RELEASE=/Wall /sdl /O2
+		CFLAGS_RELEASE=/W4 /sdl /O2
 	else
 		CFLAGS_RELEASE:=-Wall -Wextra -O2 -std=$(C_STD)
 	endif
