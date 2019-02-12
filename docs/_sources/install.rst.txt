@@ -17,4 +17,4 @@ its source as well, like this:
 
    $ env GIT_TERMINAL_PROMPT=1 go get github.com/cwchentw/mkg
 
-You need a recent Go compiler to compile ``mkg`` from its source.
+You need a Go compiler to compile and install ``mkg`` from its source.
