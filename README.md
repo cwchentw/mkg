@@ -218,14 +218,13 @@ These parameters only make effects in nested projects.
 
 ## TODO
 
-Add supports to the following compilers or toolchains:
-
-* Fortran (gFortran-based)
-* Objective-C (either GCC or Clang-based)
-* LaTeX
-* (May or may not) Vala
-
-(May or may not) add support to CMake.
+* Add supports to the following compilers or toolchains:
+  * Fortran (gFortran-based)
+  * Objective-C
+  * LaTeX
+  * Vala
+* Migrate to CMake-based project generator.
+* Add `make install` subcommand for Unix-like systems.
 
 ## Copyright
 
