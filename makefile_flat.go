@@ -17,13 +17,13 @@ run: $(PROGRAM)
 
 $(PROGRAM): $(OBJS)
 ifeq ($(CC),cl)
-	$(SET_ENV) && $(CC) $(CFLAGS) /Fe:$(PROGRAM) $(INCLUDE) $(LIBS) $(OBJS)
+	$(CC) $(CFLAGS) /Fe:$(PROGRAM) $(INCLUDE) $(LIBS) $(OBJS)
 else
 	$(CC) $(CFLAGS) -o $(PROGRAM) $(OBJS) $(INCLUDE) $(LIBS)
 endif
 
 %.obj: %.c
-	$(SET_ENV) && $(CC) $(CFLAGS) $(INCLUDE) $(LIBS) /c $< 
+	$(CC) $(CFLAGS) $(INCLUDE) $(LIBS) /c $< 
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< $(INCLUDE) $(LIBS)
@@ -46,13 +46,13 @@ run: $(PROGRAM)
 
 $(PROGRAM): $(OBJS)
 ifeq ($(CXX),cl)
-	$(SET_ENV) && $(CXX) $(CXXFLAGS) /Fe:$(PROGRAM) $(INCLUDE) $(LIBS) $(OBJS) 
+	$(CXX) $(CXXFLAGS) /Fe:$(PROGRAM) $(INCLUDE) $(LIBS) $(OBJS) 
 else
 	$(CXX) $(CXXFLAGS) -o $(PROGRAM) $(OBJS) $(INCLUDE) $(LIBS)
 endif
 
 %.obj: %.cpp
-	$(SET_ENV) && $(CXX) $(CXXFLAGS) /I. $(INCLUDE) $(LIBS) /c $< 
+	$(CXX) $(CXXFLAGS) /I. $(INCLUDE) $(LIBS) /c $< 
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -I. $(INCLUDE) $(LIBS)
@@ -65,8 +65,8 @@ all: dynamic
 test: dynamic
 ifeq ($(detected_OS),Windows)
 ifeq ($(CC),cl)
-	$(SET_ENV) && for %%x in ($(TEST_OBJS:.obj=.c)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) /c %%x /link $(DYNAMIC_LIB:.dll=.lib)
-	$(SET_ENV) && for %%x in ($(TEST_OBJS)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) %%x /link $(DYNAMIC_LIB:.dll=.lib)
+	for %%x in ($(TEST_OBJS:.obj=.c)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) /c %%x /link $(DYNAMIC_LIB:.dll=.lib)
+	for %%x in ($(TEST_OBJS)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) %%x /link $(DYNAMIC_LIB:.dll=.lib)
 	for %%x in ($(TEST_OBJS:.obj=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
 	for %%x in ($(TEST_OBJS:.o=.c)) do $(CC) $(CFLAGS) -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS) -c %%x
@@ -85,8 +85,8 @@ endif
 testStatic: static
 ifeq ($(detected_OS),Windows)
 ifeq ($(CC),cl)
-	$(SET_ENV) && for %%x in ($(TEST_OBJS:.obj=.c)) do $(CC) $(CFLAGS) /I. $(INCLUDE) /L. $(LIBS) /c %%x /link $(STATIC_LIB)
-	$(SET_ENV) && for %%x in ($(TEST_OBJS)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) %%x /link $(STATIC_LIB)
+	for %%x in ($(TEST_OBJS:.obj=.c)) do $(CC) $(CFLAGS) /I. $(INCLUDE) /L. $(LIBS) /c %%x /link $(STATIC_LIB)
+	for %%x in ($(TEST_OBJS)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) %%x /link $(STATIC_LIB)
 	for %%x in ($(TEST_OBJS:.obj=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
 	for %%x in ($(TEST_OBJS:.o=)) do $(CC) $(CFLAGS) -o %%x.exe %%x.c -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS)
@@ -104,8 +104,8 @@ endif
 dynamic:
 ifeq ($(detected_OS),Windows)
 ifeq ($(CC),cl)
-	$(SET_ENV) && for %%x in ($(OBJS:.obj=.c)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) /c %%x
-	$(SET_ENV) && link /DLL /DEF:$(DYNAMIC_LIB:.dll=.def) /out:$(DYNAMIC_LIB) $(INCLUDE) $(LIBS) $(OBJS)
+	for %%x in ($(OBJS:.obj=.c)) do $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) /c %%x
+	link /DLL /DEF:$(DYNAMIC_LIB:.dll=.def) /out:$(DYNAMIC_LIB) $(INCLUDE) $(LIBS) $(OBJS)
 else
 	for %%x in ($(OBJS:.o=.c)) do $(CC) $(CFLAGS) -fPIC -c %%x -I. $(INCLUDE) -L. $(LIBS)
 	$(CC) $(CFLAGS) -shared -o $(DYNAMIC_LIB) $(OBJS) -I. $(INCLUDE) -L. $(LIBS)
@@ -125,7 +125,7 @@ else
 endif
 
 %.obj: %.c
-	$(SET_ENV) && $(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) /c $<
+	$(CC) $(CFLAGS) /I. $(INCLUDE) $(LIBS) /c $<
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -I. $(INCLUDE) -L. $(LIBS)
@@ -138,8 +138,8 @@ all: dynamic
 test: dynamic
 ifeq ($(detected_OS),Windows)
 ifeq ($(CXX),cl)
-	$(SET_ENV) && for %%x in ($(TEST_OBJS:.obj=.cpp)) do $(CXX) $(CXXFLAGS) /I. $(INCLUDE) $(LIBS) /c %%x /link $(DYNAMIC_LIB:.dll=.lib)
-	$(SET_ENV) && for %%x in ($(TEST_OBJS)) do $(CXX) $(CXXFLAGS) /I. $(INCLUDE) $(LIBS) %%x /link $(DYNAMIC_LIB:.dll=.lib)
+	for %%x in ($(TEST_OBJS:.obj=.cpp)) do $(CXX) $(CXXFLAGS) /I. $(INCLUDE) $(LIBS) /c %%x /link $(DYNAMIC_LIB:.dll=.lib)
+	for %%x in ($(TEST_OBJS)) do $(CXX) $(CXXFLAGS) /I. $(INCLUDE) $(LIBS) %%x /link $(DYNAMIC_LIB:.dll=.lib)
 	for %%x in ($(TEST_OBJS:.obj=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
 	for %%x in ($(TEST_OBJS:.o=.cpp)) do $(CXX) $(CXXFLAGS) -c %%x -I. $(INCLUDE) -L. -l{{.Program}} $(LIBS)
@@ -158,8 +158,8 @@ endif
 testStatic: static
 ifeq ($(detected_OS),Windows)
 ifeq ($(CXX),cl)
-	$(SET_ENV) && for %%x in ($(TEST_OBJS:.obj=.cpp)) do $(CXX) $(CXXFLAGS) /I. $(INCLUDE) $(LIBS) /c %%x /link $(STATIC_LIB)
-	$(SET_ENV) && for %%x in ($(TEST_OBJS)) do $(CXX) $(CXXFLAGS) /I. $(INCLUDE) $(LIBS) %%x /link $(STATIC_LIB)
+	for %%x in ($(TEST_OBJS:.obj=.cpp)) do $(CXX) $(CXXFLAGS) /I. $(INCLUDE) $(LIBS) /c %%x /link $(STATIC_LIB)
+	for %%x in ($(TEST_OBJS)) do $(CXX) $(CXXFLAGS) /I. $(INCLUDE) $(LIBS) %%x /link $(STATIC_LIB)
 	for %%x in ($(TEST_OBJS:.obj=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
 	for %%x in ($(TEST_OBJS:.o=.cpp)) do $(CXX) $(CXXFLAGS) -c %%x $(STATIC_LIB) -I. $(INCLUDE) $(LIBS)

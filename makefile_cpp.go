@@ -112,11 +112,6 @@ else
 endif  # OBJS
 
 export OBJS
-
-# Set to VSVARS32.bat on Visual Studio 2015 or earlier version
-SET_ENV=VsDevCmd.bat -arch=amd64
-
-export SET_ENV
 `
 
 const makefileObjCppLib = `# Modify it if more than one source files.
@@ -130,11 +125,6 @@ else
 endif  # OBJS
 
 export OBJS
-
-# Set to VSVARS32.bat on Visual Studio 2015 or earlier version
-SET_ENV=VsDevCmd.bat -arch=amd64
-
-export SET_ENV
 `
 
 const makefileExternalLibraryCpp = `# Set third-party include and library path
