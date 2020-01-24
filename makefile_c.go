@@ -146,9 +146,12 @@ const MakefileCExtLib = `# Set third-party include and library path
 # Modify it as needed.
 ifeq ($(CC),cl)
 	LDFLAGS=
+	LDLIBS=
 else
 	LDFLAGS=
+	LDLIBS=
 endif
 
 export LDFLAGS
+export LDLIBS=
 `

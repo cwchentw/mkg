@@ -102,12 +102,12 @@ const makefileInternalAppC = `.SUFFIXES:
 
 all: ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 	$(CC) $(CFLAGS) -o ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM) $(OBJS) \
-		-I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS)
+		-I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS)
 
 ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM): $(OBJS)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS)
+	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR)
 `
 
 const makefileInternalAppCWin = `.SUFFIXES:
@@ -116,20 +116,20 @@ const makefileInternalAppCWin = `.SUFFIXES:
 
 all: ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 ifeq ($(CC),cl)
-	$(CC) $(CFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) \
+	$(CC) $(CFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS) \
 		/Fe:..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM) $(OBJS)
 else
 	$(CC) $(CFLAGS) -o ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM) $(OBJS) \
-		-I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS)
+		-I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS)
 endif
 
 ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM): $(OBJS)
 
 %.obj: %.c
-	$(CC) $(CFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) /c $<
+	$(CC) /c $< $(CFLAGS) /I ..$(SEP)$(INCLUDE_DIR)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS)
+	$(CC) -c $< $(CFLAGS) -I ..$(SEP)$(INCLUDE_DIR)
 `
 
 const makefileInternalAppCxx = `.SUFFIXES:
@@ -138,12 +138,12 @@ const makefileInternalAppCxx = `.SUFFIXES:
 
 all: ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 	$(CXX) $(CXXFLAGS) -o ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM) $(OBJS) \
-		-I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS)
+		-I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS)
 
 ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM): $(OBJS)
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS)
+	$(CXX) -c $< $(CXXFLAGS) -I ..$(SEP)$(INCLUDE_DIR)
 `
 
 const makefileInternalAppCxxWin = `.SUFFIXES:
@@ -152,20 +152,20 @@ const makefileInternalAppCxxWin = `.SUFFIXES:
 
 all: ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 ifeq ($(CXX),cl)
-	$(CXX) $(CXXFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) \
+	$(CXX) $(CXXFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS) \
 		/Fe:..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM) $(OBJS)
 else
 	$(CXX) $(CXXFLAGS) -o ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM) $(OBJS) \
-		-I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS)
+		-I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS)
 endif
 
 ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM): $(OBJS)
 
 %.obj: %.cpp
-	$(CXX) $(CXXFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) /c $<
+	$(CXX) /c $< $(CXXFLAGS) /I ..$(SEP)$(INCLUDE_DIR)
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS)
+	$(CXX) -c $< $(CXXFLAGS) -I ..$(SEP)$(INCLUDE_DIR)
 `
 
 const makefileInternalLibC = `.PHONY: all dynamic static clean
@@ -174,9 +174,9 @@ all: dynamic
 
 dynamic:
 	for x in ` + "`" + `ls *.c` + "`" + `; do $(CC) $(CFLAGS) -fPIC -c $$x \
-		-I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS); done
+		-I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS); done
 	$(CC) $(CFLAGS) -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) $(OBJS) \
-		-I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS)
+		-I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS)
 
 static: $(OBJS)
 ifeq ($(detected_OS),Darwin)
@@ -186,7 +186,7 @@ else
 endif
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS)
+	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS)
 `
 
 const makefileInternalLibCWin = `.PHONY: all dynamic static clean
@@ -195,15 +195,15 @@ all: dynamic
 
 dynamic:
 ifeq ($(CC),cl)
-	for %%x in (*.c) do $(CC) $(CFLAGS) $(LDFLAGS) \
+	for %%x in (*.c) do $(CC) $(CFLAGS) $(LDFLAGS) $(LDLIBS) \
 		/I ..$(SEP)$(INCLUDE_DIR) /c %%x
 	link /DLL /DEF:$(DYNAMIC_LIB:.dll=.def) /out:..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
-		$(LDFLAGS) $(OBJS)
+		$(LDFLAGS) $(LDLIBS) $(OBJS)
 else
-	for %%x in (*.c) do $(CC) $(CFLAGS) $(LDFLAGS) \
+	for %%x in (*.c) do $(CC) $(CFLAGS) $(LDFLAGS) $(LDLIBS) \
 		-I ..$(SEP)$(INCLUDE_DIR) -c %%x
 	$(CC) $(CFLAGS) -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
-		$(OBJS) $(LDFLAGS) -I ..$(SEP)$(INCLUDE_DIR)
+		$(OBJS) $(LDFLAGS) $(LDLIBS) -I ..$(SEP)$(INCLUDE_DIR)
 endif
 
 static: $(OBJS)
@@ -216,10 +216,10 @@ else
 endif
 
 %.obj: %.c
-	$(CC) $(CFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) /c $<
+	$(CC) /c $< $(CFLAGS) /I ..$(SEP)$(INCLUDE_DIR)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS)
+	$(CC) -c $< $(CFLAGS) -I ..$(SEP)$(INCLUDE_DIR)
 `
 
 const makefileInternalLibCxx = `.PHONY: all dynamic static clean
@@ -228,9 +228,9 @@ all: dynamic
 
 dynamic:
 	for x in ` + "`" + `ls *.cpp` + "`" + `; do $(CXX) $(CXXFLAGS) -fPIC -c $$x \
-		-I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS); done
+		-I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS); done
 	$(CXX) $(CXXFLAGS) -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) $(OBJS) \
-		-I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS)
+		-I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS)
 
 static: $(OBJS)
 ifeq ($(detected_OS),Darwin)
@@ -240,7 +240,7 @@ else
 endif
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS)
+	$(CXX) -c $< $(CXXFLAGS) -I ..$(SEP)$(INCLUDE_DIR)
 `
 
 const makefileInternalLibCxxWin = `.PHONY: all dynamic static clean
@@ -249,15 +249,15 @@ all: dynamic
 
 dynamic:
 ifeq ($(CXX),cl)
-	for %%x in (*.cpp) do $(CXX) $(CXXFLAGS) $(LDFLAGS) \
+	for %%x in (*.cpp) do $(CXX) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS) \
 		/I ..$(SEP)$(INCLUDE_DIR) /c %%x
 	link /DLL /DEF:$(DYNAMIC_LIB:.dll=.def) /out:..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
-		$(LDFLAGS) $(OBJS)
+		$(LDFLAGS) $(LDLIBS) $(OBJS)
 else
-	for %%x in (*.cpp) do $(CXX) $(CXXFLAGS) $(LDFLAGS) \
+	for %%x in (*.cpp) do $(CXX) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS) \
 		-I ..$(SEP)$(INCLUDE_DIR) -c %%x
 	$(CXX) $(CXXFLAGS) -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
-		$(OBJS) $(LDFLAGS) -I ..$(SEP)$(INCLUDE_DIR)
+		$(OBJS) $(LDFLAGS) $(LDLIBS) -I ..$(SEP)$(INCLUDE_DIR)
 endif
 
 static: $(OBJS)
@@ -270,10 +270,10 @@ else
 endif
 
 %.obj: %.cpp
-	$(CXX) $(CXXFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) /c $<
+	$(CXX) /c $< $(CXXFLAGS) /I ..$(SEP)$(INCLUDE_DIR)
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS)
+	$(CXX) -c $< $(CXXFLAGS) -I ..$(SEP)$(INCLUDE_DIR)
 `
 
 const makefileInternalClean = `clean:
@@ -285,24 +285,28 @@ all: test
 
 test: dynamic
 	for x in $(TEST_OBJS); do \
-		$(CC) $(CFLAGS) -c "$${x%.*}.c" \
+		$(CC) -c "$${x%.*}.c" \
 			-I..$(SEP)$(INCLUDE_DIR) \
-			-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(LDFLAGS); \
-		$(CC) $(CFLAGS) -o "$${x%.*}" $$x \
+			-L..$(SEP)$(DIST_DIR) -l{{.Program}} \
+			$(CFLAGS) $(LDFLAGS) $(LDLIBS); \
+		$(CC) -o "$${x%.*}" $$x \
 			-I..$(SEP)$(INCLUDE_DIR) \
-			-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(LDFLAGS); \
+			-L..$(SEP)$(DIST_DIR) -l{{.Program}} \
+			$(CFLAGS) $(LDFLAGS) $(LDLIBS); \
 		LD_LIBRARY_PATH=..$(SEP)$(DIST_DIR) .$(SEP)"$${x%.*}"; \
 		if [ $$? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
 	done
 
 testStatic: static
 	for x in $(TEST_OBJS); do \
-		$(CC) $(CFLAGS) -c "$${x%.*}.c" \
+		$(CC) -c "$${x%.*}.c" \
 			-I..$(SEP)$(INCLUDE_DIR) \
-			-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(LDFLAGS); \
-		$(CC) $(CFLAGS) -o "$${x%.*}" $$x \
+			-L..$(SEP)$(DIST_DIR) -l{{.Program}} \
+			$(CFLAGS) $(LDFLAGS) $(LDLIBS); \
+		$(CC) -o "$${x%.*}" $$x \
 			-I..$(SEP)$(INCLUDE_DIR) \
-			-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(LDFLAGS); \
+			-L..$(SEP)$(DIST_DIR) -l{{.Program}} \
+			$(CFLAGS) $(LDFLAGS) $(LDLIBS); \
 		.$(SEP)"$${x%.*}"; \
 		if [ $$? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
 	done
@@ -320,15 +324,15 @@ all: test
 test: dynamic
 ifeq ($(CC),cl)
 	for %%x in (*.c) do $(CC) $(CFLAGS) \
-		$(LDFLAGS) /I..$(SEP)$(INCLUDE_DIR) %%x \
+		$(LDFLAGS) $(LDLIBS) /I..$(SEP)$(INCLUDE_DIR) %%x \
 		..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB:.dll=.lib)
 	copy ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) . \
 		&& for %%x in ($(TEST_OBJS:.obj=.exe)) do .$(SEP)%%x \
 		&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
-	for %%x in ($(TEST_OBJS:.o=)) do $(CC) $(CFLAGS) -o %%x.exe %%x.c \
+	for %%x in ($(TEST_OBJS:.o=)) do $(CC) -o %%x.exe %%x.c \
 		-I..$(SEP)$(INCLUDE_DIR) \
-		-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(LDFLAGS)
+		-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(CFLAGS) $(LDFLAGS) $(LDLIBS)
 	copy ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) . \
 		&& for %%x in ($(TEST_OBJS:.o=.exe)) do .$(SEP)%%x \
 		&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
@@ -351,7 +355,7 @@ endif
 $(TEST_OBJS:.obj=.exe): static
 ifeq ($(CC),cl)
 	for %%x in ($(TEST_OBJS:.obj=.c)) do \
-		$(CC) $(CFLAGS) $(LDFLAGS) /I..$(SEP)$(INCLUDE_DIR) %%x \
+		$(CC) $(CFLAGS) $(LDFLAGS) $(LDLIBS) /I..$(SEP)$(INCLUDE_DIR) %%x \
 		..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
 else
 	for %%x in ($(TEST_OBJS:.o=)) do \
@@ -370,24 +374,28 @@ all: test
 
 test: dynamic
 	for x in $(TEST_OBJS); do \
-		$(CXX) $(CXXFLAGS) -c "$${x%.*}.cpp" \
+		$(CXX) -c "$${x%.*}.cpp" \
 			-I..$(SEP)$(INCLUDE_DIR) \
-			-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(LDFLAGS); \
-		$(CXX) $(CXXFLAGS) -o "$${x%.*}" $$x \
+			-L..$(SEP)$(DIST_DIR) -l{{.Program}} \
+			$(CXXFLAGS) $(LDFLAGS) $(LDLIBS); \
+		$(CXX) -o "$${x%.*}" $$x \
 			-I..$(SEP)$(INCLUDE_DIR) \
-			-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(LDFLAGS); \
+			-L..$(SEP)$(DIST_DIR) -l{{.Program}} \
+			$(CXXFLAGS) $(LDFLAGS) $(LDLIBS); \
 		LD_LIBRARY_PATH=..$(SEP)$(DIST_DIR) .$(SEP)"$${x%.*}"; \
 		if [ $$? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
 	done
 
 testStatic: static
 	for x in $(TEST_OBJS); do \
-		$(CXX) $(CXXFLAGS) -c "$${x%.*}.cpp" \
+		$(CXX) -c "$${x%.*}.cpp" \
 			-I..$(SEP)$(INCLUDE_DIR) \
-			-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(LDFLAGS); \
-		$(CXX) $(CXXFLAGS) -o "$${x%.*}" $$x \
+			-L..$(SEP)$(DIST_DIR) -l{{.Program}} \
+			$(CXXFLAGS) $(LDFLAGS) $(LDLIBS); \
+		$(CXX) -o "$${x%.*}" $$x \
 			-I..$(SEP)$(INCLUDE_DIR) \
-			-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(LDFLAGS); \
+			-L..$(SEP)$(DIST_DIR) -l{{.Program}} \
+			$(CXXFLAGS) $(LDFLAGS) $(LDLIBS); \
 		.$(SEP)"$${x%.*}"; \
 		if [ $$? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
 	done
@@ -406,7 +414,7 @@ all: test
 test: dynamic
 ifeq ($(CXX),cl)
 	for %%x in ($(TEST_OBJS:.obj=.cpp)) do \
-		$(CXX) $(CXXFLAGS) $(LDFLAGS) \
+		$(CXX) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS) \
 		/I..$(SEP)$(INCLUDE_DIR) %%x \
 		..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB:.dll=.lib)
 	copy ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) . \
@@ -439,13 +447,13 @@ endif
 $(TEST_OBJS:.obj=.exe): static
 ifeq ($(CXX),cl)
 	for %%x in ($(TEST_OBJS:.obj=.cpp)) do \
-		$(CXX) $(CXXFLAGS) $(LDFLAGS) /I..$(SEP)$(INCLUDE_DIR) %%x \
+		$(CXX) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS) /I..$(SEP)$(INCLUDE_DIR) %%x \
 		..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
 else
 	for %%x in ($(TEST_OBJS:.o=)) do \
 		$(CXX) $(CXXFLAGS) -o %%x.exe %%x.cpp \
 		-I..$(SEP)$(INCLUDE_DIR) \
-		..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(LDFLAGS)
+		..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB) $(LDFLAGS) $(LDLIBS)
 endif
 
 static: ..$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
