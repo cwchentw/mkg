@@ -20,7 +20,7 @@ We provide pre-compiled executables [here](https://github.com/cwchentw/mkg/relea
 Alternatively, compile and install it with a Go compiler:
 
 ```
-$ go get https://github.com/cwchentw/mkg.git
+$ go get github.com/cwchentw/mkg
 ```
 
 ## Synopsis
