@@ -145,11 +145,11 @@ export OBJS
 const MakefileCExtLib = `# Set third-party include and library path
 # Modify it as needed.
 ifeq ($(CC),cl)
-	INCLUDE=
-	LIBS=
+	INCLUDE+=
+	LIBS+=
 else
-	INCLUDE=
-	LIBS=
+	INCLUDE+=
+	LIBS+=
 endif
 
 export INCLUDE
