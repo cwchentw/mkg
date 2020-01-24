@@ -164,8 +164,8 @@ func (r *ParsingResult) ParseArgument(args []string) (ParsingEvent, error) {
 	}
 
 	// Auto-correct the language standard.
-	if r.Lang() == LANG_CPP && r.Std() == STD_C99 {
-		r.SetStd(STD_CXX11)
+	if r.Lang() == LANG_CPP && r.Std() == STD_C11 {
+		r.SetStd(STD_CXX17)
 	}
 
 	return PARSING_FSS_EVENT_RUN, nil

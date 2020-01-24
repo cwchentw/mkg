@@ -42,7 +42,7 @@ func NewParsingResult() *ParsingResult {
 	result.brief = "something"
 
 	result.lang = LANG_C
-	result.std = STD_C99
+	result.std = STD_C11
 	result.proj = PROJ_CONSOLE
 	result.layout = LAYOUT_NESTED
 

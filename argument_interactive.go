@@ -93,7 +93,7 @@ func (r *ParsingResult) RunWithDefaults() error {
 		var std Standard
 
 		if str == "" {
-			std = STD_C99
+			std = STD_C11
 		} else {
 			std, err = stringToStd(str)
 			if err != nil {
@@ -114,7 +114,7 @@ func (r *ParsingResult) RunWithDefaults() error {
 		var std Standard
 
 		if str == "" {
-			std = STD_CXX11
+			std = STD_CXX17
 		} else {
 			std, err = stringToStd(str)
 			if err != nil {
