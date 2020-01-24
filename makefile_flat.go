@@ -58,7 +58,10 @@ endif
 	$(CXX) -c $< $(CXXFLAGS)
 `
 
-const makefileLibFlatC = `.PHONY: all dynamic static clean
+const makefileLibFlatC = `DYNAMIC := all test dynamic
+
+
+.PHONY: all dynamic static clean
 
 all: dynamic
 
@@ -101,17 +104,14 @@ else
 	done
 endif
 
-dynamic:
+dynamic: $(OBJS)
 ifeq ($(detected_OS),Windows)
 ifeq ($(CC),cl)
-	for %%x in ($(OBJS:.obj=.c)) do $(CC) /c %%x $(CFLAGS) /I.
 	link /DLL /DEF:$(DYNAMIC_LIB:.dll=.def) /out:$(DYNAMIC_LIB) $(LDFLAGS) $(LDLIBS) $(OBJS)
 else
-	for %%x in ($(OBJS:.o=.c)) do $(CC) -c %%x $(CFLAGS) -fPIC -I. -L. $(LDFLAGS) $(LDLIBS)
 	$(CC) $(CFLAGS) -shared -o $(DYNAMIC_LIB) $(OBJS) -I. -L. $(LDFLAGS) $(LDLIBS)
 endif
 else
-	for x in $(OBJS:.o=.c); do $(CC) -c $$x $(CFLAGS) -fPIC -I.; done
 	$(CC) $(CFLAGS) -shared -o $(DYNAMIC_LIB) $(OBJS) -I. -L. $(LDFLAGS) $(LDLIBS)
 endif
 
@@ -125,13 +125,24 @@ else
 endif
 
 %.obj: %.c
-	$(CC) /c $< $(CFLAGS)
+ifneq (,$(findstring $(MAKECMDGOALS),$(DYNAMIC)))
+	$(CC) /c $< $(CFLAGS) /MD
+else
+	$(CC) /c $< $(CFLAGS) /MT
+endif
 
 %.o: %.c
+ifneq (,$(findstring $(MAKECMDGOALS),$(DYNAMIC)))
+	$(CC) -c $< $(CFLAGS) -fPIC
+else
 	$(CC) -c $< $(CFLAGS)
+endif
 `
 
-const makefileLibFlatCxx = `.PHONY: all dynamic static clean
+const makefileLibFlatCxx = `DYNAMIC := all test dynamic
+
+
+.PHONY: all dynamic static clean
 
 all: dynamic
 
@@ -175,17 +186,14 @@ else
 	done
 endif  # $(detected_OS)
 
-dynamic:
+dynamic: $(OBJS)
 ifeq ($(detected_OS),Windows)
 ifeq ($(CXX),cl)
-	for %%x in ($(OBJS:.obj=.cpp)) do $(CXX) /c %%x $(CXXFLAGS)
 	link /DLL /DEF:$(DYNAMIC_LIB:.dll=.def) /out:$(DYNAMIC_LIB) $(OBJS) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
 else
-	for %%x in ($(OBJS:.o=.cpp)) do $(CXX) -fPIC -c %%x $(CXXFLAGS)
 	$(CXX) -shared -o $(DYNAMIC_LIB) $(OBJS) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
 endif  # $(CXX)
 else
-	for x in $(OBJS:.o=.cpp); do $(CXX) -fPIC -c $$x $(CXXFLAGS); done
 	$(CXX) -shared -o $(DYNAMIC_LIB) $(OBJS) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
 endif  # $(detected_OS)
 
@@ -199,10 +207,18 @@ else
 endif
 
 %.obj: %.cpp
-	$(CXX) /c $< $(CXXFLAGS)
+ifneq (,$(findstring $(MAKECMDGOALS),$(DYNAMIC)))
+	$(CXX) /c $< $(CXXFLAGS) /MD
+else
+	$(CXX) /c $< $(CXXFLAGS) /MT
+endif
 
 %.o: %.cpp
+ifneq (,$(findstring $(MAKECMDGOALS),$(DYNAMIC)))
+	$(CXX) -c $< $(CXXFLAGS) -fPIC
+else
 	$(CXX) -c $< $(CXXFLAGS)
+endif
 `
 
 const makefileAppClean = `clean:

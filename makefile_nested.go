@@ -107,7 +107,7 @@ all: ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM)
 ..$(SEP)$(DIST_DIR)$(SEP)$(PROGRAM): $(OBJS)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR)
+	$(CC) -c $< $(CFLAGS) -I ..$(SEP)$(INCLUDE_DIR)
 `
 
 const makefileInternalAppCWin = `.SUFFIXES:
@@ -169,13 +169,14 @@ endif
 	$(CXX) -c $< $(CXXFLAGS) -I ..$(SEP)$(INCLUDE_DIR)
 `
 
-const makefileInternalLibC = `.PHONY: all dynamic static clean
+const makefileInternalLibC = `DYNAMIC := all test dynamic
+
+
+.PHONY: all dynamic static clean
 
 all: dynamic
 
-dynamic:
-	for x in ` + "`" + `ls *.c` + "`" + `; do $(CC) -c $$x $(CFLAGS) -fPIC \
-		-I ..$(SEP)$(INCLUDE_DIR); done
+dynamic: $(OBJS)
 	$(CC) $(CFLAGS) -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) $(OBJS) \
 		-I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS)
 
@@ -187,22 +188,25 @@ else
 endif
 
 %.o: %.c
+ifneq (,$(findstring $(MAKECMDGOALS),$(DYNAMIC)))
+	$(CC) $(CFLAGS) -fPIC -c $< -I ..$(SEP)$(INCLUDE_DIR)
+else
 	$(CC) $(CFLAGS) -c $< -I ..$(SEP)$(INCLUDE_DIR)
+endif
 `
 
-const makefileInternalLibCWin = `.PHONY: all dynamic static clean
+const makefileInternalLibCWin = `DYNAMIC := all test dynamic
+
+
+.PHONY: all dynamic static clean
 
 all: dynamic
 
-dynamic:
+dynamic: $(OBJS)
 ifeq ($(CC),cl)
-	for %%x in (*.c) do $(CC) /c %%x $(CFLAGS) \
-		/I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS)
 	link /DLL /DEF:$(DYNAMIC_LIB:.dll=.def) /out:..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
 		$(OBJS) $(LDFLAGS) $(LDLIBS)
 else
-	for %%x in (*.c) do $(CC) -c %%x $(CFLAGS) \
-		-I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS)
 	$(CC)  -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) $(OBJS) \
 		$(CFLAGS) -I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS)
 endif
@@ -217,19 +221,28 @@ else
 endif
 
 %.obj: %.c
-	$(CC) /c $< $(CFLAGS) /I ..$(SEP)$(INCLUDE_DIR)
+ifneq (,$(findstring $(MAKECMDGOALS),$(DYNAMIC)))
+	$(CC) /c $< $(CFLAGS) /MD /I ..$(SEP)$(INCLUDE_DIR)
+else
+	$(CC) /c $< $(CFLAGS) /MT /I ..$(SEP)$(INCLUDE_DIR)
+endif
 
 %.o: %.c
+ifneq (,$(findstring $(MAKECMDGOALS),$(DYNAMIC)))
+	$(CC) -c $< $(CFLAGS) -fPIC -I ..$(SEP)$(INCLUDE_DIR)
+else
 	$(CC) -c $< $(CFLAGS) -I ..$(SEP)$(INCLUDE_DIR)
+endif
 `
 
-const makefileInternalLibCxx = `.PHONY: all dynamic static clean
+const makefileInternalLibCxx = `DYNAMIC := all test dynamic
+
+
+.PHONY: all dynamic static clean
 
 all: dynamic
 
-dynamic:
-	for x in ` + "`" + `ls *.cpp` + "`" + `; do $(CXX) -c $$x $(CXXFLAGS) -fPIC \
-		-I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS); done
+dynamic: $(OBJS)
 	$(CXX) -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) $(OBJS) \
 		$(CXXFLAGS) -I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS)
 
@@ -241,22 +254,25 @@ else
 endif
 
 %.o: %.cpp
+ifneq (,$(findstring $(MAKECMDGOALS),$(DYNAMIC)))
+	$(CXX) -c $< $(CXXFLAGS) -fPIC -I ..$(SEP)$(INCLUDE_DIR)
+else
 	$(CXX) -c $< $(CXXFLAGS) -I ..$(SEP)$(INCLUDE_DIR)
+endif
 `
 
-const makefileInternalLibCxxWin = `.PHONY: all dynamic static clean
+const makefileInternalLibCxxWin = `DYNAMIC := all test dynamic
+
+
+.PHONY: all dynamic static clean
 
 all: dynamic
 
-dynamic:
+dynamic: $(OBJS)
 ifeq ($(CXX),cl)
-	for %%x in (*.cpp) do $(CXX) /c %%x \
-		$(CXXFLAGS) /I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS)
 	link /DLL /DEF:$(DYNAMIC_LIB:.dll=.def) /out:..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
 		$(OBJS) $(LDFLAGS) $(LDLIBS)
 else
-	for %%x in (*.cpp) do $(CXX) -c %%x \
-		$(CXXFLAGS) -I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS)
 	$(CXX) -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
 		$(OBJS) $(CXXFLAGS) -I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS)
 endif
@@ -271,10 +287,18 @@ else
 endif
 
 %.obj: %.cpp
-	$(CXX) /c $< $(CXXFLAGS) /I ..$(SEP)$(INCLUDE_DIR)
+ifneq (,$(findstring $(MAKECMDGOALS),$(DYNAMIC)))
+	$(CXX) /c $< $(CXXFLAGS) /MD /I ..$(SEP)$(INCLUDE_DIR)
+else
+	$(CXX) /c $< $(CXXFLAGS) /MT /I ..$(SEP)$(INCLUDE_DIR)
+endif
 
 %.o: %.cpp
+ifneq (,$(findstring $(MAKECMDGOALS),$(DYNAMIC)))
+	$(CXX) -c $< $(CXXFLAGS) -fPIC -I ..$(SEP)$(INCLUDE_DIR)
+else
 	$(CXX) -c $< $(CXXFLAGS) -I ..$(SEP)$(INCLUDE_DIR)
+endif
 `
 
 const makefileInternalClean = `clean:
