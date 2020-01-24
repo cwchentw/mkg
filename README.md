@@ -174,7 +174,7 @@ Here are the available language standard for C:
 
 * `c89` or `c90`
 * `c99`
-* `c11`
+* `c11` (default)
 * `c17` or `c18`
 * `gnu89` or `gnu90`
 * `gnu99`
@@ -188,7 +188,7 @@ Here are the available language standard for C++:
 * `c++98` or `c++03`
 * `c++11`
 * `c++14`
-* `c++17`
+* `c++17` (default)
 * `gnu++98` or `gnu++03`
 * `gnu++11`
 * `gnu++14`
