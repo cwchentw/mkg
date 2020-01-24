@@ -130,13 +130,10 @@ export OBJS
 const makefileExternalLibraryCpp = `# Set third-party include and library path
 # Modify it as needed.
 ifeq ($(CC),cl)
-	INCLUDE+=
-	LIBS+=
+	LDFLAGS=
 else
-	INCLUDE+=
-	LIBS+=
+	LDFLAGS=
 endif
 
-export INCLUDE
-export LIBS
+export LDFLAGS
 `
