@@ -225,8 +225,6 @@ func (p *CppProject) createConfigAppFlat() {
 %s
 %s
 %s
-%s
-%s
 
 %s
 %s`
@@ -235,10 +233,8 @@ func (p *CppProject) createConfigAppFlat() {
 		MakefilePlatform,
 		makefile_cxx,
 		MakefileCXXStandard,
-		makefile_cxxflags_debug,
 		makefile_cxxflags_release,
-		MakefileTarget,
-		makefile_cxxflags,
+		makefile_cxxflags_debug,
 		MakefileRM,
 		MakefileSep,
 		MakefileProgram,
@@ -284,13 +280,9 @@ func (p *CppProject) createConfigLibFlat() {
 
 	CXX_STD
 
-	CXXFLAGS_DEBUG
-
 	CXXFLAGS_RELEASE
 
-	TARGET
-
-	CXX_FLAGS
+	CXXFLAGS_DEBUG
 
 	RM
 
@@ -314,8 +306,6 @@ func (p *CppProject) createConfigLibFlat() {
 %s
 %s
 %s
-%s
-%s
 
 %s
 %s`
@@ -324,10 +314,8 @@ func (p *CppProject) createConfigLibFlat() {
 		MakefilePlatform,
 		makefile_cxx,
 		MakefileCXXStandard,
-		makefile_cxxflags_debug,
 		makefile_cxxflags_release,
-		MakefileTarget,
-		makefile_cxxflags,
+		makefile_cxxflags_debug,
 		MakefileRM,
 		MakefileSep,
 		makefileLibCpp,
@@ -373,13 +361,9 @@ func (p *CppProject) createConfigAppNested() {
 
 	CXX_STD
 
-	CFLAGS_DEBUG or CXXFLAGS_DEBUG
-
 	CFLAGS_RELEASE or CXXFLAGS_RELEASE
 
-	TARGET
-
-	CFLAGS or CXX_FLAGS
+	CFLAGS_DEBUG or CXXFLAGS_DEBUG
 
 	RM
 
@@ -408,8 +392,6 @@ func (p *CppProject) createConfigAppNested() {
 %s
 %s
 %s
-%s
-%s
 
 %s
 %s`
@@ -418,10 +400,8 @@ func (p *CppProject) createConfigAppNested() {
 		MakefilePlatform,
 		makefile_cxx,
 		MakefileCXXStandard,
-		makefile_cxxflags_debug,
 		makefile_cxxflags_release,
-		MakefileTarget,
-		makefile_cxxflags,
+		makefile_cxxflags_debug,
 		MakefileRM,
 		MakefileSep,
 		makefileProjectStructure,
@@ -478,13 +458,9 @@ func (p *CppProject) createConfigLibNested() {
 
 	CXX_STD
 
-	CXXFLAGS_DEBUG
-
 	CXXFLAGS_RELEASE
 
-	TARGET
-
-	CXX_FLAGS
+	CXXFLAGS_DEBUG
 
 	RM
 
@@ -513,8 +489,6 @@ func (p *CppProject) createConfigLibNested() {
 %s
 %s
 %s
-%s
-%s
 
 %s
 %s`
@@ -523,10 +497,8 @@ func (p *CppProject) createConfigLibNested() {
 		MakefilePlatform,
 		makefile_cxx,
 		MakefileCXXStandard,
-		makefile_cxxflags_debug,
 		makefile_cxxflags_release,
-		MakefileTarget,
-		makefile_cxxflags,
+		makefile_cxxflags_debug,
 		MakefileRM,
 		MakefileSep,
 		makefileProjectStructure,

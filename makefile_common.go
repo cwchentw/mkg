@@ -10,19 +10,9 @@ endif
 export detected_OS
 `
 
-const MakefileTarget = `# Set default target.
-TARGET=
-
-ifndef TARGET
-	TARGET=Release
-endif  # TARGET
-
-export TARGET
-`
-
 const MakefileRM = `# Set proper RM on Windows.
 ifeq ($(detected_OS),Windows)
-	RM=del
+	RM=del /q /f
 endif
 
 export RM

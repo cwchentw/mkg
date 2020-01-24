@@ -34,48 +34,32 @@ export CXX_STD
 `
 
 const makefile_cxxflags_debug = `# Set CXXFLAGS for Debug target.
-ifndef CXXFLAGS_DEBUG
+ifneq (,$(DEBUG))
 	ifeq ($(CXX),cl)
-		CXXFLAGS_DEBUG:=/W4 /sdl /EHsc /std:$(CXX_STD) /Zi
-	else ifeq ($(detected_OS),Darwin)
-		ifeq ($(CXX),clang)
-			CXXFLAGS_DEBUG:=-Wall -Wextra -O1 -g -std=$(CXX_STD) -fsanitize=address -fno-omit-frame-pointer
-		else
-			CXXFLAGS_DEBUG:=-Wall -Wextra -g -std=$(CXX_STD)
-		endif
+		CXXFLAGS+=/DDEBUG /Zi /Od
 	else
-		CXXFLAGS_DEBUG:=-Wall -Wextra -g -std=$(CXX_STD)
+		CXXFLAGS+=-DDEBUG -g -O0
 	endif
-endif  # CXXFLAGS_DEBUG
-
-export CXXFLAGS_DEBUG
-`
-
-const makefile_cxxflags_release = `# Set CXXFLAGS for Release target.
-ifndef CXXFLAGS_RELEASE
+else
 	ifeq ($(CXX),cl)
-		CXXFLAGS_RELEASE:=/W4 /sdl /EHsc /std:$(CXX_STD) /O2
+		CXXFLAGS+=/O2
 	else
-		CXXFLAGS_RELEASE:=-Wall -Wextra -O2 -std=$(CXX_STD)
+		CXXFLAGS+=-O2
 	endif
-endif  # CXXFLAGS_RELEASE
-
-export CXXFLAGS_DEBUG
-`
-
-const makefile_cxxflags = `# Set default CXXFLAGS
-# Clean implict CXXFLAGS
-CXXFLAGS=
-
-ifndef CXXFLAGS
-	ifeq ($(TARGET),Debug)
-		CXXFLAGS=$(CXXFLAGS_DEBUG)
-	else
-		CXXFLAGS=$(CXXFLAGS_RELEASE)
-	endif
-endif  # CXXFLAGS
+endif
 
 export CXXFLAGS
+`
+
+const makefile_cxxflags_release = `# Set CXXFLAGS
+CXXFLAGS=
+ifndef CXXFLAGS
+	ifeq ($(CXX),cl)
+		CXXFLAGS:=/W4 /sdl /EHsc /std:$(CXX_STD)
+	else
+		CXXFLAGS:=-Wall -Wextra -std=$(CXX_STD)
+	endif
+endif
 `
 
 const makefileLibCpp = `# Set proper library name.

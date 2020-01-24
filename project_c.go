@@ -195,13 +195,9 @@ func (p *CProject) createConfigAppFlat() {
 
 	C_STD
 
-	CFLAGS_DEBUG
-
 	CFLAGS_RELEASE
 
-	TARGET
-
-	CFLAGS
+	CFLAGS_DEBUG
 
 	RM
 
@@ -225,8 +221,6 @@ func (p *CProject) createConfigAppFlat() {
 %s
 %s
 %s
-%s
-%s
 
 %s
 %s`
@@ -235,10 +229,8 @@ func (p *CProject) createConfigAppFlat() {
 		MakefilePlatform,
 		MakefileCC,
 		MakefileCStandard,
-		MakefileCFlagsDebug,
 		MakefileCFlagsRelease,
-		MakefileTarget,
-		MakefileCFlags,
+		MakefileCFlagsDebug,
 		MakefileRM,
 		MakefileSep,
 		MakefileProgram,
@@ -282,13 +274,9 @@ func (p *CProject) createConfigLibFlat() {
 
 	C_STD
 
-	CFLAGS_DEBUG
-
 	CFLAGS_RELEASE
 
-	TARGET
-
-	CFLAGS
+	CFLAGS_DEBUG
 
 	RM
 
@@ -312,8 +300,6 @@ func (p *CProject) createConfigLibFlat() {
 %s
 %s
 %s
-%s
-%s
 
 %s
 %s`
@@ -322,10 +308,8 @@ func (p *CProject) createConfigLibFlat() {
 		MakefilePlatform,
 		MakefileCC,
 		MakefileCStandard,
-		MakefileCFlagsDebug,
 		MakefileCFlagsRelease,
-		MakefileTarget,
-		MakefileCFlags,
+		MakefileCFlagsDebug,
 		MakefileRM,
 		MakefileSep,
 		MakefileCLib,
@@ -373,10 +357,6 @@ func (p *CProject) createConfigAppNested() {
 
 	CFLAGS_RELEASE or CXXFLAGS_RELEASE
 
-	TARGET
-
-	CFLAGS or CXX_FLAGS
-
 	RM
 
 	SEP
@@ -404,8 +384,6 @@ func (p *CProject) createConfigAppNested() {
 %s
 %s
 %s
-%s
-%s
 
 %s
 %s`
@@ -414,10 +392,8 @@ func (p *CProject) createConfigAppNested() {
 		MakefilePlatform,
 		MakefileCC,
 		MakefileCStandard,
-		MakefileCFlagsDebug,
 		MakefileCFlagsRelease,
-		MakefileTarget,
-		MakefileCFlags,
+		MakefileCFlagsDebug,
 		MakefileRM,
 		MakefileSep,
 		makefileProjectStructure,
@@ -472,13 +448,9 @@ func (p *CProject) createConfigLibNested() {
 
 	C_STD
 
-	CFLAGS_DEBUG
-
 	CFLAGS_RELEASE
 
-	TARGET
-
-	CFLAGS
+	CFLAGS_DEBUG
 
 	RM
 
@@ -507,8 +479,6 @@ func (p *CProject) createConfigLibNested() {
 %s
 %s
 %s
-%s
-%s
 
 %s
 %s`
@@ -517,10 +487,8 @@ func (p *CProject) createConfigLibNested() {
 		MakefilePlatform,
 		MakefileCC,
 		MakefileCStandard,
-		MakefileCFlagsDebug,
 		MakefileCFlagsRelease,
-		MakefileTarget,
-		MakefileCFlags,
+		MakefileCFlagsDebug,
 		MakefileRM,
 		MakefileSep,
 		makefileProjectStructure,

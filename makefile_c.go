@@ -32,48 +32,32 @@ export C_STD
 `
 
 const MakefileCFlagsDebug = `# Set CFLAGS for Debug target.
-ifndef CFLAGS_DEBUG
+ifneq (,$(DEBUG))
 	ifeq ($(CC),cl)
-		CFLAGS_DEBUG=/W4 /sdl /Zi
-	else ifeq ($(detected_OS),Darwin)
-		ifeq ($(CC),clang)
-			CFLAGS_DEBUG:=-Wall -Wextra -O1 -g -std=$(C_STD) -fsanitize=address -fno-omit-frame-pointer
-		else
-			CFLAGS_DEBUG:=-Wall -Wextra -g -std=$(C_STD)
-		endif
+		CFLAGS+=/DDEBUG /Zi /Od
 	else
-		CFLAGS_DEBUG:=-Wall -Wextra -g -std=$(C_STD)
+		CFLAGS+=-DDEBUG -g -O0
 	endif
-endif  # CFLAGS_DEBUG
+else
+	ifeq ($(CC),cl)
+		CFLAGS+=/O2
+	else
+		CFLAGS+=-O2
+	endif
+endif
 
-export CFLAGS_DEBUG
+export CFLAGS
 `
 
 const MakefileCFlagsRelease = `# Set CFLAGS for Release target.
-ifndef CFLAGS_RELEASE
-	ifeq ($(CC),cl)
-		CFLAGS_RELEASE=/W4 /sdl /O2
-	else
-		CFLAGS_RELEASE:=-Wall -Wextra -O2 -std=$(C_STD)
-	endif
-endif  # CFLAGS_RELEASE
-
-export CFLAGS_RELEASE
-`
-
-const MakefileCFlags = `# Set default CFLAGS
-# Clean implict CFLAGS
 CFLAGS=
-
 ifndef CFLAGS
-	ifeq ($(TARGET),Debug)
-		CFLAGS=$(CFLAGS_DEBUG)
+	ifeq ($(CC),cl)
+		CFLAGS=/W4 /sdl
 	else
-		CFLAGS=$(CFLAGS_RELEASE)
+		CFLAGS:=-Wall -Wextra -std=$(C_STD)
 	endif
-endif  # CFLAGS
-
-export CFLAGS
+endif
 `
 
 const MakefileProgram = `# Set proper program name.
