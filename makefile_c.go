@@ -153,5 +153,5 @@ else
 endif
 
 export LDFLAGS
-export LDLIBS=
+export LDLIBS
 `
