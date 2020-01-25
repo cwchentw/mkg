@@ -10,7 +10,6 @@ install:
 - cmd: cinst golang
 - sh: if [ true = "$CI_LINUX" ]; then sudo apt update; fi
 - sh: if [ true = "$CI_LINUX" ]; then sudo apt install -y golang; fi
-- sh: if [ false = "$CI_LINUX" ]; then brew install golang; fi
 
 test_script:
 - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
