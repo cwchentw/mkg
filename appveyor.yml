@@ -39,4 +39,4 @@ test_script:
 - cmd: cd mylib && make && make clean RM="rm -f" && make static && make clean RM="rm -f" && cd ..
 - cmd: rm -rf /s /q mylib
 - sh: go build
-- sh: sh mkg_test.sh
+- sh: bash mkg_test.sh
