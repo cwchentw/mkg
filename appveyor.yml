@@ -16,27 +16,27 @@ test_script:
 - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
 - cmd: go build
 - cmd: .\mkg.exe --flat myapp
-- cmd: cd myapp && make && make clean && cd ..
-- cmd: rmdir /s /q myapp
+- cmd: cd myapp && make && make clean RM="rm -f" && cd ..
+- cmd: rm -rf /s /q myapp
 - cmd: .\mkg.exe myapp
-- cmd: cd myapp && make && make clean && cd ..
-- cmd: rmdir /s /q myapp
+- cmd: cd myapp && make && make clean RM="rm -f" && cd ..
+- cmd: rm -rf /s /q myapp
 - cmd: .\mkg.exe -cpp --flat myapp
-- cmd: cd myapp && make && make clean && cd ..
-- cmd: rmdir /s /q myapp
+- cmd: cd myapp && make && make clean RM="rm -f" && cd ..
+- cmd: rm -rf /s /q myapp
 - cmd: .\mkg.exe -cpp myapp
-- cmd: cd myapp && make && make clean && cd ..
-- cmd: rmdir /s /q myapp
+- cmd: cd myapp && make && make clean RM="rm -f" && cd ..
+- cmd: rm -rf /s /q myapp
 - cmd: .\mkg.exe --library --flat mylib
-- cmd: cd mylib && make test && make clean && make static && make clean && cd ..
-- cmd: rmdir /s /q mylib
+- cmd: cd mylib && make test && make clean RM="rm -f" && make static && make clean RM="rm -f" && cd ..
+- cmd: rm -rf /s /q mylib
 - cmd: .\mkg.exe --library mylib
-- cmd: cd mylib && make test && make clean && make static && make clean && cd ..
-- cmd: rmdir /s /q mylib
+- cmd: cd mylib && make test && make clean RM="rm -f" && make static && make clean RM="rm -f" && cd ..
+- cmd: rm -rf /s /q mylib
 - cmd: .\mkg.exe -cxx --library --flat mylib
-- cmd: cd mylib && make test && make clean && make static && make clean && cd ..
-- cmd: rmdir /s /q mylib
+- cmd: cd mylib && make test && make clean RM="rm -f" && make static && make clean RM="rm -f" && cd ..
+- cmd: rm -rf /s /q mylib
 - cmd: .\mkg.exe -cxx --library mylib
-- cmd: cd mylib && make test && make clean && make static && make clean && cd ..
-- cmd: rmdir /s /q mylib
+- cmd: cd mylib && make test && make clean RM="rm -f" && make static && make clean RM="rm -f" && cd ..
+- cmd: rm -rf /s /q mylib
 - sh: sh mkg_test.sh
