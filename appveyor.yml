@@ -8,8 +8,8 @@ build: off
 install:
 - cmd: cinst make
 - cmd: cinst golang
-- sh: if [ true = "$CI_LINUX" ]; then sudo apt update; fi
-- sh: if [ true = "$CI_LINUX" ]; then sudo apt install -y golang; fi
+- sh: if [ true = "$CI_LINUX" ]; then sudo apt install -y golang bats; fi
+- sh: if [ false = "$CI_LINUX" ]; then brew install bats; fi
 
 test_script:
 - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
@@ -38,4 +38,5 @@ test_script:
 - cmd: .\mkg.exe -cxx --library mylib
 - cmd: cd mylib && make && make clean RM="rm -f" && make static && make clean RM="rm -f" && cd ..
 - cmd: rm -rf /s /q mylib
+- sh: go build
 - sh: sh mkg_test.sh
