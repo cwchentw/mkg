@@ -1,5 +1,7 @@
 # mkg - Opinionated GNU Make-based Project Generator
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 `mkg` generates GNU Make-based projects for either C or C++.
 
 ## System Requirements
