@@ -28,15 +28,15 @@ test_script:
 - cmd: cd myapp && make && make clean RM="rm -f" && cd ..
 - cmd: rm -rf /s /q myapp
 - cmd: .\mkg.exe --library --flat mylib
-- cmd: cd mylib && make test && make clean RM="rm -f" && make static && make clean RM="rm -f" && cd ..
+- cmd: cd mylib && make && make clean RM="rm -f" && make static && make clean RM="rm -f" && cd ..
 - cmd: rm -rf /s /q mylib
 - cmd: .\mkg.exe --library mylib
-- cmd: cd mylib && make test && make clean RM="rm -f" && make static && make clean RM="rm -f" && cd ..
+- cmd: cd mylib && make && make clean RM="rm -f" && make static && make clean RM="rm -f" && cd ..
 - cmd: rm -rf /s /q mylib
 - cmd: .\mkg.exe -cxx --library --flat mylib
-- cmd: cd mylib && make test && make clean RM="rm -f" && make static && make clean RM="rm -f" && cd ..
+- cmd: cd mylib && make && make clean RM="rm -f" && make static && make clean RM="rm -f" && cd ..
 - cmd: rm -rf /s /q mylib
 - cmd: .\mkg.exe -cxx --library mylib
-- cmd: cd mylib && make test && make clean RM="rm -f" && make static && make clean RM="rm -f" && cd ..
+- cmd: cd mylib && make && make clean RM="rm -f" && make static && make clean RM="rm -f" && cd ..
 - cmd: rm -rf /s /q mylib
 - sh: sh mkg_test.sh
