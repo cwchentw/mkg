@@ -15,8 +15,8 @@ test_script:
 - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
 - cmd: go build
 - cmd: .\mkg.exe --flat myapp
-- cmd: cd myapp && make && make clean RM="rm -f" && cd ..
-- cmd: rm -rf /s /q myapp
+- cmd: call "cd myapp && make && make clean && cd .."
+- cmd: call "del /s /q myapp"
 - cmd: .\mkg.exe myapp
 - cmd: cd myapp && make && make clean RM="rm -f" && cd ..
 - cmd: rm -rf /s /q myapp
