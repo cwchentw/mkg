@@ -222,7 +222,7 @@ endif
 
 %.obj: %.c
 ifneq (,$(findstring $(MAKECMDGOALS),$(DYNAMIC)))
-	$(CC) /c $< $(CFLAGS) /MD /I ..$(SEP)$(INCLUDE_DIR)
+	$(CC) /c $< $(CFLAGS) /D{{.PROGRAM}}_EXPORT_SYMBOLS /MD /I ..$(SEP)$(INCLUDE_DIR)
 else
 	$(CC) /c $< $(CFLAGS) /MT /I ..$(SEP)$(INCLUDE_DIR)
 endif
@@ -270,7 +270,7 @@ all: dynamic
 
 dynamic: $(OBJS)
 ifeq ($(CXX),cl)
-	link /DLL /DEF:$(DYNAMIC_LIB:.dll=.def) /out:..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
+	link /DLL /out:..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
 		$(OBJS) $(LDFLAGS) $(LDLIBS)
 else
 	$(CXX) -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
@@ -288,7 +288,7 @@ endif
 
 %.obj: %.cpp
 ifneq (,$(findstring $(MAKECMDGOALS),$(DYNAMIC)))
-	$(CXX) /c $< $(CXXFLAGS) /MD /I ..$(SEP)$(INCLUDE_DIR)
+	$(CXX) /c $< $(CXXFLAGS) /D{{.PROGRAM}}_EXPORT_SYMBOLS /MD /I ..$(SEP)$(INCLUDE_DIR)
 else
 	$(CXX) /c $< $(CXXFLAGS) /MT /I ..$(SEP)$(INCLUDE_DIR)
 endif
@@ -348,7 +348,7 @@ all: test
 	
 test: dynamic
 ifeq ($(CC),cl)
-	for %%x in (*.c) do $(CC) $(CFLAGS) \
+	for %%x in (*.c) do $(CC) $(CFLAGS) /D{{.PROGRAM}}_IMPORT_SYMBOLS /MD \
 		$(LDFLAGS) $(LDLIBS) /I..$(SEP)$(INCLUDE_DIR) %%x \
 		..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB:.dll=.lib)
 	copy ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) . \
@@ -439,7 +439,8 @@ all: test
 test: dynamic
 ifeq ($(CXX),cl)
 	for %%x in ($(TEST_OBJS:.obj=.cpp)) do \
-		$(CXX) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS) \
+		$(CXX) $(CXXFLAGS) /D{{.PROGRAM}}_IMPORT_SYMBOLS /MD \
+		 $(LDFLAGS) $(LDLIBS) \
 		/I..$(SEP)$(INCLUDE_DIR) %%x \
 		..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB:.dll=.lib)
 	copy ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) . \

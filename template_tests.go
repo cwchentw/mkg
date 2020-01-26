@@ -114,8 +114,8 @@ const program_lib_test_c = `#include <stdbool.h>
 
 int main(void)
 {
-    TEST(is_even(3) == false);
-    TEST(is_even(4) == true);
+    TEST(is_even(3) == FALSE);
+    TEST(is_even(4) == TRUE);
     
     return 0;
 }
@@ -134,8 +134,8 @@ const program_lib_test_cxx = `#include <cstdlib>
 
 int main(void)
 {
-    TEST(is_even(3) == false);
-    TEST(is_even(4) == true);
+    TEST(is_even(3) == FALSE);
+    TEST(is_even(4) == TRUE);
     
     return 0;
 }

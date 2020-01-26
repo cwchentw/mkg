@@ -132,7 +132,6 @@ func (p *CProject) Create() {
 		if p.Layout() == LAYOUT_FLAT {
 			p.createConfigLibFlat()
 			p.createHeader()
-			p.createDef()
 			p.createLib()
 			p.createLibTest()
 		} else if p.Layout() == LAYOUT_NESTED {
@@ -141,7 +140,6 @@ func (p *CProject) Create() {
 			p.createConfigLibInternal()
 			p.createConfigLibTestInternal()
 			p.createHeader()
-			p.createDef()
 			p.createLib()
 			p.createLibTest()
 		} else {
@@ -326,9 +324,11 @@ func (p *CProject) createConfigLibFlat() {
 
 	err = tmpl.Execute(file, struct {
 		Program  string
+		PROGRAM  string
 		Standard string
 	}{
 		p.Prog(),
+		strings.ToUpper(p.Prog()),
 		stdToString(p.Std()),
 	})
 	if err != nil {
@@ -612,7 +612,11 @@ func (p *CProject) createConfigLibInternalImpl(path string) {
 		os.Exit(1)
 	}
 
-	err = tmpl.Execute(file, nil)
+	err = tmpl.Execute(file, struct {
+		PROGRAM string
+	}{
+		strings.ToUpper(p.Prog()),
+	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -663,8 +667,10 @@ func (p *CProject) createConfigLibTestInternalImpl(path string) {
 
 	err = tmpl.Execute(file, struct {
 		Program string
+		PROGRAM string
 	}{
 		p.Prog(),
+		strings.ToUpper(p.Prog()),
 	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -739,47 +745,6 @@ func (p *CProject) createHeaderImpl(path string) {
 		Program string
 	}{
 		progUpper,
-	})
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-}
-
-func (p *CProject) createDef() {
-	suffix := ".def"
-
-	var path string
-
-	if p.Layout() == LAYOUT_FLAT {
-		path = filepath.Join(
-			p.Path(), fmt.Sprintf("%s%s", p.Prog(), suffix))
-	} else {
-		path = filepath.Join(
-			p.Path(), p.Src(), fmt.Sprintf("%s%s", p.Prog(), suffix))
-	}
-
-	p.createDefImpl(path)
-}
-
-func (p *CProject) createDefImpl(path string) {
-	file, err := os.Create(path)
-	defer file.Close()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-
-	tmpl, err := template.New("def").Parse(programLibDef)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-
-	err = tmpl.Execute(file, struct {
-		Program string
-	}{
-		p.Prog(),
 	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)

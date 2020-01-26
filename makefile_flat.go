@@ -68,7 +68,7 @@ all: dynamic
 test: dynamic
 ifeq ($(detected_OS),Windows)
 ifeq ($(CC),cl)
-	for %%x in ($(TEST_OBJS:.obj=.c)) do $(CC) $(CFLAGS) /I. /c %%x /link $(DYNAMIC_LIB:.dll=.lib)
+	for %%x in ($(TEST_OBJS:.obj=.c)) do $(CC) $(CFLAGS) /D{{.PROGRAM}}_IMPORT_SYMBOLS /MD /I. /c %%x /link $(DYNAMIC_LIB:.dll=.lib)
 	for %%x in ($(TEST_OBJS)) do $(CC) %%x $(CFLAGS) /I. $(LDFLAGS) $(LDLIBS) /link $(DYNAMIC_LIB:.dll=.lib)
 	for %%x in ($(TEST_OBJS:.obj=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
@@ -107,7 +107,7 @@ endif
 dynamic: $(OBJS)
 ifeq ($(detected_OS),Windows)
 ifeq ($(CC),cl)
-	link /DLL /DEF:$(DYNAMIC_LIB:.dll=.def) /out:$(DYNAMIC_LIB) $(LDFLAGS) $(LDLIBS) $(OBJS)
+	link /DLL /out:$(DYNAMIC_LIB) $(LDFLAGS) $(LDLIBS) $(OBJS)
 else
 	$(CC) $(CFLAGS) -shared -o $(DYNAMIC_LIB) $(OBJS) -I. -L. $(LDFLAGS) $(LDLIBS)
 endif
@@ -126,7 +126,7 @@ endif
 
 %.obj: %.c
 ifneq (,$(findstring $(MAKECMDGOALS),$(DYNAMIC)))
-	$(CC) /c $< $(CFLAGS) /MD
+	$(CC) /c $< $(CFLAGS) /D{{.PROGRAM}}_EXPORT_SYMBOLS /MD
 else
 	$(CC) /c $< $(CFLAGS) /MT
 endif
@@ -149,7 +149,7 @@ all: dynamic
 test: dynamic
 ifeq ($(detected_OS),Windows)
 ifeq ($(CXX),cl)
-	for %%x in ($(TEST_OBJS:.obj=.cpp)) do $(CXX) /c %%x $(CXXFLAGS) /I. /link $(DYNAMIC_LIB:.dll=.lib)
+	for %%x in ($(TEST_OBJS:.obj=.cpp)) do $(CXX) /c %%x $(CXXFLAGS) /D{{.PROGRAM}}_IMPORT_SYMBOLS /MD /I. /link $(DYNAMIC_LIB:.dll=.lib)
 	for %%x in ($(TEST_OBJS)) do $(CXX) %%x $(CXXFLAGS) /I. $(LDFLAGS) $(LDLIBS) /link $(DYNAMIC_LIB:.dll=.lib)
 	for %%x in ($(TEST_OBJS:.obj=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
@@ -189,7 +189,7 @@ endif  # $(detected_OS)
 dynamic: $(OBJS)
 ifeq ($(detected_OS),Windows)
 ifeq ($(CXX),cl)
-	link /DLL /DEF:$(DYNAMIC_LIB:.dll=.def) /out:$(DYNAMIC_LIB) $(OBJS) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
+	link /DLL /out:$(DYNAMIC_LIB) $(OBJS) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
 else
 	$(CXX) -shared -o $(DYNAMIC_LIB) $(OBJS) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
 endif  # $(CXX)
@@ -208,7 +208,7 @@ endif
 
 %.obj: %.cpp
 ifneq (,$(findstring $(MAKECMDGOALS),$(DYNAMIC)))
-	$(CXX) /c $< $(CXXFLAGS) /MD
+	$(CXX) /c $< $(CXXFLAGS) /D{{.PROGRAM}}_EXPORT_SYMBOLS /MD
 else
 	$(CXX) /c $< $(CXXFLAGS) /MT
 endif

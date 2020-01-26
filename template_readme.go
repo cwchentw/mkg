@@ -6,4 +6,4 @@ const templateREADME = `# {{.Prog}}
 
 ## Copyright
 
-{{.Year}}, {{.Author}}{{ if .License -}}; {{ .License }}{{- end}}`
+Copyright (c) {{.Year}} {{.Author}}{{ if .License -}}. Licensed under {{ .License }}.{{- end}}`
