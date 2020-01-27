@@ -354,7 +354,7 @@ ifeq ($(CC),cl)
 		&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
 	for %%x in ($(TEST_OBJS:.o=)) do $(CC) -o %%x.exe %%x.c \
-		-I..$(SEP)$(INCLUDE_DIR) -L..$(SEP)$(DIST_DIR) \
+		-I..$(SEP)$(INCLUDE_DIR) -L..$(SEP)$(DIST_DIR) -l{{.Program}} \
 		$(CFLAGS) $(LDFLAGS) $(LDLIBS)
 	copy ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) . \
 		&& for %%x in ($(TEST_OBJS:.o=.exe)) do .$(SEP)%%x \
@@ -444,7 +444,8 @@ ifeq ($(CXX),cl)
 else
 	for %%x in ($(TEST_OBJS:.o=)) do \
 		$(CXX) -o %%x.exe %%x.cpp \
-		$(CXXFLAGS) -I..$(SEP)$(INCLUDE_DIR)
+		$(CXXFLAGS) -I..$(SEP)$(INCLUDE_DIR) \
+		-L..$(SEP)$(DIST_DIR) -l{{.Program}}
 	copy ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) . \
 		&& for %%x in ($(TEST_OBJS:.o=.exe)) do .$(SEP)%%x \
 		&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
