@@ -107,7 +107,7 @@ endif
 dynamic: $(OBJS)
 ifeq ($(detected_OS),Windows)
 ifeq ($(CC),cl)
-	link /DLL /out:$(DYNAMIC_LIB) $(LDFLAGS) $(LDLIBS) $(OBJS)
+	link /DLL /out:$(DYNAMIC_LIB) $(OBJS) $(LDFLAGS) $(LDLIBS)
 else
 	$(CC) $(CFLAGS) -shared -o $(DYNAMIC_LIB) $(OBJS) -I. -L. $(LDFLAGS) $(LDLIBS)
 endif
@@ -189,7 +189,7 @@ endif  # $(detected_OS)
 dynamic: $(OBJS)
 ifeq ($(detected_OS),Windows)
 ifeq ($(CXX),cl)
-	link /DLL /out:$(DYNAMIC_LIB) $(OBJS) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
+	link /DLL /out:$(DYNAMIC_LIB) $(OBJS) $(LDFLAGS) $(LDLIBS)
 else
 	$(CXX) -shared -o $(DYNAMIC_LIB) $(OBJS) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
 endif  # $(CXX)
