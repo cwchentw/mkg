@@ -106,7 +106,7 @@ const program_lib_test_c = `#include <stdbool.h>
 #include "{{.Program}}.h"
 
 #define TEST(cond) { \
-        if (!cond) { \
+        if (!(cond)) { \
             fprintf(stderr, "%s %d: Failed on %s\n", __FILE__, __LINE__, #cond); \
             exit(1); \
         } \
@@ -126,7 +126,7 @@ const program_lib_test_cxx = `#include <cstdlib>
 #include "{{.Program}}.hpp"
 
 #define TEST(cond) { \
-        if (!cond) { \
+        if (!(cond)) { \
             fprintf(stderr, "%s %d: Failed on %s\n", __FILE__, __LINE__, #cond); \
             exit(1); \
         } \
