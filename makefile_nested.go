@@ -401,8 +401,7 @@ test: dynamic
 	for x in $(TEST_OBJS); do \
 		$(CXX) -c "$${x%.*}.cpp" \
 			-I..$(SEP)$(INCLUDE_DIR) \
-			-L..$(SEP)$(DIST_DIR) -l{{.Program}} \
-			$(CXXFLAGS) $(LDFLAGS) $(LDLIBS); \
+			$(CXXFLAGS); \
 		$(CXX) -o "$${x%.*}" $$x \
 			-I..$(SEP)$(INCLUDE_DIR) \
 			-L..$(SEP)$(DIST_DIR) -l{{.Program}} \
@@ -415,8 +414,7 @@ testStatic: static
 	for x in $(TEST_OBJS); do \
 		$(CXX) -c "$${x%.*}.cpp" \
 			-I..$(SEP)$(INCLUDE_DIR) \
-			-L..$(SEP)$(DIST_DIR) -l{{.Program}} \
-			$(CXXFLAGS) $(LDFLAGS) $(LDLIBS); \
+			$(CXXFLAGS); \
 		$(CXX) -o "$${x%.*}" $$x \
 			-I..$(SEP)$(INCLUDE_DIR) \
 			-L..$(SEP)$(DIST_DIR) -l{{.Program}} \

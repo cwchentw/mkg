@@ -179,7 +179,7 @@ else
 endif  # $(CXX)
 else
 	for x in $(TEST_OBJS); do \
-		$(CXX) -c "$${x%.*}.cpp" $(CXXFLAGS) -L. -l{{.Program}} $(LDFLAGS) $(LDLIBS); \
+		$(CXX) -c "$${x%.*}.cpp" $(CXXFLAGS); \
 		$(CXX) -o "$${x%.*}" $$x $(CXXFLAGS) -L. -l{{.Program}} $(LDFLAGS) $(LDLIBS); \
 		.$(SEP)"$${x%.o}"; \
 		if [ $$? -ne 0 ]; then echo "Failed program state"; exit 1; fi \
