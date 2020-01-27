@@ -173,7 +173,7 @@ ifeq ($(CXX),cl)
 	for %%x in ($(TEST_OBJS)) do $(CXX) %%x $(CXXFLAGS) $(LDFLAGS) $(LDLIBS) /link $(STATIC_LIB)
 	for %%x in ($(TEST_OBJS:.obj=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
-	for %%x in ($(TEST_OBJS:.o=.cpp)) do $(CXX) -c %%x $(STATIC_LIB) $(CXXFLAGS)
+	for %%x in ($(TEST_OBJS:.o=.cpp)) do $(CXX) -c %%x $(CXXFLAGS)
 	for %%x in ($(TEST_OBJS:.o=)) do $(CXX) -o %%x.exe %%x.o $(STATIC_LIB) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
 	for %%x in ($(TEST_OBJS:.o=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 endif  # $(CXX)
