@@ -244,8 +244,7 @@ On Windows, the projects assume MSVC; however, MinGW is supported as well:
    ├── src
    │   ├── Makefile
    │   ├── Makefile.win
-   │   ├── mylib.c
-   │   └── mylib.def
+   │   └── mylib.c
    └── tests
        ├── Makefile
        ├── Makefile.win
@@ -328,8 +327,7 @@ On Windows, the projects assume MSVC; however, MinGW is supported as well:
    ├── src
    │   ├── Makefile
    │   ├── Makefile.win
-   │   ├── mylib.cpp
-   │   └── mylib.def
+   │   └── mylib.cpp
    └── tests
        ├── Makefile
        ├── Makefile.win
