@@ -312,8 +312,7 @@ test: dynamic
 	for x in $(TEST_OBJS); do \
 		$(CC) -c "$${x%.*}.c" \
 			-I..$(SEP)$(INCLUDE_DIR) \
-			-L..$(SEP)$(DIST_DIR) -l{{.Program}} \
-			$(CFLAGS) $(LDFLAGS) $(LDLIBS); \
+			$(CFLAGS); \
 		$(CC) -o "$${x%.*}" $$x \
 			-I..$(SEP)$(INCLUDE_DIR) \
 			-L..$(SEP)$(DIST_DIR) -l{{.Program}} \
@@ -326,8 +325,7 @@ testStatic: static
 	for x in $(TEST_OBJS); do \
 		$(CC) -c "$${x%.*}.c" \
 			-I..$(SEP)$(INCLUDE_DIR) \
-			-L..$(SEP)$(DIST_DIR) -l{{.Program}} \
-			$(CFLAGS) $(LDFLAGS) $(LDLIBS); \
+			$(CFLAGS); \
 		$(CC) -o "$${x%.*}" $$x \
 			-I..$(SEP)$(INCLUDE_DIR) \
 			-L..$(SEP)$(DIST_DIR) -l{{.Program}} \
@@ -356,8 +354,7 @@ ifeq ($(CC),cl)
 		&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
 	for %%x in ($(TEST_OBJS:.o=)) do $(CC) -o %%x.exe %%x.c \
-		-I..$(SEP)$(INCLUDE_DIR) \
-		-L..$(SEP)$(DIST_DIR) -l{{.Program}} $(CFLAGS) $(LDFLAGS) $(LDLIBS)
+		-I..$(SEP)$(INCLUDE_DIR) $(CFLAGS)
 	copy ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) . \
 		&& for %%x in ($(TEST_OBJS:.o=.exe)) do .$(SEP)%%x \
 		&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
@@ -438,7 +435,6 @@ test: dynamic
 ifeq ($(CXX),cl)
 	for %%x in ($(TEST_OBJS:.obj=.cpp)) do \
 		$(CXX) $(CXXFLAGS) /D{{.PROGRAM}}_IMPORT_SYMBOLS /MD \
-		 $(LDFLAGS) $(LDLIBS) \
 		/I..$(SEP)$(INCLUDE_DIR) %%x \
 		..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB:.dll=.lib)
 	copy ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) . \
@@ -446,9 +442,8 @@ ifeq ($(CXX),cl)
 		&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
 	for %%x in ($(TEST_OBJS:.o=)) do \
-		$(CXX) $(CXXFLAGS) -o %%x.exe %%x.cpp \
-		-I..$(SEP)$(INCLUDE_DIR) \
-		-L..$(SEP)$(DIST_DIR) -l{{.Program}}
+		$(CXX) -o %%x.exe %%x.cpp \
+		$(CXXFLAGS) -I..$(SEP)$(INCLUDE_DIR)
 	copy ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) . \
 		&& for %%x in ($(TEST_OBJS:.o=.exe)) do .$(SEP)%%x \
 		&& if %%errorlevel%% neq 0 exit /b %%errorlevel%%
