@@ -59,9 +59,9 @@ dynamic: .$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB)
 
 .$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB):
 ifeq ($(detected_OS),Windows)
-	$(MAKE) -C $(SOURCE_DIR) -f Makefile.win
+	$(MAKE) -C $(SOURCE_DIR) -f Makefile.win dynamic
 else
-	$(MAKE) -C $(SOURCE_DIR)
+	$(MAKE) -C $(SOURCE_DIR) dynamic
 endif
 
 static: .$(SEP)$(DIST_DIR)$(SEP)$(STATIC_LIB)
@@ -204,7 +204,7 @@ all: dynamic
 
 dynamic: $(OBJS)
 ifeq ($(CC),cl)
-	link /DLL /DEF:$(DYNAMIC_LIB:.dll=.def) /out:..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
+	link /DLL /out:..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
 		$(OBJS) $(LDFLAGS) $(LDLIBS)
 else
 	$(CC)  -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) $(OBJS) \
