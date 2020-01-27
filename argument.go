@@ -51,8 +51,8 @@ func NewParsingResult() *ParsingResult {
 	result.src = "src"
 	result.include = "include"
 	result.dist = "dist"
-	result.test = "tests"
-	result.example = "examples"
+	result.test = "test"
+	result.example = "example"
 
 	return result
 }
