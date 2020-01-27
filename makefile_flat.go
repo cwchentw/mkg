@@ -92,7 +92,7 @@ ifeq ($(CC),cl)
 	for %%x in ($(TEST_OBJS)) do $(CC) %%x $(CFLAGS) /I. $(LDFLAGS) $(LDLIBS) /link $(STATIC_LIB)
 	for %%x in ($(TEST_OBJS:.obj=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 else
-	for %%x in ($(TEST_OBJS:.o=)) do $(CC) -o %%x.exe %%x.c $(CC) $(CFLAGS) -I. -L. -l{{.Program}} $(LDFLAGS) $(LDLIBS)
+	for %%x in ($(TEST_OBJS:.o=)) do $(CC) -o %%x.exe %%x.c $(CFLAGS) -I. -L. -l{{.Program}} $(LDFLAGS) $(LDLIBS)
 	for %%x in ($(TEST_OBJS:.o=.exe)) do .\%%x && if %%errorlevel%% neq 0 exit /b %%errorlevel%%
 endif
 else
