@@ -218,16 +218,6 @@ These parameters only make effects in nested projects.
 
 [Autotools](https://www.gnu.org/savannah-checkouts/gnu/autoconf/manual/autoconf-2.69/html_node/The-GNU-Build-System.html#The-GNU-Build-System) is a well-known Makefile generating tool, but only feasible on Unix-like systems. [CMake](https://cmake.org/) is famous and cross-platform, but CMake users need a full language to utilize CMake. [Bakefile](https://bakefile.org/) is a less famous CMake alternative, but you still need yet another high-level language to utilize it. There have been some community projects like [PyMake](https://github.com/Melinysh/PyMake) or [vfnmake](https://github.com/Vifon/vfnmake), but they rely on some runtime environments and provide no support to Windows-family systems. Therefore, we made our own wheel.
 
-## TODO
-
-* Add supports to the following compilers or toolchains:
-  * Fortran (gFortran-based)
-  * Objective-C
-  * LaTeX
-  * Vala
-* Migrate to CMake-based project generator.
-* Add `make install` subcommand for Unix-like systems.
-
 ## Copyright
 
 Copyright (c) 2018-2020 Michael Chen.
