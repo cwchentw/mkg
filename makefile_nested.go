@@ -207,7 +207,7 @@ ifeq ($(CC),cl)
 	link /DLL /out:..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) \
 		$(OBJS) $(LDFLAGS) $(LDLIBS)
 else
-	$(CC)  -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) $(OBJS) \
+	$(CC) -shared -o ..$(SEP)$(DIST_DIR)$(SEP)$(DYNAMIC_LIB) $(OBJS) \
 		$(CFLAGS) -I ..$(SEP)$(INCLUDE_DIR) $(LDFLAGS) $(LDLIBS)
 endif
 
