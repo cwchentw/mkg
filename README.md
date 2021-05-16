@@ -4,6 +4,21 @@
 
 `mkg` generates GNU Make-based projects for either C or C++.
 
+## Not Maintained Anymore
+
+Finally, I found a project generator is not a good idea. There is no single project architecture to satisfy all secenerios. Forthermore, programmers can merely create some boilerplate projects instead. I made some as well, such as
+
+* [c-boilerplate-application](https://github.com/cwchentw/c-boilerplate-application)
+* [c-boilerplate-library](https://github.com/cwchentw/c-boilerplate-library)
+* [cpp-boilerplate-application](https://github.com/cwchentw/cpp-boilerplate-application)
+* [cpp-boilerplate-library](https://github.com/cwchentw/cpp-boilerplate-library)
+* [objc-boilerplate-application](https://github.com/cwchentw/objc-boilerplate-application)
+* [objc-boilerplate-library](https://github.com/cwchentw/objc-boilerplate-library)
+
+You can equally create your own boilerplate projects. It takes much less time than you think.
+
+If you are still interested in creating a project generator, refer to this repo. I hope the code here helps.
+
 ## System Requirements
 
 To use `mkg`-generated projects, you need
