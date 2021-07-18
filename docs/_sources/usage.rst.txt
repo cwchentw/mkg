@@ -27,7 +27,7 @@ When you run ``mkg`` without any argument, it will enter interactive mode:
    $ mkg
    Program name [myapp]:
    Project path [myapp]:
-   Project author [somebody]: Michael Chen
+   Project author [somebody]: Michelle Chen
    Project brief description [something]: Yet Another Application
    Project language (c/cpp) [c]:
    Project type (app/lib) [app]:
@@ -56,7 +56,7 @@ You may execute ``mkg`` interactively with more customization:
    $ mkg --custom
    Program name [myapp]:
    Project path [myapp]:
-   Project author [somebody]: Michael Chen
+   Project author [somebody]: Michelle Chen
    Project brief description [something]: Yet Another Application
    Project language (c/cpp) [c]:
    Project type (app/lib) [app]:
